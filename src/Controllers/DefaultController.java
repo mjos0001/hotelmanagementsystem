@@ -1,9 +1,8 @@
 package Controllers;
 
 
-import java.sql.*;
 //import oracle.jdbc.driver.OracleDriver;
-
+import java.util.*;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -18,12 +17,17 @@ import javax.persistence.Persistence;
  * @author mrkjse
  */
 public class DefaultController {
-    public EntityManagerFactory LogIn()
+    public ArrayList<EntityManagerFactory> LogIn()
     {
+        ArrayList<EntityManagerFactory> emfList = new ArrayList<>();
         try 
         {
-             EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "HotelManagementSystemPU" );
-             return emfactory;
+             EntityManagerFactory emfactoryA = Persistence.createEntityManagerFactory( "HotelManagementSystemPUA" );
+             EntityManagerFactory emfactoryB = Persistence.createEntityManagerFactory( "HotelManagementSystemPUB" );
+             emfList.add(emfactoryA);
+             emfList.add(emfactoryB);
+                     
+             return emfList;
         } 
         catch(Exception e)
         {

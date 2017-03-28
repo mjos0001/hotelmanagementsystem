@@ -1,6 +1,9 @@
 
-import Controllers.DefaultController;
+import Controllers.*;
+import Models.*;
+import java.util.*;
 import java.awt.Color;
+import java.math.BigDecimal;
 import javax.persistence.EntityManagerFactory;
 
 
@@ -17,8 +20,9 @@ import javax.persistence.EntityManagerFactory;
  */
 public class MainFrame extends javax.swing.JFrame { 
     
-    EntityManagerFactory emfactory = null;
+    ArrayList<EntityManagerFactory> emfactoryList = null;
     DefaultController defaultController = null;
+    HotelController hotelController = null;
     
     
     /**
@@ -69,6 +73,11 @@ public class MainFrame extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnHotelsMouseExited(evt);
+            }
+        });
+        btnHotels.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHotelsActionPerformed(evt);
             }
         });
 
@@ -349,20 +358,58 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBookingsMouseExited
 
     private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
-        EntityManagerFactory emfactory = defaultController.LogIn();
+        emfactoryList = defaultController.LogIn();
         
-        if (emfactory.isOpen())
+        boolean loggedIn = true;
+        
+        for (EntityManagerFactory emf : emfactoryList)
+        {
+            if (!emf.isOpen())
+            {
+                System.out.println(emf.getProperties());
+                loggedIn = false;
+            }
+        }
+        
+        if (loggedIn)
         {
             labelLogIn.setText("You are now logged in.");
         }
+        
     }//GEN-LAST:event_btnLogInActionPerformed
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         // TODO add your handling code here:
-        emfactory.close();
+        for (EntityManagerFactory emf : emfactoryList)
+        {
+            emf.close();
+        }
+        
         this.setVisible(false);
         this.dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnHotelsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHotelsActionPerformed
+        // TODO add your handling code here:
+        if (emfactoryList != null)
+        {
+            hotelController = new HotelController(emfactoryList.get(0));
+            //hotelController.getHotels();
+            
+            Hotel hotel = new Hotel();
+            hotel.setHotelId(new BigDecimal(2));
+            hotel.setAddress("101 Collins St. Melbourne VIC");
+            hotel.setCity("Melbourne");
+            hotel.setConstructionYear(new Date(2000,1,1));
+            hotel.setContactNumber("+61474987964");
+            hotel.setCountry("Australia");
+            hotel.setEmailAddress("hello@loretta.com");
+            hotel.setHotelName("Loretta Hotel");
+            hotel.setHotelTypeCode(HotelTypeCode.FIVESTAR.code());
+            
+            hotelController.createHotel(hotel);
+        }
+    }//GEN-LAST:event_btnHotelsActionPerformed
 
     /**
      * @param args the command line arguments

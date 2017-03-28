@@ -31,33 +31,42 @@ public class HotelController {
     }
     
     public List<Hotel> getHotels()
-    {
+    {   
+        List<Hotel> hotels = null;
         
-      EntityManager entitymanager = emfactory.createEntityManager( );
-      entitymanager.getTransaction( ).begin( );
-      
-      List<Hotel> hotels = entitymanager.createNamedQuery("Hotel.findAll").getResultList();
+        try
+        {
+        
+            EntityManager entitymanager = emfactory.createEntityManager( );
+            entitymanager.getTransaction( ).begin( );
 
-      if (hotels.size() > 0)
-      {
-          for (Hotel h : hotels) {
-              Calendar c = Calendar.getInstance();
-              c.setTime(h.getConstructionYear());
-              
-              System.out.println(h.getHotelId() + " "
-                      + h.getHotelName() + " "
-                      + c.get(Calendar.YEAR) + " "
-                      + h.getAddress() + " "
-                      + h.getCity() + " " 
-                      + h.getCountry() + " "
-                      + h.getContactNumber() + " "
-                      + h.getEmailAddress() + " "
-                      + h.getHotelTypeCode());
-          }
-      }
-      
-      entitymanager.getTransaction( ).commit( );
-      entitymanager.close( );
+            hotels = entitymanager.createNamedQuery("Hotel.findAll").getResultList();
+
+            if (hotels.size() > 0)
+            {
+                for (Hotel h : hotels) {
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(h.getConstructionYear());
+
+                    System.out.println(h.getHotelId() + " "
+                            + h.getHotelName() + " "
+                            + c.get(Calendar.YEAR) + " "
+                            + h.getAddress() + " "
+                            + h.getCity() + " " 
+                            + h.getCountry() + " "
+                            + h.getContactNumber() + " "
+                            + h.getEmailAddress() + " "
+                            + h.getHotelTypeCode());
+                }
+            }
+
+            entitymanager.getTransaction( ).commit( );
+            entitymanager.close( );
+        }
+        catch (Exception e)
+        {
+            
+        }
       
       return hotels;
     }
@@ -87,7 +96,7 @@ public class HotelController {
     
     public boolean deleteHotel(Hotel hotel)
     {
-         try
+        try
         {
             EntityManager entitymanager = emfactory.createEntityManager( );
             entitymanager.getTransaction( ).begin( );
@@ -113,8 +122,10 @@ public class HotelController {
         }
     }
     
-    public boolean updateHotel(Hotel newHotel)
+    public Hotel updateHotel(Hotel newHotel)
     {
+        Hotel updatedHotel = null;
+        
         try
         {
             EntityManager entitymanager = emfactory.createEntityManager( );
@@ -132,46 +143,63 @@ public class HotelController {
             oldHotel.setContactNumber(newHotel.getContactNumber());
             oldHotel.setEmailAddress(newHotel.getEmailAddress());
             oldHotel.setHotelTypeCode(newHotel.getHotelTypeCode());
-            entitymanager.getTransaction( ).commit( );
 
+            updatedHotel = oldHotel;
+            
             entitymanager.getTransaction( ).commit( );
 
             getHotels();
 
             entitymanager.close( );
-            
-            return true;
         }
         catch (Exception e)
         {
-            return false;
         }
+        
+        return updatedHotel;
     }
     
     public Hotel findHotelByName(String hotelName)
     {
-        EntityManager entitymanager = emfactory.createEntityManager( );
-        entitymanager.getTransaction( ).begin( );
-      
-        Hotel hotel = (Hotel)entitymanager.createNamedQuery("Hotel.findByHotelName")
-                .setParameter("hotelName", hotelName).getSingleResult();
-      
-        entitymanager.getTransaction( ).commit( );
-        entitymanager.close( );
+        Hotel hotel =  null;
+        try
+        {
+            EntityManager entitymanager = emfactory.createEntityManager( );
+            entitymanager.getTransaction( ).begin( );
+
+            hotel = (Hotel)entitymanager.createNamedQuery("Hotel.findByHotelName")
+                    .setParameter("hotelName", hotelName).getSingleResult();
+
+            entitymanager.getTransaction( ).commit( );
+            entitymanager.close( );
+        }
+        catch (Exception e)
+        {
+            
+        }
         
         return hotel;
     }
     
     public List<Hotel> findHotelByType(String hotelTypeCode)
     {
-        EntityManager entitymanager = emfactory.createEntityManager( );
-        entitymanager.getTransaction( ).begin( );
-      
-        List<Hotel> hotels = entitymanager.createNamedQuery("Hotel.findByHotelTypeCode")
-                .setParameter("hotelTypeCode", hotelTypeCode).getResultList();
-      
-        entitymanager.getTransaction( ).commit( );
-        entitymanager.close( );
+        List<Hotel> hotels = null;
+        
+        try
+        {
+            EntityManager entitymanager = emfactory.createEntityManager( );
+            entitymanager.getTransaction( ).begin( );
+
+            hotels = entitymanager.createNamedQuery("Hotel.findByHotelTypeCode")
+                    .setParameter("hotelTypeCode", hotelTypeCode).getResultList();
+
+            entitymanager.getTransaction( ).commit( );
+            entitymanager.close( );
+        }
+        catch (Exception e)
+        {
+            
+        }
         
         return hotels;
     }
