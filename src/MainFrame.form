@@ -253,6 +253,10 @@
             <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="opaque" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnBookingsMouseEntered"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnBookingsMouseExited"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnPayments">
           <Properties>
@@ -281,6 +285,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Log In"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLogInActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="labelLogIn">
       <Properties>

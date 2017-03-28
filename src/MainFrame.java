@@ -1,4 +1,5 @@
 
+import Controllers.DefaultController;
 import java.awt.Color;
 
 
@@ -13,13 +14,16 @@ import java.awt.Color;
  *
  * @author mrkjse
  */
-public class MainFrame extends javax.swing.JFrame {
-
+public class MainFrame extends javax.swing.JFrame { 
+    
+    DefaultController defaultController = null;
+    
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
+        defaultController = new DefaultController();
     }
 
     /**
@@ -131,6 +135,14 @@ public class MainFrame extends javax.swing.JFrame {
         btnBookings.setText("BOOKINGS");
         btnBookings.setBorderPainted(false);
         btnBookings.setOpaque(false);
+        btnBookings.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnBookingsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnBookingsMouseExited(evt);
+            }
+        });
 
         btnPayments.setBackground(new java.awt.Color(255, 255, 255));
         btnPayments.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -195,6 +207,11 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         btnLogIn.setText("Log In");
+        btnLogIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogInActionPerformed(evt);
+            }
+        });
 
         labelLogIn.setText("You are not logged in.");
 
@@ -255,7 +272,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnHotelsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHotelsMouseEntered
         // TODO add your handling code here:
-        btnHotels.setBackground(Color.LIGHT_GRAY);
+        btnHotels.setBackground(Color.GRAY);
                 
     }//GEN-LAST:event_btnHotelsMouseEntered
 
@@ -266,7 +283,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnRoomsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRoomsMouseEntered
         // TODO add your handling code here:
-        btnRooms.setBackground(Color.LIGHT_GRAY);
+        btnRooms.setBackground(Color.GRAY);
     }//GEN-LAST:event_btnRoomsMouseEntered
 
     private void btnRoomsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRoomsMouseExited
@@ -276,7 +293,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnCustomersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCustomersMouseEntered
         // TODO add your handling code here:
-        btnCustomers.setBackground(Color.WHITE);
+        btnCustomers.setBackground(Color.GRAY);
     }//GEN-LAST:event_btnCustomersMouseEntered
 
     private void btnCustomersMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCustomersMouseExited
@@ -286,7 +303,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnGuestsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuestsMouseEntered
         // TODO add your handling code here:
-        btnGuests.setBackground(Color.WHITE);
+        btnGuests.setBackground(Color.GRAY);
     }//GEN-LAST:event_btnGuestsMouseEntered
 
     private void btnGuestsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuestsMouseExited
@@ -296,7 +313,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnPaymentsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPaymentsMouseEntered
         // TODO add your handling code here:
-        btnPayments.setBackground(Color.WHITE);
+        btnPayments.setBackground(Color.GRAY);
     }//GEN-LAST:event_btnPaymentsMouseEntered
 
     private void btnPaymentsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPaymentsMouseExited
@@ -306,13 +323,32 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnMembershipsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMembershipsMouseEntered
         // TODO add your handling code here:
-        btnHotels.setBackground(Color.WHITE);
+        btnMemberships.setBackground(Color.GRAY);
     }//GEN-LAST:event_btnMembershipsMouseEntered
 
     private void btnMembershipsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMembershipsMouseExited
         // TODO add your handling code here:
-        btnHotels.setBackground(Color.WHITE);
+        btnMemberships.setBackground(Color.WHITE);
     }//GEN-LAST:event_btnMembershipsMouseExited
+
+    private void btnBookingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBookingsMouseEntered
+        // TODO add your handling code here:
+        btnBookings.setBackground(Color.GRAY);
+    }//GEN-LAST:event_btnBookingsMouseEntered
+
+    private void btnBookingsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBookingsMouseExited
+        btnBookings.setBackground(Color.WHITE);
+    }//GEN-LAST:event_btnBookingsMouseExited
+
+    private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
+        // TODO add your handling code here:
+        boolean result = defaultController.LogIn();
+        
+        if (result)
+        {
+            labelLogIn.setText("You are now logged in.");
+        }
+    }//GEN-LAST:event_btnLogInActionPerformed
 
     /**
      * @param args the command line arguments
