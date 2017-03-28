@@ -2,7 +2,10 @@ package Controllers;
 
 
 import java.sql.*;
-import oracle.jdbc.driver.OracleDriver;
+//import oracle.jdbc.driver.OracleDriver;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,26 +18,17 @@ import oracle.jdbc.driver.OracleDriver;
  * @author mrkjse
  */
 public class DefaultController {
-    
-    Connection conn;
-    String url = "jdbc:oracle:thin:@hippo.its.monash.edu.au:1521:FIT5148A";
-    String username = "S28066049";
-    String password = "student";
-    
-    public boolean LogIn()
+    public EntityManagerFactory LogIn()
     {
         try 
         {
-            DriverManager.registerDriver(new OracleDriver());
-            conn = DriverManager.getConnection(url, username, password);
-            System.out.println("Connected to Oracle");
-            return true;
-            
+             EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "HotelManagementSystemPU" );
+             return emfactory;
         } 
-        catch(SQLException e)
+        catch(Exception e)
         {
             System.out.println("Error in connection");
-            return false;
+            return null;
         }
     }
 }

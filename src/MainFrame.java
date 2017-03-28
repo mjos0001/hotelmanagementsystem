@@ -1,6 +1,7 @@
 
 import Controllers.DefaultController;
 import java.awt.Color;
+import javax.persistence.EntityManagerFactory;
 
 
 
@@ -16,7 +17,9 @@ import java.awt.Color;
  */
 public class MainFrame extends javax.swing.JFrame { 
     
+    EntityManagerFactory emfactory = null;
     DefaultController defaultController = null;
+    
     
     /**
      * Creates new form MainFrame
@@ -216,6 +219,11 @@ public class MainFrame extends javax.swing.JFrame {
         labelLogIn.setText("You are not logged in.");
 
         btnClose.setText("Close");
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("HOTEL MANAGEMENT SYSTEM");
@@ -341,14 +349,20 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBookingsMouseExited
 
     private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
-        // TODO add your handling code here:
-        boolean result = defaultController.LogIn();
+        EntityManagerFactory emfactory = defaultController.LogIn();
         
-        if (result)
+        if (emfactory.isOpen())
         {
             labelLogIn.setText("You are now logged in.");
         }
     }//GEN-LAST:event_btnLogInActionPerformed
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        // TODO add your handling code here:
+        emfactory.close();
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_btnCloseActionPerformed
 
     /**
      * @param args the command line arguments
