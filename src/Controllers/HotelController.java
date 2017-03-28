@@ -5,14 +5,12 @@ package Controllers;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import java.sql.*;
+
 import java.util.*;
 import Models.*;
-//import oracle.jdbc.driver.OracleDriver;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.math.BigDecimal;
 
 /**
  *
@@ -20,14 +18,22 @@ import java.math.BigDecimal;
  */
 public class HotelController {
     
-    Connection conn = null;
-    ArrayList<Hotel> hotels = new ArrayList<>();
+    EntityManagerFactory emfactory = null;
     
-    public static List<Hotel> GetHotels(EntityManagerFactory emFactory)
+    public HotelController(EntityManagerFactory emf)
+    {
+        if (!emf.isOpen())
+        {
+            // Should throw an error
+            emfactory = Persistence.createEntityManagerFactory( "HotelManagementSystemPUA" );
+        }
+        emfactory = emf;
+    }
+    
+    public List<Hotel> getHotels()
     {
         
-      //EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "HotelManagementSystemPU" );
-      EntityManager entitymanager = emFactory.createEntityManager( );
+      EntityManager entitymanager = emfactory.createEntityManager( );
       entitymanager.getTransaction( ).begin( );
       
       List<Hotel> hotels = entitymanager.createNamedQuery("Hotel.findAll").getResultList();
@@ -57,7 +63,7 @@ public class HotelController {
     }
     
     
-    public static boolean CreateHotel(EntityManagerFactory emfactory, Hotel hotel)
+    public boolean createHotel(Hotel hotel)
     {
         try
         {
@@ -67,7 +73,7 @@ public class HotelController {
             entitymanager.persist( hotel );
             entitymanager.getTransaction( ).commit( );
 
-            GetHotels(emfactory);
+            getHotels();
 
             entitymanager.close( );
             
@@ -79,17 +85,23 @@ public class HotelController {
         }
     }
     
-    public static boolean DeleteHotel(EntityManagerFactory emfactory, Hotel hotel)
+    public boolean deleteHotel(Hotel hotel)
     {
          try
         {
             EntityManager entitymanager = emfactory.createEntityManager( );
             entitymanager.getTransaction( ).begin( );
 
-            entitymanager.remove( hotel );
-            entitymanager.getTransaction( ).commit( );
+            // Find the hotel first
+            Hotel dataHotel = entitymanager.find( Hotel.class, hotel.getHotelId() );
 
-            GetHotels(emfactory);
+            if (dataHotel != null)
+            {
+                entitymanager.remove( hotel );
+                entitymanager.getTransaction( ).commit( );
+
+                getHotels();
+            }
 
             entitymanager.close( );
             
@@ -101,18 +113,17 @@ public class HotelController {
         }
     }
     
-    public static boolean UpdateHotel(EntityManagerFactory emfactory, Hotel newHotel)
+    public boolean updateHotel(Hotel newHotel)
     {
         try
         {
             EntityManager entitymanager = emfactory.createEntityManager( );
             entitymanager.getTransaction( ).begin( );
-
             
             Hotel oldHotel = entitymanager.find( Hotel.class, newHotel.getHotelId() );
 
-            //before update
-            System.out.println( oldHotel );
+            // Check if it exists
+            
             oldHotel.setHotelName(newHotel.getHotelName());
             oldHotel.setConstructionYear(newHotel.getConstructionYear());
             oldHotel.setCountry(newHotel.getCountry());
@@ -123,12 +134,9 @@ public class HotelController {
             oldHotel.setHotelTypeCode(newHotel.getHotelTypeCode());
             entitymanager.getTransaction( ).commit( );
 
-            //after update
-            //System.out.println( employee );
-
             entitymanager.getTransaction( ).commit( );
 
-            GetHotels(emfactory);
+            getHotels();
 
             entitymanager.close( );
             
@@ -140,7 +148,7 @@ public class HotelController {
         }
     }
     
-    public static Hotel FindHotelByName(EntityManagerFactory emfactory, String hotelName)
+    public Hotel findHotelByName(String hotelName)
     {
         EntityManager entitymanager = emfactory.createEntityManager( );
         entitymanager.getTransaction( ).begin( );
@@ -154,7 +162,7 @@ public class HotelController {
         return hotel;
     }
     
-    public static List<Hotel> FindHotelByType(EntityManagerFactory emfactory, String hotelTypeCode)
+    public List<Hotel> findHotelByType(String hotelTypeCode)
     {
         EntityManager entitymanager = emfactory.createEntityManager( );
         entitymanager.getTransaction( ).begin( );
@@ -166,61 +174,6 @@ public class HotelController {
         entitymanager.close( );
         
         return hotels;
-    }
-    
-      /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "HotelManagementSystemPU" );
-        //GetHotels(emfactory);
-
-//        Hotel hotel = new Hotel( ); 
-//        hotel.setHotelId(new BigDecimal(3));
-//        hotel.setHotelName("Christmas Hotel");
-//        hotel.setAddress("24 Lygon St. Melbourne VIC");
-//        hotel.setCity("Melbourne");
-//        hotel.setCountry("Australia");
-//        hotel.setConstructionYear(new java.util.Date(2005, 12, 25));
-//        hotel.setContactNumber("+61415987654");
-//        hotel.setEmailAddress("hello@christmashmelb.com");
-//        hotel.setHotelTypeCode((HotelType)hotelTypes.toArray()[0]);
-//        
-//        CreateHotel(emfactory, new Hotel());
-//        
-//        Hotel h = FindHotelByName(emfactory, "Christmas Hotel");
-//        Calendar c = Calendar.getInstance();
-//        c.setTime(h.getConstructionYear());
-//        
-//        System.out.println(h.getHotelId() + " "
-//                     + h.getHotelName() + " "
-//                     + c.get(Calendar.YEAR) + " "
-//                     + h.getAddress() + " "
-//                     + h.getCity() + " " 
-//                     + h.getCountry() + " "
-//                     + h.getContactNumber() + " "
-//                     + h.getEmailAddress());
-//        
-
- //       HotelType hotelType = ((HotelType)(hotelTypes.toArray()[0]));
-        
-        List<Hotel> hotels = FindHotelByType(emfactory, "5S");
-        
-        for (Hotel h : hotels) {
-              Calendar c = Calendar.getInstance();
-              c.setTime(h.getConstructionYear());
-              
-              System.out.println(h.getHotelId() + " "
-                      + h.getHotelName() + " "
-                      + c.get(Calendar.YEAR) + " "
-                      + h.getAddress() + " "
-                      + h.getCity() + " " 
-                      + h.getCountry() + " "
-                      + h.getContactNumber() + " "
-                      + h.getEmailAddress());
-          }
-        
-        emfactory.close();
     }
     
 }
