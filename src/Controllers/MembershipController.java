@@ -5,7 +5,6 @@
  */
 package Controllers;
 
-import Models.Guest;
 import Models.Membership;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -50,16 +49,6 @@ public class MembershipController {
             entitymanager.getTransaction( ).begin( );
 
             memberships = entitymanager.createNamedQuery("Membership.findAll").getResultList();
-
-            if (memberships.size() > 0)
-            {
-                for (Membership g : memberships) 
-                {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-                    System.out.println("");                
-                }
-            }
 
             entitymanager.getTransaction( ).commit( );
         }

@@ -6,8 +6,6 @@
 package Controllers;
 
 import Models.Guest;
-import Models.Room;
-import Models.RoomType;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

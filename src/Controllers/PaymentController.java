@@ -34,7 +34,6 @@ public class PaymentController {
         entitymanager = emfactory.createEntityManager( );
     }
     
-    
     public void close()
     {
         entitymanager.close();
@@ -114,29 +113,29 @@ public class PaymentController {
     
     public Payment updatePayment(Payment newPayment)
     {
-        Payment updatedPayment = null;
+        Payment paymentData = null;
         
         try
         {
             entitymanager.getTransaction( ).begin( );
             
-            Payment guestData = entitymanager.find( Payment.class, newPayment.getPaymentPK() );
+            paymentData = entitymanager.find( Payment.class, newPayment.getPaymentPK() );
 
-            if (guestData != null)
+            if (paymentData != null)
             {
-                
+                paymentData.setPaymentAmount(newPayment.getPaymentAmount());
+                paymentData.setPaymentDate(newPayment.getPaymentDate());
+                paymentData.setPaymentMethodCode(newPayment.getPaymentMethodCode());
             }
             
             entitymanager.getTransaction( ).commit( );
-
-            getPayments();
 
         }
         catch (Exception e)
         {
         }
         
-        return updatedPayment;
+        return paymentData;
     }
     
     public List<Payment> findPaymentByName(String firstName, String lastName)

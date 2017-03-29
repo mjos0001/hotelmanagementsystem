@@ -19,8 +19,6 @@ import javax.persistence.PersistenceUnit;
  * @author mrkjse
  */
 public class RoomController {
-    
-    
     EntityManagerFactory emfactory = null;
     
     @PersistenceUnit(unitName="HotelManagementSystemPUB")
@@ -103,7 +101,6 @@ public class RoomController {
         try
         {
             entitymanager.getTransaction( ).begin( );
-
             entitymanager.persist( room );
             entitymanager.getTransaction( ).commit( );
 
@@ -208,7 +205,7 @@ public class RoomController {
         
         return rooms;
     }
-     
+    
     public static void main(String args[]) {
          
         
@@ -251,5 +248,4 @@ public class RoomController {
          x.close();
          
      }
- 
 }

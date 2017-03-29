@@ -89,11 +89,8 @@ public class HotelController {
         {
             //EntityManager entitymanager = emfactory.createEntityManager( );
             entitymanager.getTransaction( ).begin( );
-
             entitymanager.persist( hotel );
             entitymanager.getTransaction( ).commit( );
-
-            getHotels();
 
             return true;
         }
@@ -131,27 +128,25 @@ public class HotelController {
     
     public Hotel updateHotel(Hotel newHotel)
     {
-        Hotel updatedHotel = null;
+        Hotel hotelData = null;
         
         try
         {
             //EntityManager entitymanager = emfactory.createEntityManager( );
             entitymanager.getTransaction( ).begin( );
             
-            Hotel oldHotel = entitymanager.find( Hotel.class, newHotel.getHotelId() );
+            hotelData = entitymanager.find( Hotel.class, newHotel.getHotelId() );
 
             // Check if it exists
             
-            oldHotel.setHotelName(newHotel.getHotelName());
-            oldHotel.setConstructionYear(newHotel.getConstructionYear());
-            oldHotel.setCountry(newHotel.getCountry());
-            oldHotel.setCity(newHotel.getCity());
-            oldHotel.setAddress(newHotel.getAddress());
-            oldHotel.setContactNumber(newHotel.getContactNumber());
-            oldHotel.setEmailAddress(newHotel.getEmailAddress());
-            oldHotel.setHotelTypeCode(newHotel.getHotelTypeCode());
-
-            updatedHotel = oldHotel;
+            hotelData.setHotelName(newHotel.getHotelName());
+            hotelData.setConstructionYear(newHotel.getConstructionYear());
+            hotelData.setCountry(newHotel.getCountry());
+            hotelData.setCity(newHotel.getCity());
+            hotelData.setAddress(newHotel.getAddress());
+            hotelData.setContactNumber(newHotel.getContactNumber());
+            hotelData.setEmailAddress(newHotel.getEmailAddress());
+            hotelData.setHotelTypeCode(newHotel.getHotelTypeCode());
             
             entitymanager.getTransaction( ).commit( );
 
@@ -162,7 +157,7 @@ public class HotelController {
         {
         }
         
-        return updatedHotel;
+        return hotelData;
     }
     
     public Hotel findHotelByName(String hotelName)

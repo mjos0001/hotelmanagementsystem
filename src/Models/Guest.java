@@ -61,7 +61,7 @@ public class Guest implements Serializable {
     private String lastName;
     @Basic(optional = false)
     @Column(name = "DOB")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date dob;
     @Basic(optional = false)
     @Column(name = "COUNTRY")

@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b")
     , @NamedQuery(name = "Booking.findByBookingId", query = "SELECT b FROM Booking b WHERE b.bookingId = :bookingId")
     , @NamedQuery(name = "Booking.findByDate", query = "SELECT b FROM Booking b WHERE b.checkInDate = :checkInDate AND b.checkOutDate = :checkOutDate")
-    , @NamedQuery(name = "Booking.findByCustomer", query = "SELECT b FROM Booking b WHERE b.customer.customerId = :customerId")
+    , @NamedQuery(name = "Booking.findByTakenDate", query = "SELECT b FROM Booking b WHERE (b.checkInDate BETWEEN :checkInDate AND :checkOutDate) OR (b.checkOutDate BETWEEN :checkInDate AND :checkOutDate) ")
+    , @NamedQuery(name = "Booking.findByCustomerId", query = "SELECT b FROM Booking b WHERE b.customer.customerId = :customerId")
     , @NamedQuery(name = "Booking.findByContactPerson", query = "SELECT b FROM Booking b WHERE b.contactPerson = :contactPerson")
     , @NamedQuery(name = "Booking.findByContactEmail", query = "SELECT b FROM Booking b WHERE b.contactEmail = :contactEmail")
     , @NamedQuery(name = "Booking.findByPaymentStatusCode", query = "SELECT b FROM Booking b WHERE b.paymentStatusCode = :paymentStatusCode")})
@@ -56,11 +57,11 @@ public class Booking implements Serializable {
     private int bookingId;
     @Basic(optional = false)
     @Column(name = "CHECK_IN_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date checkInDate;
     @Basic(optional = false)
     @Column(name = "CHECK_OUT_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date checkOutDate;
     @Basic(optional = false)
     @Column(name = "CONTACT_PERSON")

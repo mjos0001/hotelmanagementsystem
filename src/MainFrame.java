@@ -50,6 +50,7 @@ public class MainFrame extends javax.swing.JFrame {
         btnMemberships = new javax.swing.JButton();
         btnBookings = new javax.swing.JButton();
         btnPayments = new javax.swing.JButton();
+        labelInstruction = new javax.swing.JLabel();
         btnLogIn = new javax.swing.JButton();
         labelLogIn = new javax.swing.JLabel();
         btnClose = new javax.swing.JButton();
@@ -186,6 +187,9 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        labelInstruction.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        labelInstruction.setText("Please select from the menu below.");
+
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(
@@ -206,12 +210,16 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(btnMemberships)
                             .addComponent(btnPayments, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnBookings, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(222, 222, 222))))
+                        .addGap(222, 222, 222))
+                    .addGroup(menuPanelLayout.createSequentialGroup()
+                        .addComponent(labelInstruction)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         menuPanelLayout.setVerticalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
-                .addGap(42, 42, 42)
+                .addComponent(labelInstruction)
+                .addGap(26, 26, 26)
                 .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnHotels, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPayments, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -287,7 +295,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(menuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
@@ -490,6 +498,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnRooms;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel labelInstruction;
     private javax.swing.JLabel labelLogIn;
     private javax.swing.JPanel menuPanel;
     // End of variables declaration//GEN-END:variables

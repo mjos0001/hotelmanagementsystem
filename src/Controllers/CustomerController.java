@@ -6,10 +6,12 @@
 package Controllers;
 
 import Models.Customer;
+import Models.Membership;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 
 /**
@@ -32,6 +34,11 @@ public class CustomerController {
         }
         emfactory = emf;
         entitymanager = emfactory.createEntityManager( );
+    }
+    
+    public void close()
+    {
+        entitymanager.close();
     }
     
     public List<Customer> getCustomers()
@@ -112,17 +119,35 @@ public class CustomerController {
     
     public Customer updateCustomer(Customer newCustomer)
     {
-        Customer updatedCustomer = null;
+        Customer customerData = null;
         
         try
         {
             entitymanager.getTransaction( ).begin( );
             
-            Customer oldCustomer = entitymanager.find( Customer.class, newCustomer.getCustomerId());
+            customerData = entitymanager.find( Customer.class, newCustomer.getCustomerId());
 
             // Check if it exists
-           
-            updatedCustomer = oldCustomer;
+            if (customerData != null)
+            {
+                customerData.setCity(newCustomer.getCity());
+                customerData.setCountry(newCustomer.getCountry());
+                customerData.setDob(newCustomer.getDob());
+                customerData.setEmailAddress(newCustomer.getEmailAddress());
+                customerData.setFirstName(newCustomer.getFirstName());
+                customerData.setLastName(newCustomer.getLastName());
+                customerData.setMembershipCredits(newCustomer.getMembershipCredits());
+                customerData.setMembershipTierCode(newCustomer.getMembershipTierCode());
+                customerData.setPhoneNumber(newCustomer.getPhoneNumber());
+                customerData.setPostalCode(newCustomer.getPostalCode());
+                customerData.setStreet(newCustomer.getStreet());
+                customerData.setTitle(newCustomer.getTitle());
+            }
+            else
+            {
+                // throw an exception - the record does not exist!
+            }
+            
             
             entitymanager.getTransaction( ).commit( );
 
@@ -131,9 +156,10 @@ public class CustomerController {
         }
         catch (Exception e)
         {
+            // Error in updating the record!
         }
         
-        return updatedCustomer;
+        return customerData;
     }
     
     public List<Customer> findCustomerByMembership(String membershipTierCode)
@@ -154,6 +180,39 @@ public class CustomerController {
         }
         
         return customers;
+    }
+    
+    public Customer findCustomerByBookingId(int bookingId)
+    {
+        Customer customer =  null;
+        try
+        {
+            entitymanager.getTransaction( ).begin( );
+
+            customer = (Customer)entitymanager.createNamedQuery("Customer.findByBookingId")
+                    .setParameter("bookingId", bookingId).getSingleResult();
+
+            entitymanager.getTransaction( ).commit( );
+        }
+        catch (Exception e)
+        {
+            
+        }
+        
+        return customer;
+    }
+    
+    public static void main(String args[]) {
+         
+         EntityManagerFactory emfactoryb = Persistence.createEntityManagerFactory( "HotelManagementSystemPUB" );
+         CustomerController x = new CustomerController(emfactoryb);
+         
+         List<Customer> newCustomers = x.getCustomers();
+         
+         newCustomers = x.findCustomerByMembership("BRZ");
+         
+         x.close();
+         
     }
    
 }

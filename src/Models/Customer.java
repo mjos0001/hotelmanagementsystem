@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Customer.findByCustomerId", query = "SELECT c FROM Customer c WHERE c.customerId = :customerId")
     , @NamedQuery(name = "Customer.findByMembershipCredits", query = "SELECT c FROM Customer c WHERE c.membershipCredits = :membershipCredits")
     , @NamedQuery(name = "Customer.findByMembershipTierCode", query = "SELECT c FROM Customer c WHERE c.membership.membershipTierCode = :membershipTierCode")
+    , @NamedQuery(name = "Customer.findByBookingId", query = "SELECT c FROM Customer c INNER JOIN c.bookingCollection b WHERE b.bookingId = :bookingId")
     , @NamedQuery(name = "Customer.findByTitle", query = "SELECT c FROM Customer c WHERE c.title = :title")
     , @NamedQuery(name = "Customer.findByFirstName", query = "SELECT c FROM Customer c WHERE c.firstName = :firstName")
     , @NamedQuery(name = "Customer.findByLastName", query = "SELECT c FROM Customer c WHERE c.lastName = :lastName")
@@ -68,7 +69,7 @@ public class Customer implements Serializable {
     private String lastName;
     @Basic(optional = false)
     @Column(name = "DOB")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date dob;
     @Basic(optional = false)
     @Column(name = "COUNTRY")
