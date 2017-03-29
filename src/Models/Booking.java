@@ -79,7 +79,7 @@ public class Booking implements Serializable {
     private String paymentStatusCode;
     @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID")
     @ManyToOne(optional = false)
-    private Customer customerId;
+    private Customer roomId;
 
     public Booking() {
     }
@@ -155,11 +155,11 @@ public class Booking implements Serializable {
     }
 
     public Customer getCustomerId() {
-        return customerId;
+        return roomId;
     }
 
-    public void setCustomerId(Customer customerId) {
-        this.customerId = customerId;
+    public void setCustomerId(Customer roomId) {
+        this.roomId = roomId;
     }
 
     @Override

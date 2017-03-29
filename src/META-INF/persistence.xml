@@ -2,7 +2,6 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="HotelManagementSystemPUA" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>Models.HotelType</class>
     <class>Models.Hotel</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@hippo.its.monash.edu:1521:FIT5148A"/>
@@ -11,10 +10,12 @@
       <property name="javax.persistence.jdbc.password" value="student"/>
     </properties>
   </persistence-unit>
-    <persistence-unit name="HotelManagementSystemPUB" transaction-type="RESOURCE_LOCAL">
+  <persistence-unit name="HotelManagementSystemPUB" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>Models.HotelType</class>
-    <class>Models.Hotel</class>
+    <class>Models.Room</class>
+    <class>Models.RoomType</class>
+    <class>Models.RoomFacility</class>
+    <class>Models.Facility</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@hippo.its.monash.edu:1521:FIT5148B"/>
       <property name="javax.persistence.jdbc.user" value="S28066049"/>
@@ -23,3 +24,4 @@
     </properties>
   </persistence-unit>
 </persistence>
+

@@ -10,7 +10,7 @@ import java.util.*;
 import Models.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 
 /**
  *
@@ -20,14 +20,28 @@ public class HotelController {
     
     EntityManagerFactory emfactory = null;
     
+    @PersistenceUnit(unitName="HotelManagementSystemPUA")
+    EntityManager entitymanager = null;
+    
     public HotelController(EntityManagerFactory emf)
     {
         if (!emf.isOpen())
         {
             // Should throw an error
-            emfactory = Persistence.createEntityManagerFactory( "HotelManagementSystemPUA" );
+            emfactory = null;
         }
         emfactory = emf;
+        entitymanager = emfactory.createEntityManager( );
+    
+    }
+    
+    public void close()
+    {
+        if (entitymanager != null)
+        {
+            entitymanager.close();
+        }
+        
     }
     
     public List<Hotel> getHotels()
@@ -36,8 +50,6 @@ public class HotelController {
         
         try
         {
-        
-            EntityManager entitymanager = emfactory.createEntityManager( );
             entitymanager.getTransaction( ).begin( );
 
             hotels = entitymanager.createNamedQuery("Hotel.findAll").getResultList();
@@ -61,7 +73,6 @@ public class HotelController {
             }
 
             entitymanager.getTransaction( ).commit( );
-            entitymanager.close( );
         }
         catch (Exception e)
         {
@@ -76,7 +87,7 @@ public class HotelController {
     {
         try
         {
-            EntityManager entitymanager = emfactory.createEntityManager( );
+            //EntityManager entitymanager = emfactory.createEntityManager( );
             entitymanager.getTransaction( ).begin( );
 
             entitymanager.persist( hotel );
@@ -84,8 +95,6 @@ public class HotelController {
 
             getHotels();
 
-            entitymanager.close( );
-            
             return true;
         }
         catch (Exception e)
@@ -98,7 +107,7 @@ public class HotelController {
     {
         try
         {
-            EntityManager entitymanager = emfactory.createEntityManager( );
+            //EntityManager entitymanager = emfactory.createEntityManager( );
             entitymanager.getTransaction( ).begin( );
 
             // Find the hotel first
@@ -111,8 +120,6 @@ public class HotelController {
 
                 getHotels();
             }
-
-            entitymanager.close( );
             
             return true;
         }
@@ -128,7 +135,7 @@ public class HotelController {
         
         try
         {
-            EntityManager entitymanager = emfactory.createEntityManager( );
+            //EntityManager entitymanager = emfactory.createEntityManager( );
             entitymanager.getTransaction( ).begin( );
             
             Hotel oldHotel = entitymanager.find( Hotel.class, newHotel.getHotelId() );
@@ -150,7 +157,6 @@ public class HotelController {
 
             getHotels();
 
-            entitymanager.close( );
         }
         catch (Exception e)
         {
@@ -164,14 +170,12 @@ public class HotelController {
         Hotel hotel =  null;
         try
         {
-            EntityManager entitymanager = emfactory.createEntityManager( );
             entitymanager.getTransaction( ).begin( );
 
             hotel = (Hotel)entitymanager.createNamedQuery("Hotel.findByHotelName")
                     .setParameter("hotelName", hotelName).getSingleResult();
 
             entitymanager.getTransaction( ).commit( );
-            entitymanager.close( );
         }
         catch (Exception e)
         {
@@ -187,14 +191,12 @@ public class HotelController {
         
         try
         {
-            EntityManager entitymanager = emfactory.createEntityManager( );
             entitymanager.getTransaction( ).begin( );
 
             hotels = entitymanager.createNamedQuery("Hotel.findByHotelTypeCode")
                     .setParameter("hotelTypeCode", hotelTypeCode).getResultList();
 
             entitymanager.getTransaction( ).commit( );
-            entitymanager.close( );
         }
         catch (Exception e)
         {
@@ -203,5 +205,27 @@ public class HotelController {
         
         return hotels;
     }
+    
+     public static void main(String args[]) {
+         
+         EntityManagerFactory emfactorya = Persistence.createEntityManagerFactory( "HotelManagementSystemPUA" );
+         HotelController x = new HotelController(emfactorya);
+         
+         List<Hotel> hList = x.getHotels();
+         
+         Hotel newHotel = new Hotel(10, "Maruku Hotel", new Date(2010,5,16), "Japan", "Yokohama", "5 Minami-ku Yokohama", "33333", "talktous@marukuh.com", "5S");
+         
+         x.createHotel(newHotel);
+         
+         newHotel.setHotelName("Maruku Yokohama Hotel");
+         
+         x.updateHotel(newHotel);
+         
+         Hotel findHotel = x.findHotelByName("Maruku Yokohama Hotel");
+         
+         List<Hotel> findHotels = x.findHotelByType("5S");
+         
+         x.close();
+     }
     
 }

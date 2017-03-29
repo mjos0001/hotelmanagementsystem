@@ -35,8 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c")
-    , @NamedQuery(name = "Customer.findByCustomerId", query = "SELECT c FROM Customer c WHERE c.customerId = :customerId")
+    , @NamedQuery(name = "Customer.findByCustomerId", query = "SELECT c FROM Customer c WHERE c.roomId = :roomId")
     , @NamedQuery(name = "Customer.findByMembershipCredits", query = "SELECT c FROM Customer c WHERE c.membershipCredits = :membershipCredits")
+    , @NamedQuery(name = "Customer.findByMembershipTierCode", query = "SELECT c FROM Customer c WHERE c.membershipTierCode = :membershipTierCode")
     , @NamedQuery(name = "Customer.findByTitle", query = "SELECT c FROM Customer c WHERE c.title = :title")
     , @NamedQuery(name = "Customer.findByFirstName", query = "SELECT c FROM Customer c WHERE c.firstName = :firstName")
     , @NamedQuery(name = "Customer.findByLastName", query = "SELECT c FROM Customer c WHERE c.lastName = :lastName")
@@ -54,7 +55,7 @@ public class Customer implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "CUSTOMER_ID")
-    private BigDecimal customerId;
+    private BigDecimal roomId;
     @Basic(optional = false)
     @Column(name = "MEMBERSHIP_CREDITS")
     private BigInteger membershipCredits;
@@ -92,18 +93,18 @@ public class Customer implements Serializable {
     @JoinColumn(name = "MEMBERSHIP_TIER_CODE", referencedColumnName = "MEMBERSHIP_TIER_CODE")
     @ManyToOne(optional = false)
     private Membership membershipTierCode;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "roomId")
     private Collection<Booking> bookingCollection;
 
     public Customer() {
     }
 
-    public Customer(BigDecimal customerId) {
-        this.customerId = customerId;
+    public Customer(BigDecimal roomId) {
+        this.roomId = roomId;
     }
 
-    public Customer(BigDecimal customerId, BigInteger membershipCredits, String title, String firstName, String lastName, Date dob, String country, String city, String street, String postalCode, String phoneNumber, String emailAddress) {
-        this.customerId = customerId;
+    public Customer(BigDecimal roomId, BigInteger membershipCredits, String title, String firstName, String lastName, Date dob, String country, String city, String street, String postalCode, String phoneNumber, String emailAddress) {
+        this.roomId = roomId;
         this.membershipCredits = membershipCredits;
         this.title = title;
         this.firstName = firstName;
@@ -118,11 +119,11 @@ public class Customer implements Serializable {
     }
 
     public BigDecimal getCustomerId() {
-        return customerId;
+        return roomId;
     }
 
-    public void setCustomerId(BigDecimal customerId) {
-        this.customerId = customerId;
+    public void setCustomerId(BigDecimal roomId) {
+        this.roomId = roomId;
     }
 
     public BigInteger getMembershipCredits() {
@@ -233,7 +234,7 @@ public class Customer implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (customerId != null ? customerId.hashCode() : 0);
+        hash += (roomId != null ? roomId.hashCode() : 0);
         return hash;
     }
 
@@ -244,7 +245,7 @@ public class Customer implements Serializable {
             return false;
         }
         Customer other = (Customer) object;
-        if ((this.customerId == null && other.customerId != null) || (this.customerId != null && !this.customerId.equals(other.customerId))) {
+        if ((this.roomId == null && other.roomId != null) || (this.roomId != null && !this.roomId.equals(other.roomId))) {
             return false;
         }
         return true;
@@ -252,7 +253,7 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "Models.Customer[ customerId=" + customerId + " ]";
+        return "Models.Customer[ roomId=" + roomId + " ]";
     }
     
 }

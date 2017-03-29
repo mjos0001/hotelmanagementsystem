@@ -18,7 +18,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,8 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Guest.findAll", query = "SELECT g FROM Guest g")
     , @NamedQuery(name = "Guest.findByGuestId", query = "SELECT g FROM Guest g WHERE g.guestId = :guestId")
     , @NamedQuery(name = "Guest.findByTitle", query = "SELECT g FROM Guest g WHERE g.title = :title")
-    , @NamedQuery(name = "Guest.findByFirstName", query = "SELECT g FROM Guest g WHERE g.firstName = :firstName")
-    , @NamedQuery(name = "Guest.findByLastName", query = "SELECT g FROM Guest g WHERE g.lastName = :lastName")
+    , @NamedQuery(name = "Guest.findByName", query = "SELECT g FROM Guest g WHERE g.firstName = :firstName AND g.lastName = :lastName")
     , @NamedQuery(name = "Guest.findByDob", query = "SELECT g FROM Guest g WHERE g.dob = :dob")
     , @NamedQuery(name = "Guest.findByCountry", query = "SELECT g FROM Guest g WHERE g.country = :country")
     , @NamedQuery(name = "Guest.findByCity", query = "SELECT g FROM Guest g WHERE g.city = :city")
@@ -84,8 +82,6 @@ public class Guest implements Serializable {
     @Basic(optional = false)
     @Column(name = "EMAIL_ADDRESS")
     private String emailAddress;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "guest")
-    private Collection<BookingRoomGuest> bookingRoomGuestCollection;
     @JoinColumn(name = "BOOKING_ID", referencedColumnName = "BOOKING_ID")
     @ManyToOne(optional = false)
     private Booking bookingId;
@@ -197,15 +193,6 @@ public class Guest implements Serializable {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
-    }
-
-    @XmlTransient
-    public Collection<BookingRoomGuest> getBookingRoomGuestCollection() {
-        return bookingRoomGuestCollection;
-    }
-
-    public void setBookingRoomGuestCollection(Collection<BookingRoomGuest> bookingRoomGuestCollection) {
-        this.bookingRoomGuestCollection = bookingRoomGuestCollection;
     }
 
     public Booking getBookingId() {

@@ -23,6 +23,7 @@ public class MainFrame extends javax.swing.JFrame {
     ArrayList<EntityManagerFactory> emfactoryList = null;
     DefaultController defaultController = null;
     HotelController hotelController = null;
+    RoomController roomController = null;
     
     
     /**
@@ -95,6 +96,11 @@ public class MainFrame extends javax.swing.JFrame {
                 btnRoomsMouseExited(evt);
             }
         });
+        btnRooms.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRoomsActionPerformed(evt);
+            }
+        });
 
         btnCustomers.setBackground(new java.awt.Color(255, 255, 255));
         btnCustomers.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -123,6 +129,11 @@ public class MainFrame extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnGuestsMouseExited(evt);
+            }
+        });
+        btnGuests.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuestsActionPerformed(evt);
             }
         });
 
@@ -397,7 +408,7 @@ public class MainFrame extends javax.swing.JFrame {
             //hotelController.getHotels();
             
             Hotel hotel = new Hotel();
-            hotel.setHotelId(new BigDecimal(2));
+            hotel.setHotelId(2);
             hotel.setAddress("101 Collins St. Melbourne VIC");
             hotel.setCity("Melbourne");
             hotel.setConstructionYear(new Date(2000,1,1));
@@ -410,6 +421,28 @@ public class MainFrame extends javax.swing.JFrame {
             hotelController.createHotel(hotel);
         }
     }//GEN-LAST:event_btnHotelsActionPerformed
+
+    private void btnGuestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuestsActionPerformed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_btnGuestsActionPerformed
+
+    private void btnRoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRoomsActionPerformed
+        // TODO add your handling code here:
+        if (emfactoryList != null)
+        {
+            roomController = new RoomController(emfactoryList.get(1));
+            
+            List<Room> rooms = roomController.getRooms();
+            
+            for (Room r : rooms)
+            {
+                System.out.println("Room number: " + r.getRoomNumber() + " - " + r.getRoomDescription());
+            }
+            
+        }
+    }//GEN-LAST:event_btnRoomsActionPerformed
 
     /**
      * @param args the command line arguments

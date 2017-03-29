@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Facility.findAll", query = "SELECT f FROM Facility f")
     , @NamedQuery(name = "Facility.findByFacilityNumber", query = "SELECT f FROM Facility f WHERE f.facilityNumber = :facilityNumber")
-    , @NamedQuery(name = "Facility.findByDescription", query = "SELECT f FROM Facility f WHERE f.description = :description")})
+    , @NamedQuery(name = "Facility.findByFacilityName", query = "SELECT f FROM Facility f WHERE f.facilityName = :facilityName")})
 public class Facility implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,8 +41,8 @@ public class Facility implements Serializable {
     @Column(name = "FACILITY_NUMBER")
     private BigDecimal facilityNumber;
     @Basic(optional = false)
-    @Column(name = "DESCRIPTION")
-    private String description;
+    @Column(name = "FACILITY_NAME")
+    private String facilityName;
     @JoinTable(name = "ROOM_FACILITY", joinColumns = {
         @JoinColumn(name = "FACILITY_NUMBER", referencedColumnName = "FACILITY_NUMBER")}, inverseJoinColumns = {
         @JoinColumn(name = "ROOM_ID", referencedColumnName = "ROOM_ID")})
@@ -56,9 +56,9 @@ public class Facility implements Serializable {
         this.facilityNumber = facilityNumber;
     }
 
-    public Facility(BigDecimal facilityNumber, String description) {
+    public Facility(BigDecimal facilityNumber, String facilityName) {
         this.facilityNumber = facilityNumber;
-        this.description = description;
+        this.facilityName = facilityName;
     }
 
     public BigDecimal getFacilityNumber() {
@@ -69,12 +69,12 @@ public class Facility implements Serializable {
         this.facilityNumber = facilityNumber;
     }
 
-    public String getDescription() {
-        return description;
+    public String getFacilityName() {
+        return facilityName;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setFacilityName(String facilityName) {
+        this.facilityName = facilityName;
     }
 
     @XmlTransient

@@ -10,14 +10,14 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -33,10 +33,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Room.findAll", query = "SELECT r FROM Room r")
     , @NamedQuery(name = "Room.findByRoomId", query = "SELECT r FROM Room r WHERE r.roomId = :roomId")
     , @NamedQuery(name = "Room.findByRoomNumber", query = "SELECT r FROM Room r WHERE r.roomNumber = :roomNumber")
+    , @NamedQuery(name = "Room.findByRoomTypeCode", query = "SELECT r FROM Room r WHERE r.roomType.roomTypeCode = :roomTypeCode")
+    , @NamedQuery(name = "Room.findByRoomFacilityNumber", query = "SELECT r FROM Room r INNER JOIN r.facilityCollection rf WHERE rf.facilityNumber = :facilityNumber")
     , @NamedQuery(name = "Room.findByRoomPrice", query = "SELECT r FROM Room r WHERE r.roomPrice = :roomPrice")
     , @NamedQuery(name = "Room.findByRoomDescription", query = "SELECT r FROM Room r WHERE r.roomDescription = :roomDescription")
-    , @NamedQuery(name = "Room.findByHotelId", query = "SELECT r FROM Room r WHERE r.hotelId = :hotelId")
-    , @NamedQuery(name = "Room.findByRoomTypeCode", query = "SELECT r FROM Room r WHERE r.roomTypeCode = :roomTypeCode")})
+    , @NamedQuery(name = "Room.findByHotelId", query = "SELECT r FROM Room r WHERE r.hotelId = :hotelId")})
 public class Room implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,48 +45,45 @@ public class Room implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "ROOM_ID")
-    private BigDecimal roomId;
+    private int roomId;
     @Basic(optional = false)
     @Column(name = "ROOM_NUMBER")
     private String roomNumber;
     @Basic(optional = false)
     @Column(name = "ROOM_PRICE")
-    private BigDecimal roomPrice;
+    private double roomPrice;
     @Basic(optional = false)
     @Column(name = "ROOM_DESCRIPTION")
     private String roomDescription;
     @Basic(optional = false)
     @Column(name = "HOTEL_ID")
-    private BigInteger hotelId;
-    @Basic(optional = false)
-    @Column(name = "ROOM_TYPE_CODE")
-    private String roomTypeCode;
+    private int hotelId;
     @ManyToMany(mappedBy = "roomCollection")
     private Collection<Facility> facilityCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "room")
-    private Collection<BookingRoomGuest> bookingRoomGuestCollection;
+    @JoinColumn(name = "ROOM_TYPE_CODE", referencedColumnName = "ROOM_TYPE_CODE")
+    @ManyToOne(optional = false)
+    private RoomType roomType;
 
     public Room() {
     }
 
-    public Room(BigDecimal roomId) {
+    public Room(int roomId) {
         this.roomId = roomId;
     }
 
-    public Room(BigDecimal roomId, String roomNumber, BigDecimal roomPrice, String roomDescription, BigInteger hotelId, String roomTypeCode) {
+    public Room(int roomId, String roomNumber, double roomPrice, String roomDescription, int hotelId) {
         this.roomId = roomId;
         this.roomNumber = roomNumber;
         this.roomPrice = roomPrice;
         this.roomDescription = roomDescription;
         this.hotelId = hotelId;
-        this.roomTypeCode = roomTypeCode;
     }
 
-    public BigDecimal getRoomId() {
+    public int getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(BigDecimal roomId) {
+    public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
 
@@ -97,11 +95,11 @@ public class Room implements Serializable {
         this.roomNumber = roomNumber;
     }
 
-    public BigDecimal getRoomPrice() {
+    public double getRoomPrice() {
         return roomPrice;
     }
 
-    public void setRoomPrice(BigDecimal roomPrice) {
+    public void setRoomPrice(double roomPrice) {
         this.roomPrice = roomPrice;
     }
 
@@ -113,20 +111,12 @@ public class Room implements Serializable {
         this.roomDescription = roomDescription;
     }
 
-    public BigInteger getHotelId() {
+    public int getHotelId() {
         return hotelId;
     }
 
-    public void setHotelId(BigInteger hotelId) {
+    public void setHotelId(int hotelId) {
         this.hotelId = hotelId;
-    }
-
-    public String getRoomTypeCode() {
-        return roomTypeCode;
-    }
-
-    public void setRoomTypeCode(String roomTypeCode) {
-        this.roomTypeCode = roomTypeCode;
     }
 
     @XmlTransient
@@ -138,33 +128,12 @@ public class Room implements Serializable {
         this.facilityCollection = facilityCollection;
     }
 
-    @XmlTransient
-    public Collection<BookingRoomGuest> getBookingRoomGuestCollection() {
-        return bookingRoomGuestCollection;
+    public RoomType getRoomType() {
+        return roomType;
     }
 
-    public void setBookingRoomGuestCollection(Collection<BookingRoomGuest> bookingRoomGuestCollection) {
-        this.bookingRoomGuestCollection = bookingRoomGuestCollection;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (roomId != null ? roomId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Room)) {
-            return false;
-        }
-        Room other = (Room) object;
-        if ((this.roomId == null && other.roomId != null) || (this.roomId != null && !this.roomId.equals(other.roomId))) {
-            return false;
-        }
-        return true;
+    public void setRoomType(RoomType roomTypeCode) {
+        this.roomType = roomTypeCode;
     }
 
     @Override

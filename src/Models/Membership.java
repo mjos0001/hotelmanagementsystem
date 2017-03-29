@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Membership.findAll", query = "SELECT m FROM Membership m")
     , @NamedQuery(name = "Membership.findByMembershipTierCode", query = "SELECT m FROM Membership m WHERE m.membershipTierCode = :membershipTierCode")
     , @NamedQuery(name = "Membership.findByMembershipTier", query = "SELECT m FROM Membership m WHERE m.membershipTier = :membershipTier")
-    , @NamedQuery(name = "Membership.findByTierCredits", query = "SELECT m FROM Membership m WHERE m.tierCredits = :tierCredits")
+    , @NamedQuery(name = "Membership.findByTierCredits", query = "SELECT m FROM Membership m WHERE m.tierCredits <= :tierCredits")
     , @NamedQuery(name = "Membership.findByDiscount", query = "SELECT m FROM Membership m WHERE m.discount = :discount")
     , @NamedQuery(name = "Membership.findByOtherRewards", query = "SELECT m FROM Membership m WHERE m.otherRewards = :otherRewards")})
 public class Membership implements Serializable {
@@ -54,7 +54,7 @@ public class Membership implements Serializable {
     @Column(name = "OTHER_REWARDS")
     private String otherRewards;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "membershipTierCode")
-    private Collection<Customer> customerCollection;
+    private Collection<Customer> roomCollection;
 
     public Membership() {
     }
@@ -113,11 +113,11 @@ public class Membership implements Serializable {
 
     @XmlTransient
     public Collection<Customer> getCustomerCollection() {
-        return customerCollection;
+        return roomCollection;
     }
 
-    public void setCustomerCollection(Collection<Customer> customerCollection) {
-        this.customerCollection = customerCollection;
+    public void setCustomerCollection(Collection<Customer> roomCollection) {
+        this.roomCollection = roomCollection;
     }
 
     @Override

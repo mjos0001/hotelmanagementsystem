@@ -44,7 +44,7 @@ public class Hotel implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "HOTEL_ID")
-    private BigDecimal hotelId;
+    private int hotelId;
     @Basic(optional = false)
     @Column(name = "HOTEL_NAME")
     private String hotelName;
@@ -74,11 +74,11 @@ public class Hotel implements Serializable {
     public Hotel() {
     }
 
-    public Hotel(BigDecimal hotelId) {
+    public Hotel(int hotelId) {
         this.hotelId = hotelId;
     }
 
-    public Hotel(BigDecimal hotelId, String hotelName, Date constructionYear, String country, String city, String address, String contactNumber, String emailAddress, String hotelTypeCode) {
+    public Hotel(int hotelId, String hotelName, Date constructionYear, String country, String city, String address, String contactNumber, String emailAddress, String hotelTypeCode) {
         this.hotelId = hotelId;
         this.hotelName = hotelName;
         this.constructionYear = constructionYear;
@@ -90,11 +90,11 @@ public class Hotel implements Serializable {
         this.hotelTypeCode = hotelTypeCode;
     }
 
-    public BigDecimal getHotelId() {
+    public int getHotelId() {
         return hotelId;
     }
 
-    public void setHotelId(BigDecimal hotelId) {
+    public void setHotelId(int hotelId) {
         this.hotelId = hotelId;
     }
 
@@ -160,31 +160,6 @@ public class Hotel implements Serializable {
 
     public void setHotelTypeCode(String hotelTypeCode) {
         this.hotelTypeCode = hotelTypeCode;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (hotelId != null ? hotelId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Hotel)) {
-            return false;
-        }
-        Hotel other = (Hotel) object;
-        if ((this.hotelId == null && other.hotelId != null) || (this.hotelId != null && !this.hotelId.equals(other.hotelId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Models.Hotel[ hotelId=" + hotelId + " ]";
     }
     
 }
