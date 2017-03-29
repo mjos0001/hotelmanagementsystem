@@ -5,29 +5,25 @@
  */
 package Controllers;
 
-import Models.Guest;
-import Models.Room;
-import Models.RoomType;
+import Models.Payment;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.text.SimpleDateFormat;
 import javax.persistence.PersistenceUnit;
-
 
 /**
  *
  * @author mrkjse
  */
-public class GuestController {
-    
-    EntityManagerFactory emfactory = null;
+public class PaymentController {
+     EntityManagerFactory emfactory = null;
     
     @PersistenceUnit(unitName="HotelManagementSystemPUB")
     EntityManager entitymanager = null;
     
-    public GuestController(EntityManagerFactory emf)
+    public PaymentController(EntityManagerFactory emf)
     {
         if (!emf.isOpen())
         {
@@ -44,26 +40,20 @@ public class GuestController {
         entitymanager.close();
     }
     
-    public List<Guest> getGuests()
+    public List<Payment> getPayments()
     {   
-        List<Guest> guests = null;
+        List<Payment> guests = null;
         
         try
         {
             entitymanager.getTransaction( ).begin( );
 
-            guests = entitymanager.createNamedQuery("Guest.findAll").getResultList();
+            guests = entitymanager.createNamedQuery("Payment.findAll").getResultList();
 
             if (guests.size() > 0)
             {
-                for (Guest g : guests) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-                    System.out.println(g.getBookingId() + " "
-                                       + g.getGuestId() + " " + g.getTitle() + " " 
-                            + g.getFirstName() + " " + g.getLastName() + " " 
-                            + dateFormat.format(g.getDob()) + " "  + g.getCountry() + " " + g.getCity() + " " + g.getStreet() + " " 
-                            + g.getPostalCode() + " " + g.getPhoneNumber() + " " + g.getEmailAddress());                   
+                for (Payment g : guests) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");                   
                 }
             }
 
@@ -78,7 +68,7 @@ public class GuestController {
     }
     
     
-    public boolean createGuest(Guest guest)
+    public boolean createPayment(Payment guest)
     {
         try
         {
@@ -86,7 +76,7 @@ public class GuestController {
             entitymanager.persist( guest );
             entitymanager.getTransaction( ).commit( );
 
-            getGuests();
+            getPayments();
             
             return true;
         }
@@ -96,20 +86,20 @@ public class GuestController {
         }
     }
     
-    public boolean deleteGuest(Guest guest)
+    public boolean deletePayment(Payment guest)
     {
         try
         {
             entitymanager.getTransaction( ).begin( );
 
-            // Find the Guest first
-            Guest dataGuest = entitymanager.find( Guest.class, guest.getGuestId() );
+            // Find the Payment first
+            Payment dataPayment = entitymanager.find( Payment.class, guest.getPaymentPK() );
 
-            if (dataGuest != null)
+            if (dataPayment != null)
             {
                 entitymanager.remove( guest );
 
-                getGuests();
+                getPayments();
             }
             
             entitymanager.getTransaction( ).commit( );
@@ -122,53 +112,42 @@ public class GuestController {
         }
     }
     
-    public Guest updateGuest(Guest newGuest)
+    public Payment updatePayment(Payment newPayment)
     {
-        Guest updatedGuest = null;
+        Payment updatedPayment = null;
         
         try
         {
             entitymanager.getTransaction( ).begin( );
             
-            Guest guestData = entitymanager.find( Guest.class, newGuest.getGuestId() );
+            Payment guestData = entitymanager.find( Payment.class, newPayment.getPaymentPK() );
 
             if (guestData != null)
             {
-                // Check if it exists
-                guestData.setBookingId(newGuest.getBookingId());
-                guestData.setCity(newGuest.getCity());
-                guestData.setCountry(newGuest.getCountry());
-                guestData.setDob(newGuest.getDob());
-                guestData.setEmailAddress(newGuest.getEmailAddress());
-                guestData.setFirstName(newGuest.getFirstName());
-                guestData.setLastName(newGuest.getLastName());
-                guestData.setPhoneNumber(newGuest.getPhoneNumber());
-                guestData.setPostalCode(newGuest.getPostalCode());
-                guestData.setStreet(newGuest.getStreet());
-                guestData.setTitle(newGuest.getTitle());
+                
             }
             
             entitymanager.getTransaction( ).commit( );
 
-            getGuests();
+            getPayments();
 
         }
         catch (Exception e)
         {
         }
         
-        return updatedGuest;
+        return updatedPayment;
     }
     
-    public List<Guest> findGuestByName(String firstName, String lastName)
+    public List<Payment> findPaymentByName(String firstName, String lastName)
     {
-        List<Guest> guests = null;
+        List<Payment> guests = null;
         
         try
         {
             entitymanager.getTransaction( ).begin( );
 
-            guests = entitymanager.createNamedQuery("Guest.findByGuestTypeCode")
+            guests = entitymanager.createNamedQuery("Payment.findByPaymentTypeCode")
                     .setParameter("firstName", firstName)
                     .setParameter("lastName", lastName)
                     .getResultList();
@@ -187,13 +166,12 @@ public class GuestController {
          
         
          EntityManagerFactory emfactoryb = Persistence.createEntityManagerFactory( "HotelManagementSystemPUB" );
-         GuestController x = new GuestController(emfactoryb);
+         PaymentController x = new PaymentController(emfactoryb);
          
-         List<Guest> newGuests = x.getGuests();
+         List<Payment> newPayments = x.getPayments();
          
          x.close();
          
      }
 
-   
 }

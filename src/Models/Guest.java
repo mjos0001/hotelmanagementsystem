@@ -6,7 +6,6 @@
 package Models;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -50,7 +49,7 @@ public class Guest implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "GUEST_ID")
-    private BigDecimal guestId;
+    private int guestId;
     @Basic(optional = false)
     @Column(name = "TITLE")
     private String title;
@@ -89,11 +88,11 @@ public class Guest implements Serializable {
     public Guest() {
     }
 
-    public Guest(BigDecimal guestId) {
+    public Guest(int guestId) {
         this.guestId = guestId;
     }
 
-    public Guest(BigDecimal guestId, String title, String firstName, String lastName, Date dob, String country, String city, String street, String postalCode, String phoneNumber, String emailAddress) {
+    public Guest(int guestId, String title, String firstName, String lastName, Date dob, String country, String city, String street, String postalCode, String phoneNumber, String emailAddress) {
         this.guestId = guestId;
         this.title = title;
         this.firstName = firstName;
@@ -107,11 +106,11 @@ public class Guest implements Serializable {
         this.emailAddress = emailAddress;
     }
 
-    public BigDecimal getGuestId() {
+    public int getGuestId() {
         return guestId;
     }
 
-    public void setGuestId(BigDecimal guestId) {
+    public void setGuestId(int guestId) {
         this.guestId = guestId;
     }
 
@@ -201,26 +200,6 @@ public class Guest implements Serializable {
 
     public void setBookingId(Booking bookingId) {
         this.bookingId = bookingId;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (guestId != null ? guestId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Guest)) {
-            return false;
-        }
-        Guest other = (Guest) object;
-        if ((this.guestId == null && other.guestId != null) || (this.guestId != null && !this.guestId.equals(other.guestId))) {
-            return false;
-        }
-        return true;
     }
 
     @Override

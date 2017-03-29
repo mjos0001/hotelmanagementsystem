@@ -6,7 +6,7 @@
 package Models;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -46,7 +46,7 @@ public class Payment implements Serializable {
     private Date paymentDate;
     @Basic(optional = false)
     @Column(name = "PAYMENT_AMOUNT")
-    private BigInteger paymentAmount;
+    private long paymentAmount;
     @Basic(optional = false)
     @Column(name = "PAYMENT_METHOD_CODE")
     private String paymentMethodCode;
@@ -61,14 +61,14 @@ public class Payment implements Serializable {
         this.paymentPK = paymentPK;
     }
 
-    public Payment(PaymentPK paymentPK, Date paymentDate, BigInteger paymentAmount, String paymentMethodCode) {
+    public Payment(PaymentPK paymentPK, Date paymentDate, long paymentAmount, String paymentMethodCode) {
         this.paymentPK = paymentPK;
         this.paymentDate = paymentDate;
         this.paymentAmount = paymentAmount;
         this.paymentMethodCode = paymentMethodCode;
     }
 
-    public Payment(BigInteger paymentNumber, BigInteger bookingId) {
+    public Payment(long paymentNumber, long bookingId) {
         this.paymentPK = new PaymentPK(paymentNumber, bookingId);
     }
 
@@ -88,11 +88,11 @@ public class Payment implements Serializable {
         this.paymentDate = paymentDate;
     }
 
-    public BigInteger getPaymentAmount() {
+    public long getPaymentAmount() {
         return paymentAmount;
     }
 
-    public void setPaymentAmount(BigInteger paymentAmount) {
+    public void setPaymentAmount(long paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
 

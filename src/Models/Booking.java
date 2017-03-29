@@ -6,8 +6,6 @@
 package Models;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -36,11 +34,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b")
     , @NamedQuery(name = "Booking.findByBookingId", query = "SELECT b FROM Booking b WHERE b.bookingId = :bookingId")
-    , @NamedQuery(name = "Booking.findByCheckInDate", query = "SELECT b FROM Booking b WHERE b.checkInDate = :checkInDate")
-    , @NamedQuery(name = "Booking.findByCheckOutDate", query = "SELECT b FROM Booking b WHERE b.checkOutDate = :checkOutDate")
+    , @NamedQuery(name = "Booking.findByDate", query = "SELECT b FROM Booking b WHERE b.checkInDate = :checkInDate AND b.checkOutDate = :checkOutDate")
+    , @NamedQuery(name = "Booking.findByCustomer", query = "SELECT b FROM Booking b WHERE b.customer.customerId = :customerId")
     , @NamedQuery(name = "Booking.findByContactPerson", query = "SELECT b FROM Booking b WHERE b.contactPerson = :contactPerson")
     , @NamedQuery(name = "Booking.findByContactEmail", query = "SELECT b FROM Booking b WHERE b.contactEmail = :contactEmail")
-    , @NamedQuery(name = "Booking.findByTotalAmount", query = "SELECT b FROM Booking b WHERE b.totalAmount = :totalAmount")
     , @NamedQuery(name = "Booking.findByPaymentStatusCode", query = "SELECT b FROM Booking b WHERE b.paymentStatusCode = :paymentStatusCode")})
 public class Booking implements Serializable {
 
@@ -56,7 +53,7 @@ public class Booking implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "BOOKING_ID")
-    private BigDecimal bookingId;
+    private int bookingId;
     @Basic(optional = false)
     @Column(name = "CHECK_IN_DATE")
     @Temporal(TemporalType.TIMESTAMP)
@@ -73,22 +70,22 @@ public class Booking implements Serializable {
     private String contactEmail;
     @Basic(optional = false)
     @Column(name = "TOTAL_AMOUNT")
-    private BigInteger totalAmount;
+    private long totalAmount;
     @Basic(optional = false)
     @Column(name = "PAYMENT_STATUS_CODE")
     private String paymentStatusCode;
     @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID")
     @ManyToOne(optional = false)
-    private Customer roomId;
+    private Customer customer;
 
     public Booking() {
     }
 
-    public Booking(BigDecimal bookingId) {
+    public Booking(int bookingId) {
         this.bookingId = bookingId;
     }
 
-    public Booking(BigDecimal bookingId, Date checkInDate, Date checkOutDate, String contactPerson, String contactEmail, BigInteger totalAmount, String paymentStatusCode) {
+    public Booking(int bookingId, Date checkInDate, Date checkOutDate, String contactPerson, String contactEmail, long totalAmount, String paymentStatusCode) {
         this.bookingId = bookingId;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
@@ -98,11 +95,11 @@ public class Booking implements Serializable {
         this.paymentStatusCode = paymentStatusCode;
     }
 
-    public BigDecimal getBookingId() {
+    public int getBookingId() {
         return bookingId;
     }
 
-    public void setBookingId(BigDecimal bookingId) {
+    public void setBookingId(int bookingId) {
         this.bookingId = bookingId;
     }
 
@@ -138,11 +135,11 @@ public class Booking implements Serializable {
         this.contactEmail = contactEmail;
     }
 
-    public BigInteger getTotalAmount() {
+    public long getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(BigInteger totalAmount) {
+    public void setTotalAmount(long totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -155,31 +152,11 @@ public class Booking implements Serializable {
     }
 
     public Customer getCustomerId() {
-        return roomId;
+        return customer;
     }
 
-    public void setCustomerId(Customer roomId) {
-        this.roomId = roomId;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (bookingId != null ? bookingId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Booking)) {
-            return false;
-        }
-        Booking other = (Booking) object;
-        if ((this.bookingId == null && other.bookingId != null) || (this.bookingId != null && !this.bookingId.equals(other.bookingId))) {
-            return false;
-        }
-        return true;
+    public void setCustomerId(Customer customer) {
+        this.customer = customer;
     }
 
     @Override

@@ -6,7 +6,6 @@
 package Models;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -50,7 +49,7 @@ public class BookingRoomGuest implements Serializable {
         this.bookingRoomGuestPK = bookingRoomGuestPK;
     }
 
-    public BookingRoomGuest(BigInteger bookingId, BigInteger guestId, BigInteger roomId) {
+    public BookingRoomGuest(int bookingId, int guestId, int roomId) {
         this.bookingRoomGuestPK = new BookingRoomGuestPK(bookingId, guestId, roomId);
     }
 

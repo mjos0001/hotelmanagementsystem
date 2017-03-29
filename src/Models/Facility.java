@@ -6,7 +6,6 @@
 package Models;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -39,7 +38,7 @@ public class Facility implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "FACILITY_NUMBER")
-    private BigDecimal facilityNumber;
+    private int facilityNumber;
     @Basic(optional = false)
     @Column(name = "FACILITY_NAME")
     private String facilityName;
@@ -52,20 +51,20 @@ public class Facility implements Serializable {
     public Facility() {
     }
 
-    public Facility(BigDecimal facilityNumber) {
+    public Facility(int facilityNumber) {
         this.facilityNumber = facilityNumber;
     }
 
-    public Facility(BigDecimal facilityNumber, String facilityName) {
+    public Facility(int facilityNumber, String facilityName) {
         this.facilityNumber = facilityNumber;
         this.facilityName = facilityName;
     }
 
-    public BigDecimal getFacilityNumber() {
+    public int getFacilityNumber() {
         return facilityNumber;
     }
 
-    public void setFacilityNumber(BigDecimal facilityNumber) {
+    public void setFacilityNumber(int facilityNumber) {
         this.facilityNumber = facilityNumber;
     }
 
@@ -85,27 +84,7 @@ public class Facility implements Serializable {
     public void setRoomCollection(Collection<Room> roomCollection) {
         this.roomCollection = roomCollection;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (facilityNumber != null ? facilityNumber.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Facility)) {
-            return false;
-        }
-        Facility other = (Facility) object;
-        if ((this.facilityNumber == null && other.facilityNumber != null) || (this.facilityNumber != null && !this.facilityNumber.equals(other.facilityNumber))) {
-            return false;
-        }
-        return true;
-    }
-
+    
     @Override
     public String toString() {
         return "Models.Facility[ facilityNumber=" + facilityNumber + " ]";

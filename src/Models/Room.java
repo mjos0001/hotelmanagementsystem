@@ -6,8 +6,6 @@
 package Models;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -35,9 +33,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Room.findByRoomNumber", query = "SELECT r FROM Room r WHERE r.roomNumber = :roomNumber")
     , @NamedQuery(name = "Room.findByRoomTypeCode", query = "SELECT r FROM Room r WHERE r.roomType.roomTypeCode = :roomTypeCode")
     , @NamedQuery(name = "Room.findByRoomFacilityNumber", query = "SELECT r FROM Room r INNER JOIN r.facilityCollection rf WHERE rf.facilityNumber = :facilityNumber")
-    , @NamedQuery(name = "Room.findByRoomPrice", query = "SELECT r FROM Room r WHERE r.roomPrice = :roomPrice")
+    , @NamedQuery(name = "Room.findByRoomPriceRange", query = "SELECT r FROM Room r WHERE r.roomPrice >= :minRoomPrice AND r.roomPrice <= :maxRoomPrice")
     , @NamedQuery(name = "Room.findByRoomDescription", query = "SELECT r FROM Room r WHERE r.roomDescription = :roomDescription")
-    , @NamedQuery(name = "Room.findByHotelId", query = "SELECT r FROM Room r WHERE r.hotelId = :hotelId")})
+    , @NamedQuery(name = "Room.findByHotelId", query = "SELECT r FROM Room r WHERE r.hotelId = :hotelId")
+    , @NamedQuery(name = "Room.findByOccupancy", query = "SELECT r FROM Room r INNER JOIN r.roomType rt WHERE rt.maxOccupancy <= :maxOccupancy") })
 public class Room implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -5,27 +5,27 @@
  */
 package Controllers;
 
-import Models.Customer;
+import Models.Booking;
 import java.text.SimpleDateFormat;
-import java.util.List;
+import java.util.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 
 /**
  *
  * @author mrkjse
  */
-public class CustomerController {
-    
-    EntityManagerFactory emfactory = null;
+public class BookingController {
+     EntityManagerFactory emfactory = null;
     
     @PersistenceUnit(unitName="HotelManagementSystemPUB")
     EntityManager entitymanager = null;
     
-    public CustomerController(EntityManagerFactory emf)
+    public BookingController(EntityManagerFactory emf)
     {
-         if (!emf.isOpen())
+        if (!emf.isOpen())
         {
             // Should throw an error
             emfactory = null;
@@ -34,23 +34,27 @@ public class CustomerController {
         entitymanager = emfactory.createEntityManager( );
     }
     
-    public List<Customer> getCustomers()
+    
+    public void close()
+    {
+        entitymanager.close();
+    }
+    
+    public List<Booking> getBookings()
     {   
-        List<Customer> rooms = null;
+        List<Booking> bookings = null;
         
         try
         {
             entitymanager.getTransaction( ).begin( );
 
-            rooms = entitymanager.createNamedQuery("Customer.findAll").getResultList();
+            bookings = entitymanager.createNamedQuery("Booking.findAll").getResultList();
 
-            if (rooms.size() > 0)
+            if (bookings.size() > 0)
             {
-                for (Customer g : rooms) 
-                {
+                for (Booking g : bookings) {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-                    System.out.println("");                
                 }
             }
 
@@ -61,20 +65,19 @@ public class CustomerController {
             
         }
       
-      return rooms;
+      return bookings;
     }
     
     
-    public boolean createCustomer(Customer room)
+    public boolean createBooking(Booking booking)
     {
         try
         {
             entitymanager.getTransaction( ).begin( );
-
-            entitymanager.persist( room );
+            entitymanager.persist( booking );
             entitymanager.getTransaction( ).commit( );
 
-            getCustomers();
+            getBookings();
             
             return true;
         }
@@ -84,76 +87,71 @@ public class CustomerController {
         }
     }
     
-    public boolean deleteCustomer(Customer room)
+    public boolean deleteBooking(Booking booking)
     {
         try
         {
             entitymanager.getTransaction( ).begin( );
 
-            // Find the Customer first
-            Customer dataCustomer = entitymanager.find( Customer.class, room.getCustomerId());
+            // Find the Booking first
+            Booking dataBooking = entitymanager.find( Booking.class, booking.getBookingId() );
 
-            if (dataCustomer != null)
+            if (dataBooking != null)
             {
-                entitymanager.remove( room );
+                entitymanager.remove( booking );
 
-                getCustomers();
+                getBookings();
+            }
+            
+            entitymanager.getTransaction( ).commit( );
+            
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+    
+    public Booking updateBooking(Booking newBooking)
+    {
+        Booking updatedBooking = null;
+        
+        try
+        {
+            entitymanager.getTransaction( ).begin( );
+            
+            Booking bookingData = entitymanager.find( Booking.class, newBooking.getBookingId() );
+
+            if (bookingData != null)
+            {
+                
             }
             
             entitymanager.getTransaction( ).commit( );
 
-            return true;
+            getBookings();
+
         }
         catch (Exception e)
         {
-            return false;
         }
+        
+        return updatedBooking;
     }
     
-    public Customer updateCustomer(Customer newCustomer)
-    {
-        Customer updatedCustomer = null;
-        
-        try
-        {
-            entitymanager.getTransaction( ).begin( );
-            
-            Customer oldCustomer = entitymanager.find( Customer.class, newCustomer.getCustomerId());
-
-            // Check if it exists
-           
-            updatedCustomer = oldCustomer;
-            
-            entitymanager.getTransaction( ).commit( );
-
-            getCustomers();
-            
-        }
-        catch (Exception e)
-        {
-        }
-        
-        return updatedCustomer;
-    }
     
-    public List<Customer> findCustomerByMembership(String membershipTierCode)
-    {
-        List<Customer> customers =  null;
-        try
-        {
-            entitymanager.getTransaction( ).begin( );
-
-            customers = entitymanager.createNamedQuery("Customer.findByMembershipTierCode")
-                    .setParameter("membershipTierCode", membershipTierCode).getResultList();
-
-            entitymanager.getTransaction( ).commit( );
-        }
-        catch (Exception e)
-        {
-            
-        }
+    
+    public static void main(String args[]) {
+         
         
-        return customers;
-    }
-   
+         EntityManagerFactory emfactoryb = Persistence.createEntityManagerFactory( "HotelManagementSystemPUB" );
+         BookingController x = new BookingController(emfactoryb);
+         
+         List<Booking> newBookings = x.getBookings();
+         
+         x.close();
+         
+     }
+
 }

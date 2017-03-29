@@ -6,8 +6,6 @@
 package Models;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -35,9 +33,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c")
-    , @NamedQuery(name = "Customer.findByCustomerId", query = "SELECT c FROM Customer c WHERE c.roomId = :roomId")
+    , @NamedQuery(name = "Customer.findByCustomerId", query = "SELECT c FROM Customer c WHERE c.customerId = :customerId")
     , @NamedQuery(name = "Customer.findByMembershipCredits", query = "SELECT c FROM Customer c WHERE c.membershipCredits = :membershipCredits")
-    , @NamedQuery(name = "Customer.findByMembershipTierCode", query = "SELECT c FROM Customer c WHERE c.membershipTierCode = :membershipTierCode")
+    , @NamedQuery(name = "Customer.findByMembershipTierCode", query = "SELECT c FROM Customer c WHERE c.membership.membershipTierCode = :membershipTierCode")
     , @NamedQuery(name = "Customer.findByTitle", query = "SELECT c FROM Customer c WHERE c.title = :title")
     , @NamedQuery(name = "Customer.findByFirstName", query = "SELECT c FROM Customer c WHERE c.firstName = :firstName")
     , @NamedQuery(name = "Customer.findByLastName", query = "SELECT c FROM Customer c WHERE c.lastName = :lastName")
@@ -55,10 +53,10 @@ public class Customer implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "CUSTOMER_ID")
-    private BigDecimal roomId;
+    private int customerId;
     @Basic(optional = false)
     @Column(name = "MEMBERSHIP_CREDITS")
-    private BigInteger membershipCredits;
+    private long membershipCredits;
     @Basic(optional = false)
     @Column(name = "TITLE")
     private String title;
@@ -92,19 +90,19 @@ public class Customer implements Serializable {
     private String emailAddress;
     @JoinColumn(name = "MEMBERSHIP_TIER_CODE", referencedColumnName = "MEMBERSHIP_TIER_CODE")
     @ManyToOne(optional = false)
-    private Membership membershipTierCode;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "roomId")
+    private Membership membership;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     private Collection<Booking> bookingCollection;
 
     public Customer() {
     }
 
-    public Customer(BigDecimal roomId) {
-        this.roomId = roomId;
+    public Customer(int customerId) {
+        this.customerId = customerId;
     }
 
-    public Customer(BigDecimal roomId, BigInteger membershipCredits, String title, String firstName, String lastName, Date dob, String country, String city, String street, String postalCode, String phoneNumber, String emailAddress) {
-        this.roomId = roomId;
+    public Customer(int customerId, long membershipCredits, String title, String firstName, String lastName, Date dob, String country, String city, String street, String postalCode, String phoneNumber, String emailAddress) {
+        this.customerId = customerId;
         this.membershipCredits = membershipCredits;
         this.title = title;
         this.firstName = firstName;
@@ -118,19 +116,19 @@ public class Customer implements Serializable {
         this.emailAddress = emailAddress;
     }
 
-    public BigDecimal getCustomerId() {
-        return roomId;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerId(BigDecimal roomId) {
-        this.roomId = roomId;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
-    public BigInteger getMembershipCredits() {
+    public long getMembershipCredits() {
         return membershipCredits;
     }
 
-    public void setMembershipCredits(BigInteger membershipCredits) {
+    public void setMembershipCredits(long membershipCredits) {
         this.membershipCredits = membershipCredits;
     }
 
@@ -215,11 +213,11 @@ public class Customer implements Serializable {
     }
 
     public Membership getMembershipTierCode() {
-        return membershipTierCode;
+        return membership;
     }
 
-    public void setMembershipTierCode(Membership membershipTierCode) {
-        this.membershipTierCode = membershipTierCode;
+    public void setMembershipTierCode(Membership membership) {
+        this.membership = membership;
     }
 
     @XmlTransient
@@ -232,28 +230,8 @@ public class Customer implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (roomId != null ? roomId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Customer)) {
-            return false;
-        }
-        Customer other = (Customer) object;
-        if ((this.roomId == null && other.roomId != null) || (this.roomId != null && !this.roomId.equals(other.roomId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public String toString() {
-        return "Models.Customer[ roomId=" + roomId + " ]";
+        return "Models.Customer[ customerId=" + customerId + " ]";
     }
     
 }

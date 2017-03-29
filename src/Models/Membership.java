@@ -6,7 +6,7 @@
 package Models;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -46,15 +46,15 @@ public class Membership implements Serializable {
     private String membershipTier;
     @Basic(optional = false)
     @Column(name = "TIER_CREDITS")
-    private BigInteger tierCredits;
+    private long tierCredits;
     @Basic(optional = false)
     @Column(name = "DISCOUNT")
-    private BigInteger discount;
+    private long discount;
     @Basic(optional = false)
     @Column(name = "OTHER_REWARDS")
     private String otherRewards;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "membershipTierCode")
-    private Collection<Customer> roomCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "membership")
+    private Collection<Customer> customerCollection;
 
     public Membership() {
     }
@@ -63,7 +63,7 @@ public class Membership implements Serializable {
         this.membershipTierCode = membershipTierCode;
     }
 
-    public Membership(String membershipTierCode, String membershipTier, BigInteger tierCredits, BigInteger discount, String otherRewards) {
+    public Membership(String membershipTierCode, String membershipTier, long tierCredits, long discount, String otherRewards) {
         this.membershipTierCode = membershipTierCode;
         this.membershipTier = membershipTier;
         this.tierCredits = tierCredits;
@@ -87,19 +87,19 @@ public class Membership implements Serializable {
         this.membershipTier = membershipTier;
     }
 
-    public BigInteger getTierCredits() {
+    public long getTierCredits() {
         return tierCredits;
     }
 
-    public void setTierCredits(BigInteger tierCredits) {
+    public void setTierCredits(long tierCredits) {
         this.tierCredits = tierCredits;
     }
 
-    public BigInteger getDiscount() {
+    public long getDiscount() {
         return discount;
     }
 
-    public void setDiscount(BigInteger discount) {
+    public void setDiscount(long discount) {
         this.discount = discount;
     }
 
@@ -113,11 +113,11 @@ public class Membership implements Serializable {
 
     @XmlTransient
     public Collection<Customer> getCustomerCollection() {
-        return roomCollection;
+        return customerCollection;
     }
 
-    public void setCustomerCollection(Collection<Customer> roomCollection) {
-        this.roomCollection = roomCollection;
+    public void setCustomerCollection(Collection<Customer> customerCollection) {
+        this.customerCollection = customerCollection;
     }
 
     @Override

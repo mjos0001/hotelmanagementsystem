@@ -16,6 +16,14 @@
     <class>Models.RoomType</class>
     <class>Models.RoomFacility</class>
     <class>Models.Facility</class>
+    <class>Models.Guest</class>
+    <class>Models.Booking</class>
+    <class>Models.Customer</class>
+    <class>Models.BookingRoomGuest</class>
+    <class>Models.BookingRoomGuestPK</class>
+    <class>Models.Membership</class>
+    <class>Models.Payment</class>
+    <class>Models.PaymentPK</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@hippo.its.monash.edu:1521:FIT5148B"/>
       <property name="javax.persistence.jdbc.user" value="S28066049"/>
