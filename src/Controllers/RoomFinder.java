@@ -260,5 +260,7 @@ public class RoomFinder {
         // look for a matching room
         // pop that room
         // if we don't have a matching room, return false
+        
+        return false;
     }
 }
