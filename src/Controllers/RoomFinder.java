@@ -33,7 +33,7 @@ public class RoomFinder {
         entitymanager = emfactory.createEntityManager( );
     }
     
-    public ArrayList<Room> findRooms (SearchRoomRequest request)
+    public ArrayList<Room> findAvailableRooms (SearchRoomRequest request)
     {
         
         RoomController rc = new RoomController(emfactory);
@@ -176,8 +176,6 @@ public class RoomFinder {
                 {
                     rc.setAllocatedGuests(maxOccupancy);
                     numOfGuests -= maxOccupancy;
-
-
                 }
                 // if there are more space for the room put everyone else in this allocation
                 else
@@ -195,9 +193,6 @@ public class RoomFinder {
             }
         }
         
-        // By this time i should allocated everything or only have rooms without allocations
-        
-        
         return roomChoices;
     }
     
@@ -206,42 +201,64 @@ public class RoomFinder {
         ArrayList<BookingRoomGuestPK> brgList = null;
         ArrayList<Room> roomsCopy = new ArrayList(availableRooms);
         
+        
+        // Rule of thumb: the roomChoices here should make sure that
+        // there are more rooms available for their choices
         for (RoomChoice rc : roomChoices)
         {
-            // for each room choice
-            // find a room that is of the same type
-            // allocate the number of guests in that room
-            
-            Room room = null;
-            
-            for (Room r : roomsCopy)
+            if (roomsCopy.size() > 0)
             {
-                if (r.getRoomType().getRoomTypeCode().equals(rc.getRoomTypeCode()))
-                {
-                    room = r;
-                    break;
-                }
-            }
-            
-            if (room == null)
-            {
-                // Should not happen! Throw error (Picked room is now unavailable!)
-            }
-            else
-            {
-                brgList = new ArrayList<>();
-                ArrayList<Guest> guestsCopy = new ArrayList(guests);
+                // for each room choice
+                // find a room that is of the same type
+                // allocate the number of guests in that room
 
-                for (int i = 0; i < rc.getAllocatedGuests(); i++)
+                Room room = null;
+
+                for (Room r : roomsCopy)
                 {
-                    Guest guest = guests.remove(guestsCopy.size() - 1);
-                    brgList.add(new BookingRoomGuestPK(0, guest.getGuestId(), room.getRoomId()));
+                    if (r.getRoomType().getRoomTypeCode().equals(rc.getRoomTypeCode()))
+                    {
+                        room = r;
+                        break;
+                    }
                 }
+
+                if (room == null)
+                {
+                    // Should not happen! Throw error (Picked room is now unavailable!)
+                }
+                else
+                {
+                    brgList = new ArrayList<>();
+                    ArrayList<Guest> guestsCopy = new ArrayList(guests);
+                    Guest guest = null;
+
+                    for (int i = 0; i < rc.getAllocatedGuests(); i++)
+                    {
+                        // Don't override the guest if we got the last one
+                        if (guestsCopy.size() > 0)
+                        {
+                           guest = guestsCopy.remove(guestsCopy.size() - 1);
+                        }
+
+                        brgList.add(new BookingRoomGuestPK(0, guest.getGuestId(), room.getRoomId()));
+                    }
+                }
+
+                roomsCopy.remove(room);
             }
-            
-            availableRooms.remove(room);
         }
         
         return brgList;
+    }
+    
+    public boolean roomChoiceIntegrityEnsured (ArrayList<RoomChoice> roomChoices, ArrayList<Room> availableRooms)
+    {
+        // ensure that the total number of rooms in roomChoices is still enough for the guests
+        
+        // for each room choice * quantity
+        // look for a matching room
+        // pop that room
+        // if we don't have a matching room, return false
     }
 }
