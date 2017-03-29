@@ -246,12 +246,12 @@ public class BookingController {
             Date date1 = fmt.parse("2017-02-01");
             Date date2 = fmt.parse("2017-07-02");
             
-            newBookings = x.findByTakenDates(date1, date2); //with bkg result
+            newBookings = x.findByTakenBookingDates(date1, date2); //with bkg result
             
             date1 = fmt.parse("2017-01-01");
             date2 = fmt.parse("2017-02-01");
             
-            newBookings = x.findByTakenDates(date1, date2); //without bkg result
+            newBookings = x.findByTakenBookingDates(date1, date2); //without bkg result
  
         }
         catch (Exception e)

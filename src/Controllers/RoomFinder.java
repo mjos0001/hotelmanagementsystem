@@ -55,7 +55,7 @@ public class RoomFinder {
             try
             {
                 // Check BookingRoomGuests
-                List<Booking> takenBookings = bc.findByTakenDates(request.getCheckInDate(), request.getCheckOutDate());
+                List<Booking> takenBookings = bc.findByTakenBookingDates(request.getCheckInDate(), request.getCheckOutDate());
                 int i = 0;
                 
                 for (Booking b : takenBookings)
