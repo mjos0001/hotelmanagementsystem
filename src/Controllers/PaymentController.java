@@ -41,19 +41,17 @@ public class PaymentController {
     
     public List<Payment> getPayments()
     {   
-        List<Payment> guests = null;
+        List<Payment> payments = null;
         
         try
         {
             entitymanager.getTransaction( ).begin( );
 
-            guests = entitymanager.createNamedQuery("Payment.findAll").getResultList();
+            payments = entitymanager.createNamedQuery("Payment.findAll").getResultList();
 
-            if (guests.size() > 0)
+            if (payments.size() > 0)
             {
-                for (Payment g : guests) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");                   
-                }
+                
             }
 
             entitymanager.getTransaction( ).commit( );
@@ -63,7 +61,32 @@ public class PaymentController {
             
         }
       
-      return guests;
+      return payments;
+    }
+    
+    public List<Payment> getPaymentsByBookingId(int bookingId)
+    {   
+        List<Payment> payments = null;
+        
+        try
+        {
+            entitymanager.getTransaction( ).begin( );
+
+            payments = entitymanager.createNamedQuery("Payment.findByBookingId").setParameter("bookingId", bookingId).getResultList();
+
+            if (payments.size() > 0)
+            {
+
+            }
+
+            entitymanager.getTransaction( ).commit( );
+        }
+        catch (Exception e)
+        {
+            
+        }
+      
+      return payments;
     }
     
     
@@ -74,8 +97,6 @@ public class PaymentController {
             entitymanager.getTransaction( ).begin( );
             entitymanager.persist( payment );
             entitymanager.getTransaction( ).commit( );
-
-            getPayments();
             
             return true;
         }
@@ -97,8 +118,6 @@ public class PaymentController {
             if (dataPayment != null)
             {
                 entitymanager.remove( payment );
-
-                getPayments();
             }
             
             entitymanager.getTransaction( ).commit( );

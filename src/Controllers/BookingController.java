@@ -475,8 +475,14 @@ public class BookingController {
                         x.createBookingRoomGuest(brg);
                     }
                 }
+                
+                // 6. Compute for total payment amount
+                
+                // 6a. calculate the prices of the rooms
+                
+                // 6b. consider any customer discounts
 
-                // 6. Add Payment record 
+                // 7. Add Payment record 
                 int numberOfPayments = 2;
                 int paymentNumber = 0;
 
