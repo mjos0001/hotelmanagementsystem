@@ -12,12 +12,15 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,12 +49,14 @@ public class Booking implements Serializable {
     private Collection<Payment> paymentCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "booking")
     private Collection<BookingRoomGuest> bookingRoomGuestCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookingId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "booking")
     private Collection<Guest> guestCollection;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+    @GeneratedValue(generator = "BookingSeq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "BookingSeq",sequenceName = "BKG_BOOKING_ID_SEQ", allocationSize = 1) 
     @Basic(optional = false)
     @Column(name = "BOOKING_ID")
     private int bookingId;
@@ -71,7 +76,9 @@ public class Booking implements Serializable {
     private String contactEmail;
     @Basic(optional = false)
     @Column(name = "TOTAL_AMOUNT")
-    private long totalAmount;
+    private double totalAmount;
+    @Column(name = "CURRENCY_CODE")
+    private String currencyCode;
     @Basic(optional = false)
     @Column(name = "PAYMENT_STATUS_CODE")
     private String paymentStatusCode;
@@ -86,7 +93,7 @@ public class Booking implements Serializable {
         this.bookingId = bookingId;
     }
 
-    public Booking(int bookingId, Date checkInDate, Date checkOutDate, String contactPerson, String contactEmail, long totalAmount, String paymentStatusCode) {
+    public Booking(int bookingId, Date checkInDate, Date checkOutDate, String contactPerson, String contactEmail, double totalAmount, String paymentStatusCode) {
         this.bookingId = bookingId;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
@@ -136,11 +143,11 @@ public class Booking implements Serializable {
         this.contactEmail = contactEmail;
     }
 
-    public long getTotalAmount() {
+    public double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(long totalAmount) {
+    public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -152,12 +159,20 @@ public class Booking implements Serializable {
         this.paymentStatusCode = paymentStatusCode;
     }
 
-    public Customer getCustomerId() {
+    public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomerId(Customer customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+    
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+    
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     @Override

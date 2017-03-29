@@ -46,7 +46,9 @@ public class Payment implements Serializable {
     private Date paymentDate;
     @Basic(optional = false)
     @Column(name = "PAYMENT_AMOUNT")
-    private long paymentAmount;
+    private double paymentAmount;
+    @Column(name = "CURRENCY_CODE")
+    private String currencyCode;
     @Basic(optional = false)
     @Column(name = "PAYMENT_METHOD_CODE")
     private String paymentMethodCode;
@@ -61,7 +63,7 @@ public class Payment implements Serializable {
         this.paymentPK = paymentPK;
     }
 
-    public Payment(PaymentPK paymentPK, Date paymentDate, long paymentAmount, String paymentMethodCode) {
+    public Payment(PaymentPK paymentPK, Date paymentDate, double paymentAmount, String paymentMethodCode) {
         this.paymentPK = paymentPK;
         this.paymentDate = paymentDate;
         this.paymentAmount = paymentAmount;
@@ -88,11 +90,11 @@ public class Payment implements Serializable {
         this.paymentDate = paymentDate;
     }
 
-    public long getPaymentAmount() {
+    public double getPaymentAmount() {
         return paymentAmount;
     }
 
-    public void setPaymentAmount(long paymentAmount) {
+    public void setPaymentAmount(double paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
 
@@ -110,6 +112,14 @@ public class Payment implements Serializable {
 
     public void setBooking(Booking booking) {
         this.booking = booking;
+    }
+    
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+    
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     @Override

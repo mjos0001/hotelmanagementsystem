@@ -10,12 +10,15 @@ import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -43,6 +46,8 @@ public class Room implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
+    @GeneratedValue(generator = "RoomSeq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "RoomSeq",sequenceName = "ROOM_room_id_SEQ", allocationSize = 1)
     @Column(name = "ROOM_ID")
     private int roomId;
     @Basic(optional = false)
@@ -51,6 +56,8 @@ public class Room implements Serializable {
     @Basic(optional = false)
     @Column(name = "ROOM_PRICE")
     private double roomPrice;
+    @Column(name = "CURRENCY_CODE")
+    private String currencyCode;
     @Basic(optional = false)
     @Column(name = "ROOM_DESCRIPTION")
     private String roomDescription;
@@ -116,6 +123,14 @@ public class Room implements Serializable {
 
     public void setHotelId(int hotelId) {
         this.hotelId = hotelId;
+    }
+    
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+    
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     @XmlTransient

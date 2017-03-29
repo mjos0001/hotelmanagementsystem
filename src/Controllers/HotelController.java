@@ -11,6 +11,7 @@ import Models.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -208,15 +209,23 @@ public class HotelController {
          
          List<Hotel> hList = x.getHotels();
          
-         Hotel newHotel = new Hotel(10, "Maruku Hotel", new Date(2010,5,16), "Japan", "Yokohama", "5 Minami-ku Yokohama", "33333", "talktous@marukuh.com", "5S");
+                 
+        try
+        {
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            Date date1 = fmt.parse("2006-02-01");
+
+            Hotel newHotel = new Hotel(0, "El Paseo Hotel", date1, "Philippines", "Makati", "5 Minami-ku Yokohama", "33333", "talktous@elpaseoh.com", "5S");
+            x.createHotel(newHotel);
+ 
+        }
+        catch (Exception e)
+        {
+            
+        }
          
-         x.createHotel(newHotel);
          
-         newHotel.setHotelName("Maruku Yokohama Hotel");
-         
-         x.updateHotel(newHotel);
-         
-         Hotel findHotel = x.findHotelByName("Maruku Yokohama Hotel");
+         Hotel findHotel = x.findHotelByName("Honmaru Hotel");
          
          List<Hotel> findHotels = x.findHotelByType("5S");
          

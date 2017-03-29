@@ -38,7 +38,10 @@ public class CustomerController {
     
     public void close()
     {
-        entitymanager.close();
+        if(entitymanager != null)
+        {
+            entitymanager.close();
+        }
     }
     
     public List<Customer> getCustomers()
@@ -191,6 +194,26 @@ public class CustomerController {
 
             customer = (Customer)entitymanager.createNamedQuery("Customer.findByBookingId")
                     .setParameter("bookingId", bookingId).getSingleResult();
+
+            entitymanager.getTransaction( ).commit( );
+        }
+        catch (Exception e)
+        {
+            
+        }
+        
+        return customer;
+    }
+    
+    public Customer findCustomerById(int customerId)
+    {
+        Customer customer =  null;
+        try
+        {
+            entitymanager.getTransaction( ).begin( );
+
+            customer = (Customer)entitymanager.createNamedQuery("Customer.findByCustomerId")
+                    .setParameter("customerId", customerId).getSingleResult();
 
             entitymanager.getTransaction( ).commit( );
         }

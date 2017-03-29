@@ -16,14 +16,14 @@ import java.util.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
-public class RoomFinder {
+public class RoomService {
     
     EntityManagerFactory emfactory = null;
     
     @PersistenceUnit(unitName="HotelManagementSystemPUB")
     EntityManager entitymanager = null;
     
-    public RoomFinder(EntityManagerFactory emf)
+    public RoomService(EntityManagerFactory emf)
     {
         if (emf != null)
         {
@@ -47,15 +47,20 @@ public class RoomFinder {
         }
         
         // Check each criteria
+        Date checkIn = request.getCheckInDate();
+        Date checkOut = request.getCheckOutDate();
         
         // Check in and check-out: both should be filled up and required
-        if (request.getCheckInDate() != null && request.getCheckInDate() != null)
+        // check in should be earlier than checkout
+        if (request.getCheckInDate() != null && 
+            request.getCheckInDate() != null &&
+            (checkIn.compareTo(checkOut) < 0) )
         {   
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
             try
             {
                 // Check BookingRoomGuests
-                List<Booking> takenBookings = bc.findByTakenBookingDates(request.getCheckInDate(), request.getCheckOutDate());
+                List<Booking> takenBookings = bc.getBookingsByTakenDates(request.getCheckInDate(), request.getCheckOutDate());
                 int i = 0;
                 
                 for (Booking b : takenBookings)
@@ -86,7 +91,7 @@ public class RoomFinder {
             // throw exception!!! this is required
         }
         
-        // Room Type
+        // Filter by room type
         if (request.getRoomTypeCode() != null && request.getRoomTypeCode().size() > 0)
         {
             // Check room type code
@@ -96,7 +101,8 @@ public class RoomFinder {
                 // Check if the room type code is in the request
                 // if yes then don't delete
                 boolean delete = true;
-                for (String rtc : request.getRoomTypeCode())
+                ArrayList<String> roomTypes = request.getRoomTypeCode();
+                for (String rtc : roomTypes)
                 {
                     if (allRooms.get(i).getRoomType().getRoomTypeCode().equals(rtc))
                     {
@@ -112,7 +118,6 @@ public class RoomFinder {
             }
                
         }
-        // Occupancy
         
         // Price range: any can be filled up
         if (request.getMinPrice() != -1L)
@@ -182,6 +187,7 @@ public class RoomFinder {
                 {
                     rc.setAllocatedGuests(numOfGuests);
                     allocatedAll = true;
+                    continue;
                 }
 
                 // allocate one guest to every excess room
@@ -196,56 +202,60 @@ public class RoomFinder {
         return roomChoices;
     }
     
-    public ArrayList<BookingRoomGuestPK> createBookingRoomGuest(ArrayList<RoomChoice> roomChoices, ArrayList<Room> availableRooms, ArrayList<Guest> guests)
+    public ArrayList<BookingRoomGuestPK> createBookingRoomGuest(int bookingId, ArrayList<RoomChoice> roomChoices, ArrayList<Room> availableRooms, ArrayList<Guest> guests)
     {
         ArrayList<BookingRoomGuestPK> brgList = null;
-        ArrayList<Room> roomsCopy = new ArrayList(availableRooms);
         
         
-        // Rule of thumb: the roomChoices here should make sure that
-        // there are more rooms available for their choices
-        for (RoomChoice rc : roomChoices)
+        if (roomChoices != null && availableRooms != null && guests != null)
         {
-            if (roomsCopy.size() > 0)
+            ArrayList<Room> roomsCopy = new ArrayList(availableRooms);
+            brgList = new ArrayList<>();
+
+            // Rule of thumb: the roomChoices here should make sure that
+            // there are more rooms available for their choices
+            for (RoomChoice rc : roomChoices)
             {
-                // for each room choice
-                // find a room that is of the same type
-                // allocate the number of guests in that room
-
-                Room room = null;
-
-                for (Room r : roomsCopy)
+                if (roomsCopy.size() > 0)
                 {
-                    if (r.getRoomType().getRoomTypeCode().equals(rc.getRoomTypeCode()))
+                    // for each room choice
+                    // find a room that is of the same type
+                    // allocate the number of guests in that room
+
+                    Room room = null;
+
+                    for (Room r : roomsCopy)
                     {
-                        room = r;
-                        break;
-                    }
-                }
-
-                if (room == null)
-                {
-                    // Should not happen! Throw error (Picked room is now unavailable!)
-                }
-                else
-                {
-                    brgList = new ArrayList<>();
-                    ArrayList<Guest> guestsCopy = new ArrayList(guests);
-                    Guest guest = null;
-
-                    for (int i = 0; i < rc.getAllocatedGuests(); i++)
-                    {
-                        // Don't override the guest if we got the last one
-                        if (guestsCopy.size() > 0)
+                        if (r.getRoomType().getRoomTypeCode().equals(rc.getRoomTypeCode()))
                         {
-                           guest = guestsCopy.remove(guestsCopy.size() - 1);
+                            room = r;
+                            break;
                         }
-
-                        brgList.add(new BookingRoomGuestPK(0, guest.getGuestId(), room.getRoomId()));
                     }
-                }
 
-                roomsCopy.remove(room);
+                    if (room == null)
+                    {
+                        // Should not happen! Throw error (Picked room is now unavailable!)
+                    }
+                    else
+                    {
+                        ArrayList<Guest> guestsCopy = new ArrayList(guests);
+                        Guest guest = null;
+
+                        for (int i = 0; i < rc.getAllocatedGuests(); i++)
+                        {
+                            // Don't override the guest if we got the last one
+                            if (guestsCopy.size() > 0)
+                            {
+                               guest = guestsCopy.remove(guestsCopy.size() - 1);
+                            }
+
+                            brgList.add(new BookingRoomGuestPK(bookingId, guest.getGuestId(), room.getRoomId()));
+                        }
+                    }
+
+                    roomsCopy.remove(room);
+                }
             }
         }
         

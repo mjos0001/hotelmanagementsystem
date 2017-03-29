@@ -114,6 +114,28 @@ public class RoomController {
         }
     }
     
+    public Room getRoomByRoomId(int roomId)
+    {
+        Room dataRoom = null;
+        
+        try
+        {
+            entitymanager.getTransaction( ).begin( );
+
+            // Find the Room 
+            dataRoom = entitymanager.find( Room.class, roomId);
+
+            entitymanager.getTransaction( ).commit( );
+            
+        }
+        catch (Exception e)
+        {
+            
+        }
+        
+        return dataRoom;
+    }
+    
     public boolean deleteRoom(int roomId)
     {
         try
@@ -165,7 +187,7 @@ public class RoomController {
         return roomData;
     }
     
-    public List<Room> findRoomByFacilityNumber(int facilityNumber)
+    public List<Room> getRoomByFacilityNumber(int facilityNumber)
     {
         List<Room> rooms =  null;
         try
@@ -185,7 +207,7 @@ public class RoomController {
         return rooms;
     }
     
-    public List<Room> findRoomByType(String roomTypeCode)
+    public List<Room> getRoomByType(String roomTypeCode)
     {
         List<Room> rooms = null;
         
@@ -214,7 +236,7 @@ public class RoomController {
          
          List<Room> rList = x.getRooms();
          
-         List<Room> r = x.findRoomByType("DLX");
+         List<Room> r = x.getRoomByType("DLX");
          
          List<RoomType> roomTypes = x.getRoomTypes();
          RoomType roomType = null;
@@ -243,7 +265,7 @@ public class RoomController {
 //         x.updateRoom(newRoom);
 
         //x.deleteRoom(2);
-         x.findRoomByFacilityNumber(1);
+//         x.getRoomByFacilityNumber(1);
          
          x.close();
          

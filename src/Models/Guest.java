@@ -12,11 +12,14 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -47,6 +50,8 @@ public class Guest implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+    @GeneratedValue(generator = "GuestSeq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "GuestSeq",sequenceName = "GUEST_GUEST_ID_SEQ", allocationSize = 1) 
     @Basic(optional = false)
     @Column(name = "GUEST_ID")
     private int guestId;
@@ -83,7 +88,7 @@ public class Guest implements Serializable {
     private String emailAddress;
     @JoinColumn(name = "BOOKING_ID", referencedColumnName = "BOOKING_ID")
     @ManyToOne(optional = false)
-    private Booking bookingId;
+    private Booking booking;
 
     public Guest() {
     }
@@ -194,12 +199,12 @@ public class Guest implements Serializable {
         this.emailAddress = emailAddress;
     }
 
-    public Booking getBookingId() {
-        return bookingId;
+    public Booking getBooking() {
+        return booking;
     }
 
-    public void setBookingId(Booking bookingId) {
-        this.bookingId = bookingId;
+    public void setBooking(Booking booking) {
+        this.booking = booking;
     }
 
     @Override

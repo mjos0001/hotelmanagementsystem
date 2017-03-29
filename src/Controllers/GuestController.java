@@ -39,7 +39,11 @@ public class GuestController {
     
     public void close()
     {
-        entitymanager.close();
+        if(entitymanager != null)
+        {
+            entitymanager.close();
+        }
+ 
     }
     
     public List<Guest> getGuests()
@@ -54,15 +58,7 @@ public class GuestController {
 
             if (guests.size() > 0)
             {
-                for (Guest g : guests) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-                    System.out.println(g.getBookingId() + " "
-                                       + g.getGuestId() + " " + g.getTitle() + " " 
-                            + g.getFirstName() + " " + g.getLastName() + " " 
-                            + dateFormat.format(g.getDob()) + " "  + g.getCountry() + " " + g.getCity() + " " + g.getStreet() + " " 
-                            + g.getPostalCode() + " " + g.getPhoneNumber() + " " + g.getEmailAddress());                   
-                }
+                
             }
 
             entitymanager.getTransaction( ).commit( );
@@ -76,22 +72,25 @@ public class GuestController {
     }
     
     
-    public boolean createGuest(Guest guest)
+    public int createGuest(Guest guest)
     {
+        int id = 0;
         try
         {
             entitymanager.getTransaction( ).begin( );
             entitymanager.persist( guest );
+            entitymanager.flush( );
             entitymanager.getTransaction( ).commit( );
 
-            getGuests();
+           id = guest.getGuestId();
             
-            return true;
         }
         catch (Exception e)
         {
-            return false;
+            
         }
+        
+        return id;
     }
     
     public boolean deleteGuest(Guest guest)
@@ -133,7 +132,7 @@ public class GuestController {
             if (guestData != null)
             {
                 // Check if it exists
-                guestData.setBookingId(newGuest.getBookingId());
+                guestData.setBooking(newGuest.getBooking());
                 guestData.setCity(newGuest.getCity());
                 guestData.setCountry(newGuest.getCountry());
                 guestData.setDob(newGuest.getDob());
@@ -158,7 +157,7 @@ public class GuestController {
         return updatedGuest;
     }
     
-    public List<Guest> findGuestByName(String firstName, String lastName)
+    public List<Guest> getGuestByName(String firstName, String lastName)
     {
         List<Guest> guests = null;
         
@@ -179,6 +178,26 @@ public class GuestController {
         }
         
         return guests;
+    }
+    
+    public Guest getGuestById(int guestId)
+    {
+        Guest guest = null;
+        
+        try
+        {
+            entitymanager.getTransaction( ).begin( );
+
+            guest = entitymanager.find( Guest.class, guestId );
+
+            entitymanager.getTransaction( ).commit( );
+        }
+        catch (Exception e)
+        {
+            
+        }
+        
+        return guest;
     }
     
     public static void main(String args[]) {

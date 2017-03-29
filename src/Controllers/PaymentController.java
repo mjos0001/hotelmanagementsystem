@@ -67,12 +67,12 @@ public class PaymentController {
     }
     
     
-    public boolean createPayment(Payment guest)
+    public boolean createPayment(Payment payment)
     {
         try
         {
             entitymanager.getTransaction( ).begin( );
-            entitymanager.persist( guest );
+            entitymanager.persist( payment );
             entitymanager.getTransaction( ).commit( );
 
             getPayments();
@@ -85,18 +85,18 @@ public class PaymentController {
         }
     }
     
-    public boolean deletePayment(Payment guest)
+    public boolean deletePayment(Payment payment)
     {
         try
         {
             entitymanager.getTransaction( ).begin( );
 
             // Find the Payment first
-            Payment dataPayment = entitymanager.find( Payment.class, guest.getPaymentPK() );
+            Payment dataPayment = entitymanager.find( Payment.class, payment.getPaymentPK() );
 
             if (dataPayment != null)
             {
-                entitymanager.remove( guest );
+                entitymanager.remove( payment );
 
                 getPayments();
             }
@@ -138,28 +138,7 @@ public class PaymentController {
         return paymentData;
     }
     
-    public List<Payment> findPaymentByName(String firstName, String lastName)
-    {
-        List<Payment> guests = null;
-        
-        try
-        {
-            entitymanager.getTransaction( ).begin( );
-
-            guests = entitymanager.createNamedQuery("Payment.findByPaymentTypeCode")
-                    .setParameter("firstName", firstName)
-                    .setParameter("lastName", lastName)
-                    .getResultList();
-
-            entitymanager.getTransaction( ).commit( );
-        }
-        catch (Exception e)
-        {
-            
-        }
-        
-        return guests;
-    }
+    // findPaymentByBooking
     
     public static void main(String args[]) {
          
