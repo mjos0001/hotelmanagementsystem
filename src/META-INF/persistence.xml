@@ -2,7 +2,7 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="HotelManagementSystemPUA" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>Models.Hotel</class>
+    <class>hmsModel.Hotel</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@hippo.its.monash.edu:1521:FIT5148A"/>
       <property name="javax.persistence.jdbc.user" value="S28066049"/>
@@ -12,18 +12,18 @@
   </persistence-unit>
   <persistence-unit name="HotelManagementSystemPUB" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>Models.Room</class>
-    <class>Models.RoomType</class>
     <class>Models.RoomFacility</class>
-    <class>Models.Facility</class>
-    <class>Models.Guest</class>
-    <class>Models.Booking</class>
-    <class>Models.Customer</class>
-    <class>Models.BookingRoomGuest</class>
-    <class>Models.BookingRoomGuestPK</class>
-    <class>Models.Membership</class>
-    <class>Models.Payment</class>
-    <class>Models.PaymentPK</class>
+    <class>hmsModel.Guest</class>
+    <class>hmsModel.RoomType</class>
+    <class>hmsModel.PaymentPK</class>
+    <class>hmsModel.Booking</class>
+    <class>hmsModel.Customer</class>
+    <class>hmsModel.Facility</class>
+    <class>hmsModel.BookingRoomGuest</class>
+    <class>hmsModel.Membership</class>
+    <class>hmsModel.Room</class>
+    <class>hmsModel.BookingRoomGuestPK</class>
+    <class>hmsModel.Payment</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@hippo.its.monash.edu:1521:FIT5148B"/>
       <property name="javax.persistence.jdbc.user" value="S28066049"/>
@@ -32,4 +32,3 @@
     </properties>
   </persistence-unit>
 </persistence>
-
