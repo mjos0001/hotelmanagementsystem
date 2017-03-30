@@ -13,6 +13,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureQuery;
+import javax.persistence.StoredProcedureParameter;
 
 /**
  *
@@ -136,7 +139,7 @@ public class CustomerController {
                 customerData.setCity(newCustomer.getCity());
                 customerData.setCountry(newCustomer.getCountry());
                 customerData.setDob(newCustomer.getDob());
-                customerData.setEmailAddress(newCustomer.getEmailAddress());
+                //customerData.setEmailAddress(newCustomer.getEmailAddress());
                 customerData.setFirstName(newCustomer.getFirstName());
                 customerData.setLastName(newCustomer.getLastName());
                 customerData.setMembershipCredits(newCustomer.getMembershipCredits());
@@ -145,6 +148,16 @@ public class CustomerController {
                 customerData.setPostalCode(newCustomer.getPostalCode());
                 customerData.setStreet(newCustomer.getStreet());
                 customerData.setTitle(newCustomer.getTitle());
+                
+                StoredProcedureQuery storedProcedure = entitymanager.createStoredProcedureQuery("updateEmail");
+                storedProcedure.registerStoredProcedureParameter("p_customerid", Integer.class, ParameterMode.IN);
+                storedProcedure.registerStoredProcedureParameter("p_email", String.class, ParameterMode.IN);
+                storedProcedure.setParameter("p_customerid", newCustomer.getCustomerId());
+                storedProcedure.setParameter("p_email", newCustomer.getEmailAddress());
+                // execute SP
+                storedProcedure.execute();
+                // get result
+
             }
             else
             {
@@ -153,8 +166,6 @@ public class CustomerController {
             
             
             entitymanager.getTransaction( ).commit( );
-
-            getCustomers();
             
         }
         catch (Exception e)
@@ -232,7 +243,12 @@ public class CustomerController {
          
          List<Customer> newCustomers = x.getCustomers();
          
-         newCustomers = x.findCustomerByMembership("BRZ");
+         newCustomers = x.findCustomerByMembership("SLR");
+         
+         Customer c = newCustomers.get(0);
+         
+         c.setEmailAddress("beyonce@beyonce.com");
+         x.updateCustomer(c);
          
          x.close();
          

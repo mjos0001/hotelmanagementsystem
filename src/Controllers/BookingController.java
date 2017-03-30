@@ -476,16 +476,19 @@ public class BookingController {
                     }
                 }
                 
-                // 6. Compute for total payment amount
+                // 6. Compute for the total booking amount
                 
                 // 6a. calculate the prices of the rooms
                 
                 // 6b. consider any customer discounts
 
                 // 7. Add Payment record 
+                
+                // 7a. ask for the number of payments
                 int numberOfPayments = 2;
                 int paymentNumber = 0;
 
+                // 7b. add payment records
                 Payment p1 = new Payment(paymentNumber++, newBooking.getBookingId());
                 p1.setBooking(newBooking);
                 p1.setPaymentAmount(500.00);
