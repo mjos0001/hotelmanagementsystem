@@ -41,119 +41,133 @@ public class RoomAllocatorService {
         entitymanager = emfactory.createEntityManager();
     }
     
-    public ArrayList<Room> findAvailableRooms (SearchRoomRequest request)
+    public ArrayList<Room> findAvailableRooms (SearchRoomRequest request) throws Exception
     {
-        
-        RoomDataService rc = new RoomDataService(emfactory);
-        BookingDataService bc = new BookingDataService(emfactory);
-        List<Room> allRoomsList = rc.getRooms();
+        List<Room> allRoomsList = null;
         ArrayList<Room> allRooms = new ArrayList<>();
+        BookingDataService bc = null;
+        RoomDataService rc = null;
         
-        for (Room r : allRoomsList)
+        
+        try
         {
-            allRooms.add(r);
+            rc = new RoomDataService(emfactory);
+            bc = new BookingDataService(emfactory);
+            allRoomsList = rc.getRooms();
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error in getting rooms data. Please contact your database administrator.");
         }
         
-        // Check each criteria
-        Date checkIn = request.getCheckInDate();
-        Date checkOut = request.getCheckOutDate();
-        
-        // Check in and check-out: both should be filled up and required
-        // check in should be earlier than checkout
-        if (request.getCheckInDate() != null && 
-            request.getCheckInDate() != null &&
-            (checkIn.compareTo(checkOut) < 0))
-        {   
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-            try
+        if (allRoomsList != null && allRoomsList.size() > 0)
+        {
+            for (Room r : allRoomsList)
             {
-                // Check BookingRoomGuests
-                List<Booking> takenBookings = bc.getBookingsByTakenDates(request.getCheckInDate(), request.getCheckOutDate());
-                int i = 0;
-                
-                for (Booking b : takenBookings)
+                allRooms.add(r);
+            }
+
+            // Check each criteria
+            Date checkIn = request.getCheckInDate();
+            Date checkOut = request.getCheckOutDate();
+
+            // Check in and check-out: both should be filled up and required
+            // check in should be earlier than checkout
+            if (request.getCheckInDate() != null && 
+                request.getCheckInDate() != null &&
+                (checkIn.compareTo(checkOut) < 0))
+            {   
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                try
                 {
-                    for (BookingRoomGuest brg : b.getBookingRoomGuestCollection())
+                    // Check BookingRoomGuests
+                    List<Booking> takenBookings = bc.getBookingsByTakenDates(request.getCheckInDate(), request.getCheckOutDate());
+                    int i = 0;
+
+                    for (Booking b : takenBookings)
                     {
-                        // Find this room in all rooms
-                        i = 0;
-                        for (i = allRooms.size() - 1; i >= 0; i--)
+                        for (BookingRoomGuest brg : b.getBookingRoomGuestCollection())
                         {
-                            if (allRooms.get(i).getRoomId() == brg.getRoom().getRoomId())
+                            // Find this room in all rooms
+                            i = 0;
+                            for (i = allRooms.size() - 1; i >= 0; i--)
                             {
-                                allRooms.remove(i);
+                                if (allRooms.get(i).getRoomId() == brg.getRoom().getRoomId())
+                                {
+                                    allRooms.remove(i);
+                                }
                             }
                         }
-                    }
-                } 
-                
-            }
-            catch (Exception e)
-            {
+                    } 
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Error in getting bookings data. Please contact your database administrator.");
+                }
 
             }
-            
-        }
-        else
-        {
-            // throw exception!!! this is required
-        }
-        
-        // Filter by room type
-        if (request.getRoomTypeCode() != null && request.getRoomTypeCode().size() > 0)
-        {
-            // Check room type code
-            int i = 0;
-            for (i = allRooms.size() - 1; i >= 0; i--)
+            else
             {
-                // Check if the room type code is in the request
-                // if yes then don't delete
-                boolean delete = true;
-                ArrayList<String> roomTypes = request.getRoomTypeCode();
-                for (String rtc : roomTypes)
+                // throw exception!!! this is required
+            }
+
+            // Filter by room type
+            if (request.getRoomTypeCode() != null && request.getRoomTypeCode().size() > 0)
+            {
+                // Check room type code
+                int i = 0;
+                for (i = allRooms.size() - 1; i >= 0; i--)
                 {
-                    if (allRooms.get(i).getRoomType().getRoomTypeCode().equals(rtc))
+                    // Check if the room type code is in the request
+                    // if yes then don't delete
+                    boolean delete = true;
+                    ArrayList<String> roomTypes = request.getRoomTypeCode();
+                    for (String rtc : roomTypes)
                     {
-                        delete = false;
-                        break;
+                        if (allRooms.get(i).getRoomType().getRoomTypeCode().equals(rtc))
+                        {
+                            delete = false;
+                            break;
+                        }
+                    }
+
+                    if (delete)
+                    {
+                        allRooms.remove(i);
                     }
                 }
 
-                if (delete)
-                {
-                    allRooms.remove(i);
-                }
             }
-               
-        }
-        
-        // Price range: any can be filled up
-        if (request.getMinPrice() != -1L)
-        {
-            // Check room type code
-            int i = 0;
-            
-            for (i = allRooms.size() - 1; i >= 0; i--)
+
+            // Price range: any can be filled up
+            if (request.getMinPrice() != -1L)
             {
-                if (allRooms.get(i).getRoomPrice() < request.getMinPrice())
+                // Check room type code
+                int i = 0;
+
+                for (i = allRooms.size() - 1; i >= 0; i--)
                 {
-                    allRooms.remove(i);
+                    if (allRooms.get(i).getRoomPrice() < request.getMinPrice())
+                    {
+                        allRooms.remove(i);
+                    }
                 }
+
             }
-            
-        }
-        
-        
-        if (request.getMaxPrice() != -1L)
-        {
-            // Check room type code
-            int i = 0;
-            
-            for (i = allRooms.size() - 1; i >= 0; i--)
+
+
+            if (request.getMaxPrice() != -1L)
             {
-                if (allRooms.get(i).getRoomPrice() > request.getMaxPrice())
+                // Check room type code
+                int i = 0;
+
+                for (i = allRooms.size() - 1; i >= 0; i--)
                 {
-                    allRooms.remove(i);
+                    if (allRooms.get(i).getRoomPrice() > request.getMaxPrice())
+                    {
+                        allRooms.remove(i);
+                    }
                 }
             }
         }
@@ -164,12 +178,11 @@ public class RoomAllocatorService {
         return allRooms;
     }
     
-    public ArrayList<RoomChoice> allocateRoomPerGuest(ArrayList<RoomChoice> roomChoices, int numOfGuests)
+    public ArrayList<RoomChoice> allocateRoomPerGuest(ArrayList<RoomChoice> roomChoices, int numOfGuests) throws Exception
     {
         int totalMaxOccupancy = 0;
         
-        for (RoomChoice rc : roomChoices)
-        {
+        for (RoomChoice rc : roomChoices) {
             totalMaxOccupancy += rc.getTotalMaxOccupancy();
         }
         
@@ -177,6 +190,7 @@ public class RoomAllocatorService {
         if (numOfGuests > totalMaxOccupancy)
         {
             // throw an exception!!! not allowed
+            throw new Exception("Number of guests cannot be more than the total room occupancy.");
         }
         else
         {
