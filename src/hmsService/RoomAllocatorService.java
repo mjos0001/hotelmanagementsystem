@@ -110,6 +110,7 @@ public class RoomAllocatorService {
             else
             {
                 // throw exception!!! this is required
+                throw new Exception("Check in date and check out date are both required.");
             }
 
             // Filter by room type
@@ -138,6 +139,11 @@ public class RoomAllocatorService {
                     }
                 }
 
+            }
+            
+            if (request.getMinPrice() > request.getMaxPrice())
+            {
+                throw new Exception("Minimum price cannot be greater than the maximum price.");
             }
 
             // Price range: any can be filled up
