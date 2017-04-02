@@ -29,10 +29,10 @@ public class BookingDataService {
     @PersistenceUnit(unitName = "HotelManagementSystemPUB")
     EntityManager entitymanager = null;
 
-    public BookingDataService(EntityManagerFactory emf) {
+    public BookingDataService(EntityManagerFactory emf) throws Exception {
         if (!emf.isOpen()) {
             // Should throw an error - no connection found!
-            emfactory = null;
+            throw new Exception("Cannot continue operation - connection cannot be found.");
         }
         emfactory = emf;
         entitymanager = emfactory.createEntityManager();
@@ -44,23 +44,25 @@ public class BookingDataService {
         }
     }
 
-    public List<Booking> getBookings() {
+    public List<Booking> getBookings() throws Exception {
         List<Booking> bookings = null;
 
         try {
+            
             entitymanager.getTransaction().begin();
             bookings = entitymanager.createNamedQuery("Booking.findAll").getResultList();
             entitymanager.getTransaction().commit();
         } catch (Exception e) {
-            // Error in getting bookings
+            throw new Exception("Error in doing the database operation.");
         }
 
         return bookings;
     }
 
-    public int createBooking(Booking booking) {
+    public int createBooking(Booking booking) throws Exception {
         int id = 0;
         try {
+            
             entitymanager.getTransaction().begin();
             entitymanager.persist(booking);
             entitymanager.flush();
@@ -70,13 +72,15 @@ public class BookingDataService {
 
         } catch (Exception e) {
             // Error in inserting booking record
+            throw new Exception("Error in doing the database operation.");
         }
 
         return id;
     }
 
-    public boolean deleteBooking(Booking booking) {
+    public boolean deleteBooking(Booking booking) throws Exception {
         try {
+            
             entitymanager.getTransaction().begin();
 
             // Find the Booking first
@@ -90,14 +94,15 @@ public class BookingDataService {
 
             return true;
         } catch (Exception e) {
-            return false;
+            throw new Exception("Error in doing the database operation.");
         }
     }
 
-    public Booking updateBooking(Booking newBooking) {
+    public Booking updateBooking(Booking newBooking) throws Exception {
         Booking updatedBooking = null;
 
         try {
+            
             entitymanager.getTransaction().begin();
 
             Booking bookingData = entitymanager.find(Booking.class, newBooking.getBookingId());
@@ -120,14 +125,16 @@ public class BookingDataService {
             getBookings();
 
         } catch (Exception e) {
+            throw new Exception("Error in doing the database operation.");
         }
 
         return updatedBooking;
     }
 
-    public List<Booking> getBookingsByCustomerId(int customerId) {
+    public List<Booking> getBookingsByCustomerId(int customerId) throws Exception {
         List<Booking> bookings = null;
         try {
+            
             entitymanager.getTransaction().begin();
 
             bookings = entitymanager.createNamedQuery("Booking.findByCustomerId")
@@ -135,16 +142,18 @@ public class BookingDataService {
 
             entitymanager.getTransaction().commit();
         } catch (Exception e) {
+            throw new Exception("Error in doing the database operation.");
 
         }
 
         return bookings;
     }
 
-    public List<BookingRoomGuest> getBookingRoomGuests() {
+    public List<BookingRoomGuest> getBookingRoomGuests() throws Exception {
         List<BookingRoomGuest> bookingRoomGuests = null;
 
         try {
+            
             entitymanager.getTransaction().begin();
 
             bookingRoomGuests = entitymanager.createNamedQuery("BookingRoomGuest.findAll")
@@ -152,16 +161,18 @@ public class BookingDataService {
 
             entitymanager.getTransaction().commit();
         } catch (Exception e) {
+            throw new Exception("Error in doing the database operation.");
 
         }
 
         return bookingRoomGuests;
     }
 
-    public List<Booking> getBookingsByTakenDates(Date checkInDate, Date checkOutDate) {
+    public List<Booking> getBookingsByTakenDates(Date checkInDate, Date checkOutDate) throws Exception {
         List<Booking> bookings = null;
 
         try {
+            
             entitymanager.getTransaction().begin();
 
             // Find bookings that are within the checkInDate and checkOutDate
@@ -172,16 +183,18 @@ public class BookingDataService {
 
             entitymanager.getTransaction().commit();
         } catch (Exception e) {
+            throw new Exception("Error in doing the database operation.");
 
         }
 
         return bookings;
     }
 
-    public Booking getBookingByBookingId(int bookingId) {
+    public Booking getBookingByBookingId(int bookingId) throws Exception {
         Booking booking = null;
 
         try {
+            
             entitymanager.getTransaction().begin();
 
             // Find bookings that are within the checkInDate and checkOutDate
@@ -191,26 +204,29 @@ public class BookingDataService {
 
             entitymanager.getTransaction().commit();
         } catch (Exception e) {
+            throw new Exception("Error in doing the database operation.");
 
         }
 
         return booking;
     }
 
-    public boolean createBookingRoomGuest(BookingRoomGuest bookingRoomGuest) {
+    public boolean createBookingRoomGuest(BookingRoomGuest bookingRoomGuest) throws Exception {
         try {
+            
             entitymanager.getTransaction().begin();
             entitymanager.persist(bookingRoomGuest);
             entitymanager.getTransaction().commit();
             return true;
+            
         } catch (Exception e) {
+            
+            throw new Exception("Error in doing the database operation.");
 
         }
-
-        return false;
     }
 
-    public boolean deleteBookingRoomGuest(BookingRoomGuest bookingRoomGuest) {
+    public boolean deleteBookingRoomGuest(BookingRoomGuest bookingRoomGuest) throws Exception {
         try {
             entitymanager.getTransaction().begin();
 
@@ -226,12 +242,12 @@ public class BookingDataService {
 
             return true;
         } catch (Exception e) {
-            return false;
+            throw new Exception("Error in doing the database operation.");
         }
     }
 
     // This can only change the room of the guest
-    public BookingRoomGuest updateBookingRoomGuest(BookingRoomGuest brg) {
+    public BookingRoomGuest updateBookingRoomGuest(BookingRoomGuest brg) throws Exception {
         BookingRoomGuest updatedBRG = null;
         RoomDataService rc = new RoomDataService(emfactory);
 
@@ -255,6 +271,7 @@ public class BookingDataService {
             entitymanager.getTransaction().commit();
 
         } catch (Exception e) {
+            throw new Exception("Error in doing the database operation.");
         }
 
         return updatedBRG;
@@ -262,19 +279,26 @@ public class BookingDataService {
 
     public static void main(String args[]) {
 
-        EntityManagerFactory emfactoryb = Persistence.createEntityManagerFactory("HotelManagementSystemPUB");
-        BookingDataService x = new BookingDataService(emfactoryb);
-        CustomerDataService y = new CustomerDataService(emfactoryb);
-        GuestDataService z = new GuestDataService(emfactoryb);
-        RoomDataService a = new RoomDataService(emfactoryb);
+        try
+        {
+            EntityManagerFactory emfactoryb = Persistence.createEntityManagerFactory("HotelManagementSystemPUB");
+            BookingDataService x = new BookingDataService(emfactoryb);
+            CustomerDataService y = new CustomerDataService(emfactoryb);
+            GuestDataService z = new GuestDataService(emfactoryb);
+            RoomDataService a = new RoomDataService(emfactoryb);
 
-        List<Booking> newBookings = x.getBookings();
+            List<Booking> newBookings = x.getBookings();
 
-        BookingService.CreateSampleBooking(emfactoryb);
-        x.close();
-        y.close();
-        z.close();
-        a.close();
+            BookingService.CreateSampleBooking(emfactoryb);
+            x.close();
+            y.close();
+            z.close();
+            a.close();
+        }
+        catch(Exception e)
+        {
+            
+        }
 
     }
 

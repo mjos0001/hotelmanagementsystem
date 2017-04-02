@@ -24,7 +24,7 @@ public class HotelDataService {
     @PersistenceUnit(unitName="HotelManagementSystemPUA")
     EntityManager entitymanager = null;
     
-    public HotelDataService(EntityManagerFactory emf)
+    public HotelDataService(EntityManagerFactory emf) 
     {
         if (!emf.isOpen())
         {
@@ -45,7 +45,7 @@ public class HotelDataService {
         
     }
     
-    public List<Hotel> getHotels()
+    public List<Hotel> getHotels() throws Exception
     {   
         List<Hotel> hotels = null;
         
@@ -59,14 +59,14 @@ public class HotelDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
       
       return hotels;
     }
     
     
-    public boolean createHotel(Hotel hotel)
+    public boolean createHotel(Hotel hotel) throws Exception
     {
         try
         {
@@ -79,11 +79,11 @@ public class HotelDataService {
         }
         catch (Exception e)
         {
-            return false;
+            throw new Exception("Error in doing the database operation.");
         }
     }
     
-    public boolean deleteHotel(Hotel hotel)
+    public boolean deleteHotel(Hotel hotel) throws Exception
     {
         try
         {
@@ -105,11 +105,11 @@ public class HotelDataService {
         }
         catch (Exception e)
         {
-            return false;
+            throw new Exception("Error in doing the database operation.");
         }
     }
     
-    public Hotel updateHotel(Hotel newHotel)
+    public Hotel updateHotel(Hotel newHotel) throws Exception
     {
         Hotel hotelData = null;
         
@@ -138,12 +138,13 @@ public class HotelDataService {
         }
         catch (Exception e)
         {
+            throw new Exception("Error in doing the database operation.");
         }
         
         return hotelData;
     }
     
-    public Hotel findHotelByName(String hotelName)
+    public Hotel findHotelByName(String hotelName) throws Exception
     {
         Hotel hotel =  null;
         try
@@ -157,13 +158,13 @@ public class HotelDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
         
         return hotel;
     }
     
-    public List<Hotel> findHotelByType(String hotelTypeCode)
+    public List<Hotel> findHotelByType(String hotelTypeCode) throws Exception
     {
         List<Hotel> hotels = null;
         
@@ -178,7 +179,7 @@ public class HotelDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
         
         return hotels;
@@ -188,17 +189,22 @@ public class HotelDataService {
          
          EntityManagerFactory emfactorya = Persistence.createEntityManagerFactory("HotelManagementSystemPUA");
          HotelDataService x = new HotelDataService(emfactorya);
-         
-         List<Hotel> hList = x.getHotels();
-         
                  
         try
         {
+                     
+            List<Hotel> hList = x.getHotels();
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
             Date date1 = fmt.parse("2006-02-01");
 
             Hotel newHotel = new Hotel(0, "El Paseo Hotel", date1, "Philippines", "Makati", "5 Minami-ku Yokohama", "33333", "talktous@elpaseoh.com", "5S");
             x.createHotel(newHotel);
+            
+            Hotel findHotel = x.findHotelByName("Honmaru Hotel");
+         
+            List<Hotel> findHotels = x.findHotelByType("5S");
+         
+            x.close();
  
         }
         catch (Exception e)
@@ -206,12 +212,6 @@ public class HotelDataService {
             
         }
          
-         
-         Hotel findHotel = x.findHotelByName("Honmaru Hotel");
-         
-         List<Hotel> findHotels = x.findHotelByType("5S");
-         
-         x.close();
      }
     
 }

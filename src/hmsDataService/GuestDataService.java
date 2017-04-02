@@ -46,7 +46,7 @@ public class GuestDataService {
  
     }
     
-    public List<Guest> getGuests()
+    public List<Guest> getGuests() throws Exception
     {   
         List<Guest> guests = null;
         
@@ -65,14 +65,14 @@ public class GuestDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
       
       return guests;
     }
     
     
-    public int createGuest(Guest guest)
+    public int createGuest(Guest guest) throws Exception
     {
         int id = 0;
         try
@@ -87,13 +87,13 @@ public class GuestDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
         
         return id;
     }
     
-    public boolean deleteGuest(Guest guest)
+    public boolean deleteGuest(Guest guest) throws Exception
     {
         try
         {
@@ -115,11 +115,11 @@ public class GuestDataService {
         }
         catch (Exception e)
         {
-            return false;
+            throw new Exception("Error in doing the database operation.");
         }
     }
     
-    public Guest updateGuest(Guest newGuest)
+    public Guest updateGuest(Guest newGuest) throws Exception
     {
         Guest updatedGuest = null;
         
@@ -144,6 +144,10 @@ public class GuestDataService {
                 guestData.setStreet(newGuest.getStreet());
                 guestData.setTitle(newGuest.getTitle());
             }
+            else
+            {
+                throw new Exception("The data being updated does not exist.");
+            }
             
             entitymanager.getTransaction().commit();
 
@@ -152,12 +156,13 @@ public class GuestDataService {
         }
         catch (Exception e)
         {
+            throw new Exception("Error in doing the database operation.");
         }
         
         return updatedGuest;
     }
     
-    public List<Guest> getGuestByName(String firstName, String lastName)
+    public List<Guest> getGuestByName(String firstName, String lastName) throws Exception
     {
         List<Guest> guests = null;
         
@@ -174,13 +179,13 @@ public class GuestDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
         
         return guests;
     }
     
-    public Guest getGuestById(int guestId)
+    public Guest getGuestById(int guestId) throws Exception
     {
         Guest guest = null;
         
@@ -194,7 +199,7 @@ public class GuestDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
         
         return guest;
@@ -202,13 +207,19 @@ public class GuestDataService {
     
     public static void main(String args[]) {
          
+        try{
         
-         EntityManagerFactory emfactoryb = Persistence.createEntityManagerFactory("HotelManagementSystemPUB");
-         GuestDataService x = new GuestDataService(emfactoryb);
-         
-         List<Guest> newGuests = x.getGuests();
-         
-         x.close();
+            EntityManagerFactory emfactoryb = Persistence.createEntityManagerFactory("HotelManagementSystemPUB");
+            GuestDataService x = new GuestDataService(emfactoryb);
+
+            List<Guest> newGuests = x.getGuests();
+
+            x.close();
+        }
+        catch (Exception e)
+        {
+        
+        }
          
      }
 

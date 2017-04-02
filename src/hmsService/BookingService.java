@@ -34,19 +34,21 @@ import javax.persistence.EntityManagerFactory;
  */
 public class BookingService {
     
-    public static void CreateSampleBooking(EntityManagerFactory emfactoryb) {
-        BookingDataService x = new BookingDataService(emfactoryb);
-        CustomerDataService y = new CustomerDataService(emfactoryb);
-        GuestDataService z = new GuestDataService(emfactoryb);
-        RoomDataService a = new RoomDataService(emfactoryb);
-        PaymentDataService b = new PaymentDataService(emfactoryb);
-        RoomAllocatorService rf = new RoomAllocatorService(emfactoryb);
-
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-        int newId = 0;
-        Booking newBooking = null;
-
+    public static void CreateSampleBooking(EntityManagerFactory emfactoryb) 
+    {     
         try {
+            BookingDataService x = new BookingDataService(emfactoryb);
+            CustomerDataService y = new CustomerDataService(emfactoryb);
+            GuestDataService z = new GuestDataService(emfactoryb);
+            RoomDataService a = new RoomDataService(emfactoryb);
+            PaymentDataService b = new PaymentDataService(emfactoryb);
+            RoomAllocatorService rf = new RoomAllocatorService(emfactoryb);
+
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            int newId = 0;
+            Booking newBooking = null;
+
+        
             Date date1 = fmt.parse("2017-06-01");
             Date date2 = fmt.parse("2017-07-02");
 
@@ -75,6 +77,7 @@ public class BookingService {
 
             if (availableRooms.size() <= 0) {
                 // Throw excepion - sorry no more rooms!
+                throw new Exception("No rooms are available to accommodate guest!");
             } else {
                 // 2b Pick the rooms that you want
                 // IMPORTANT - total occupancy should be checked! (totalOcc >= numOfGuests)

@@ -46,7 +46,7 @@ public class CustomerDataService {
         }
     }
     
-    public List<Customer> getCustomers()
+    public List<Customer> getCustomers () throws Exception
     {   
         List<Customer> rooms = null;
         
@@ -58,14 +58,14 @@ public class CustomerDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
       
       return rooms;
     }
     
     
-    public boolean createCustomer(Customer room)
+    public boolean createCustomer(Customer room) throws Exception
     {
         try
         {
@@ -79,11 +79,11 @@ public class CustomerDataService {
         }
         catch (Exception e)
         {
-            return false;
+            throw new Exception("Error in doing the database operation.");
         }
     }
     
-    public boolean deleteCustomer(Customer room)
+    public boolean deleteCustomer(Customer room) throws Exception
     {
         try
         {
@@ -99,6 +99,7 @@ public class CustomerDataService {
             else
             {
                 // throw an exception - customer does not exist!
+                throw new Exception("Error in doing the database operation.");
             }
             
             entitymanager.getTransaction().commit();
@@ -111,7 +112,7 @@ public class CustomerDataService {
         }
     }
     
-    public Customer updateCustomer(Customer newCustomer)
+    public Customer updateCustomer(Customer newCustomer) throws Exception
     {
         Customer customerData = null;
         
@@ -148,6 +149,7 @@ public class CustomerDataService {
             else
             {
                 // throw an exception - the record does not exist!
+                throw new Exception("The record you are trying to update does not exist.");
             }
             
             
@@ -157,12 +159,13 @@ public class CustomerDataService {
         catch (Exception e)
         {
             // Error in updating the record!
+            throw new Exception("Error in doing the database operation.");
         }
         
         return customerData;
     }
     
-    public List<Customer> findCustomerByMembership(String membershipTierCode)
+    public List<Customer> findCustomerByMembership(String membershipTierCode) throws Exception
     {
         List<Customer> customers =  null;
         try
@@ -176,13 +179,13 @@ public class CustomerDataService {
         }
         catch (Exception e)
         {
-            // throw exception - error in updating record!
+            throw new Exception("Error in doing the database operation.");
         }
         
         return customers;
     }
     
-    public Customer findCustomerByBookingId(int bookingId)
+    public Customer findCustomerByBookingId(int bookingId) throws Exception
     {
         Customer customer =  null;
         try
@@ -197,12 +200,13 @@ public class CustomerDataService {
         catch (Exception e)
         {
             // Error in finding customer
+            throw new Exception("Error in doing the database operation.");
         }
         
         return customer;
     }
     
-    public Customer findCustomerById(int customerId)
+    public Customer findCustomerById(int customerId) throws Exception
     {
         Customer customer =  null;
         try
@@ -215,7 +219,7 @@ public class CustomerDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
         
         return customer;
@@ -223,19 +227,26 @@ public class CustomerDataService {
     
     public static void main(String args[]) {
          
-         EntityManagerFactory emfactoryb = Persistence.createEntityManagerFactory("HotelManagementSystemPUB");
-         CustomerDataService x = new CustomerDataService(emfactoryb);
-         
-         List<Customer> newCustomers = x.getCustomers();
-         
-         newCustomers = x.findCustomerByMembership("SLR");
-         
-         Customer c = newCustomers.get(0);
-         
-         c.setEmailAddress("beyonce@beyonce.com");
-         x.updateCustomer(c);
-         
-         x.close();
+        try
+        {
+            EntityManagerFactory emfactoryb = Persistence.createEntityManagerFactory("HotelManagementSystemPUB");
+            CustomerDataService x = new CustomerDataService(emfactoryb);
+
+            List<Customer> newCustomers = x.getCustomers();
+
+            newCustomers = x.findCustomerByMembership("SLR");
+
+            Customer c = newCustomers.get(0);
+
+            c.setEmailAddress("beyonce@beyonce.com");
+            x.updateCustomer(c);
+
+            x.close();
+        }
+        catch(Exception e)
+        {
+            
+        }
          
     }
    

@@ -6,7 +6,6 @@
 package hmsDataService;
 
 import hmsModel.Payment;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -39,7 +38,7 @@ public class PaymentDataService {
         entitymanager.close();
     }
     
-    public List<Payment> getPayments()
+    public List<Payment> getPayments() throws Exception
     {   
         List<Payment> payments = null;
         
@@ -58,13 +57,13 @@ public class PaymentDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
       
       return payments;
     }
     
-    public List<Payment> getPaymentsByBookingId(int bookingId)
+    public List<Payment> getPaymentsByBookingId(int bookingId) throws Exception
     {   
         List<Payment> payments = null;
         
@@ -74,23 +73,18 @@ public class PaymentDataService {
 
             payments = entitymanager.createNamedQuery("Payment.findByBookingId").setParameter("bookingId", bookingId).getResultList();
 
-            if (payments.size() > 0)
-            {
-
-            }
-
             entitymanager.getTransaction().commit();
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
       
       return payments;
     }
     
     
-    public boolean createPayment(Payment payment)
+    public boolean createPayment(Payment payment) throws Exception
     {
         try
         {
@@ -102,11 +96,11 @@ public class PaymentDataService {
         }
         catch (Exception e)
         {
-            return false;
+            throw new Exception("Error in doing the database operation.");
         }
     }
     
-    public boolean deletePayment(Payment payment)
+    public boolean deletePayment(Payment payment) throws Exception
     {
         try
         {
@@ -126,11 +120,11 @@ public class PaymentDataService {
         }
         catch (Exception e)
         {
-            return false;
+            throw new Exception("Error in doing the database operation.");
         }
     }
     
-    public Payment updatePayment(Payment newPayment)
+    public Payment updatePayment(Payment newPayment) throws Exception
     {
         Payment paymentData = null;
         
@@ -152,6 +146,7 @@ public class PaymentDataService {
         }
         catch (Exception e)
         {
+            throw new Exception("Error in doing the database operation.");
         }
         
         return paymentData;
@@ -161,14 +156,19 @@ public class PaymentDataService {
     
     public static void main(String args[]) {
          
-        
-         EntityManagerFactory emfactoryb = Persistence.createEntityManagerFactory("HotelManagementSystemPUB");
-         PaymentDataService x = new PaymentDataService(emfactoryb);
-         
-         List<Payment> newPayments = x.getPayments();
-         
-         x.close();
-         
+        try
+        {
+            EntityManagerFactory emfactoryb = Persistence.createEntityManagerFactory("HotelManagementSystemPUB");
+            PaymentDataService x = new PaymentDataService(emfactoryb);
+
+            List<Payment> newPayments = x.getPayments();
+
+            x.close();
+        }
+        catch (Exception e)
+        {
+            
+        }
      }
 
 }

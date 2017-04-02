@@ -40,7 +40,7 @@ public class MembershipDataService {
         entitymanager.close();
     }
     
-    public List<Membership> getMemberships()
+    public List<Membership> getMemberships() throws Exception
     {   
         List<Membership> memberships = null;
         
@@ -54,14 +54,14 @@ public class MembershipDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
       
       return memberships;
     }
     
     
-    public boolean createMembership(Membership membership)
+    public boolean createMembership(Membership membership) throws Exception
     {
         try
         {
@@ -75,11 +75,11 @@ public class MembershipDataService {
         }
         catch (Exception e)
         {
-            return false;
+            throw new Exception("Error in doing the database operation.");
         }
     }
     
-    public boolean deleteMembership(Membership membership)
+    public boolean deleteMembership(Membership membership) throws Exception
     {
         try
         {
@@ -101,11 +101,11 @@ public class MembershipDataService {
         }
         catch (Exception e)
         {
-            return false;
+            throw new Exception("Error in doing the database operation.");
         }
     }
     
-    public Membership updateMembership(Membership newMembership)
+    public Membership updateMembership(Membership newMembership) throws Exception
     {
         Membership updatedMembership = null;
         
@@ -132,12 +132,13 @@ public class MembershipDataService {
         }
         catch (Exception e)
         {
+            throw new Exception("Error in doing the database operation.");
         }
         
         return updatedMembership;
     }
     
-    public List<Membership> findMembershipByTierCode(String membershipTierCode)
+    public List<Membership> findMembershipByTierCode(String membershipTierCode) throws Exception
     {
         List<Membership> memberships =  null;
         
@@ -152,13 +153,13 @@ public class MembershipDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
         
         return memberships;
     }
     
-    public List<Membership> findMembershipByTierCredits(long availableCredits)
+    public List<Membership> findMembershipByTierCredits(long availableCredits) throws Exception
     {
         List<Membership> memberships = null;
         
@@ -175,7 +176,7 @@ public class MembershipDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
         
         return memberships;
@@ -184,14 +185,21 @@ public class MembershipDataService {
      
     public static void main(String args[]) {
          
-         EntityManagerFactory emfactoryb = Persistence.createEntityManagerFactory("HotelManagementSystemPUB");
-         MembershipDataService x = new MembershipDataService(emfactoryb);
-         
-         List<Membership> newMemberships = x.getMemberships();
-         
-         newMemberships = x.findMembershipByTierCredits(1200000L);
-         
-         x.close();
+        try
+        {
+            EntityManagerFactory emfactoryb = Persistence.createEntityManagerFactory("HotelManagementSystemPUB");
+            MembershipDataService x = new MembershipDataService(emfactoryb);
+
+            List<Membership> newMemberships = x.getMemberships();
+
+            newMemberships = x.findMembershipByTierCredits(1200000L);
+
+            x.close();
+        }
+        catch (Exception e)
+        {
+            
+        }
          
     }
 }

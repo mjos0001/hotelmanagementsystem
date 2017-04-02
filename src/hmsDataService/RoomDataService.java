@@ -12,7 +12,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.math.*;
 import javax.persistence.PersistenceUnit;
 
 /**
@@ -46,7 +45,7 @@ public class RoomDataService {
     }
     
     
-    public List<Room> getRooms()
+    public List<Room> getRooms() throws Exception
     {   
         List<Room> rooms = null;
         
@@ -70,13 +69,13 @@ public class RoomDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
       
       return rooms;
     }
     
-    public List<RoomType> getRoomTypes()
+    public List<RoomType> getRoomTypes() throws Exception
     {   
         List<RoomType> rooms = null;
         
@@ -90,14 +89,14 @@ public class RoomDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
       
       return rooms;
     }
     
     
-    public boolean createRoom(Room room)
+    public boolean createRoom(Room room) throws Exception
     {
         try
         {
@@ -111,11 +110,11 @@ public class RoomDataService {
         }
         catch (Exception e)
         {
-            return false;
+            throw new Exception("Error in doing the database operation.");
         }
     }
     
-    public Room getRoomByRoomId(int roomId)
+    public Room getRoomByRoomId(int roomId) throws Exception
     {
         Room dataRoom = null;
         
@@ -131,13 +130,13 @@ public class RoomDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
         
         return dataRoom;
     }
     
-    public boolean deleteRoom(int roomId)
+    public boolean deleteRoom(int roomId) throws Exception
     {
         try
         {
@@ -158,11 +157,11 @@ public class RoomDataService {
         }
         catch (Exception e)
         {
-            return false;
+            throw new Exception("Error in doing the database operation.");
         }
     }
     
-    public Room updateRoom(Room newRoom)
+    public Room updateRoom(Room newRoom) throws Exception
     {
         Room roomData = null; 
         
@@ -183,12 +182,13 @@ public class RoomDataService {
         }
         catch (Exception e)
         {
+            throw new Exception("Error in doing the database operation.");
         }
         
         return roomData;
     }
     
-    public List<Room> getRoomByFacilityNumber(int facilityNumber)
+    public List<Room> getRoomByFacilityNumber(int facilityNumber) throws Exception
     {
         List<Room> rooms =  null;
         try
@@ -202,13 +202,13 @@ public class RoomDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation."); 
         }
         
         return rooms;
     }
     
-    public List<Room> getRoomByType(String roomTypeCode)
+    public List<Room> getRoomByType(String roomTypeCode) throws Exception
     {
         List<Room> rooms = null;
         
@@ -223,7 +223,7 @@ public class RoomDataService {
         }
         catch (Exception e)
         {
-            
+            throw new Exception("Error in doing the database operation.");
         }
         
         return rooms;
@@ -231,44 +231,48 @@ public class RoomDataService {
     
     public static void main(String args[]) {
          
-        
-         EntityManagerFactory emfactorya = Persistence.createEntityManagerFactory("HotelManagementSystemPUB");
-         RoomDataService x = new RoomDataService(emfactorya);
-         
-         List<Room> rList = x.getRooms();
-         
-         List<Room> r = x.getRoomByType("DLX");
-         
-         List<RoomType> roomTypes = x.getRoomTypes();
-         RoomType roomType = null;
-         
-         for (RoomType rt : roomTypes)
-         {
-             if (rt.getRoomTypeCode().equals("DLX"))
-             {
-                 roomType = rt;
-                 break;
-             }
-         }
-         
-//         Room newRoom = new Room();
-//         newRoom.setHotelId(1);
-//         newRoom.setRoomDescription("Fancy room with white gold trimmings.");
-//         newRoom.setRoomType(roomType);
-//         newRoom.setRoomNumber("202");
-//         newRoom.setRoomPrice(300.50);
-//         newRoom.setRoomId(4);
-//         
-//         x.createRoom(newRoom);
-//         
-//         newRoom.setRoomDescription("A deluxe room with red carpet and velvet curtains.");
-//         
-//         x.updateRoom(newRoom);
+        try {
+            EntityManagerFactory emfactorya = Persistence.createEntityManagerFactory("HotelManagementSystemPUB");
+            RoomDataService x = new RoomDataService(emfactorya);
 
-        //x.deleteRoom(2);
-//         x.getRoomByFacilityNumber(1);
-         
-         x.close();
-         
+            List<Room> rList = x.getRooms();
+
+            List<Room> r = x.getRoomByType("DLX");
+
+            List<RoomType> roomTypes = x.getRoomTypes();
+            RoomType roomType = null;
+
+            for (RoomType rt : roomTypes)
+            {
+                if (rt.getRoomTypeCode().equals("DLX"))
+                {
+                    roomType = rt;
+                    break;
+                }
+            }
+
+   //         Room newRoom = new Room();
+   //         newRoom.setHotelId(1);
+   //         newRoom.setRoomDescription("Fancy room with white gold trimmings.");
+   //         newRoom.setRoomType(roomType);
+   //         newRoom.setRoomNumber("202");
+   //         newRoom.setRoomPrice(300.50);
+   //         newRoom.setRoomId(4);
+   //         
+   //         x.createRoom(newRoom);
+   //         
+   //         newRoom.setRoomDescription("A deluxe room with red carpet and velvet curtains.");
+   //         
+   //         x.updateRoom(newRoom);
+
+           //x.deleteRoom(2);
+   //         x.getRoomByFacilityNumber(1);
+
+            x.close();
+        }
+        catch (Exception e)
+        {
+        }
+        
      }
 }
