@@ -138,16 +138,16 @@ public class MembershipDataService {
         return updatedMembership;
     }
     
-    public List<Membership> findMembershipByTierCode(String membershipTierCode) throws Exception
+    public Membership findMembershipByTierCode(String membershipTierCode) throws Exception
     {
-        List<Membership> memberships =  null;
+        Membership membership =  null;
         
         try
         {
             entitymanager.getTransaction().begin();
 
-            memberships = entitymanager.createNamedQuery("Membership.findByMembershipTierCode")
-                    .setParameter("membershipTierCode", membershipTierCode).getResultList();
+            membership = (Membership)entitymanager.createNamedQuery("Membership.findByMembershipTierCode")
+                    .setParameter("membershipTierCode", membershipTierCode).getSingleResult();
 
             entitymanager.getTransaction().commit();
         }
@@ -156,7 +156,7 @@ public class MembershipDataService {
             throw new Exception("Error in doing the database operation.");
         }
         
-        return memberships;
+        return membership;
     }
     
     public List<Membership> findMembershipByTierCredits(long availableCredits) throws Exception

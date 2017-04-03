@@ -4,11 +4,8 @@
  * and open the template in the editor.
  */
 package hmsService;
-import hmsModel.Room;
-import hmsModel.Guest;
-import hmsModel.Customer;
-import hmsModel.Booking;
-import hmsModel.Payment;
+
+import hmsModel.*;
 import java.util.*;
 
 /**
@@ -16,6 +13,7 @@ import java.util.*;
  * @author mrkjse
  */
 public class FinderService {
+
     
     public static Guest findGuestByGuestId(ArrayList<Guest> list, int id)
     {
@@ -30,11 +28,24 @@ public class FinderService {
         return null;
     }
     
-    public static Booking findBookingByBookingId(ArrayList<Booking> list, int id)
+    public static Hotel findHotelByName(ArrayList<Hotel> list, String name)
     {
-        for (Booking b : list)
+        for (Hotel b : list)
         {
-            if (b.getBookingId() == id)
+            if (b.getHotelName().toLowerCase().equals(name.toLowerCase()))
+            {
+                return b;
+            }
+        }
+        
+        return null;
+    }
+    
+    public static Hotel findHotelById(ArrayList<Hotel> list, int id)
+    {
+        for (Hotel b : list)
+        {
+            if (b.getHotelId() == id)
             {
                 return b;
             }
@@ -56,11 +67,38 @@ public class FinderService {
         return null;
     }
     
+    public static RoomType findRoomTypeByCode(ArrayList<RoomType> list, String code)
+    {
+        for (RoomType r : list)
+        {
+            if (r.getRoomTypeCode().toUpperCase().equals(code.toUpperCase()))
+            {
+                return r;
+            }
+        }
+        
+        return null;
+    }
+    
     public static Customer findCustomerByCustomerId(ArrayList<Customer> list, int id)
     {
         for (Customer c : list)
         {
             if (c.getCustomerId() == id)
+            {
+                return c;
+            }
+        }
+        
+        return null;
+    }
+    
+    public static Customer findCustomerByCustomerName(ArrayList<Customer> list, String fn, String ln)
+    {
+        for (Customer c : list)
+        {
+            if (c.getFirstName().toLowerCase().equals(fn.toLowerCase()) &&
+                c.getLastName().toLowerCase().equals(ln.toLowerCase()))
             {
                 return c;
             }
