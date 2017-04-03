@@ -138,8 +138,6 @@ public class HotelDataService {
             
             entitymanager.getTransaction().commit();
 
-            getHotels();
-
         }
         catch (Exception e)
         {
