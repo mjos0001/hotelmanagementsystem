@@ -147,7 +147,7 @@ public class HotelDataService {
         return hotelData;
     }
     
-    public Hotel findHotelByName(String hotelName) throws Exception
+    public Hotel getHotelByName(String hotelName) throws Exception
     {
         Hotel hotel =  null;
         try
@@ -167,7 +167,7 @@ public class HotelDataService {
         return hotel;
     }
     
-    public List<Hotel> findHotelByType(String hotelTypeCode) throws Exception
+    public List<Hotel> getHotelByType(String hotelTypeCode) throws Exception
     {
         List<Hotel> hotels = null;
         
@@ -203,9 +203,9 @@ public class HotelDataService {
             Hotel newHotel = new Hotel(0, "El Paseo Hotel", date1, "Philippines", "Makati", "5 Minami-ku Yokohama", "33333", "talktous@elpaseoh.com", "5S");
             x.createHotel(newHotel);
             
-            Hotel findHotel = x.findHotelByName("Honmaru Hotel");
+            Hotel findHotel = x.getHotelByName("Honmaru Hotel");
          
-            List<Hotel> findHotels = x.findHotelByType("5S");
+            List<Hotel> findHotels = x.getHotelByType("5S");
          
             x.close();
  

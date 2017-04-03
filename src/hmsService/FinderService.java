@@ -193,6 +193,99 @@ public class FinderService {
         return null;
     }
     
+    public static ArrayList<Customer> listCustomerByCustomerName(ArrayList<Customer> list, String fn, String ln)
+    {
+        ArrayList<Customer> cList = new ArrayList<>();
+        
+        for (Customer c : list)
+        {
+            if (c.getFirstName().toLowerCase().equals(fn.toLowerCase()) &&
+                c.getLastName().toLowerCase().equals(ln.toLowerCase()))
+            {
+                cList.add(c);
+            }
+        }
+        
+        return cList;
+    }
+    
+    public static ArrayList<Customer> findCustomerByFirstName(ArrayList<Customer> list, String fn)
+    {
+        ArrayList<Customer> cList = new ArrayList<>();
+        
+        for (Customer c : list)
+        {
+            if (c.getFirstName().toLowerCase().equals(fn.toLowerCase()))
+            {
+                cList.add(c);
+            }
+        }
+        
+        return cList;
+    }
+    
+    public static ArrayList<Customer> findCustomerByLastName(ArrayList<Customer> list, String ln)
+    {
+        ArrayList<Customer> cList = new ArrayList<>();
+        
+        for (Customer c : list)
+        {
+            if (c.getLastName().toLowerCase().equals(ln.toLowerCase()))
+            {
+                cList.add(c);
+            }
+        }
+        
+        return cList;
+    }
+
+    public static ArrayList<Guest> listGuestByGuestName(ArrayList<Guest> list, String fn, String ln)
+    {
+        ArrayList<Guest> cList = new ArrayList<>();
+        
+        for (Guest c : list)
+        {
+            if (c.getFirstName().toLowerCase().equals(fn.toLowerCase()) &&
+                c.getLastName().toLowerCase().equals(ln.toLowerCase()))
+            {
+                cList.add(c);
+            }
+        }
+        
+        return cList;
+    }
+    
+    public static ArrayList<Guest> findGuestByFirstName(ArrayList<Guest> list, String fn)
+    {
+        ArrayList<Guest> cList = new ArrayList<>();
+        
+        for (Guest c : list)
+        {
+            if (c.getFirstName().toLowerCase().equals(fn.toLowerCase()))
+            {
+                cList.add(c);
+            }
+        }
+        
+        return cList;
+    }
+    
+    public static ArrayList<Guest> findGuestByLastName(ArrayList<Guest> list, String ln)
+    {
+        ArrayList<Guest> cList = new ArrayList<>();
+        
+        for (Guest c : list)
+        {
+            if (c.getLastName().toLowerCase().equals(ln.toLowerCase()))
+            {
+                cList.add(c);
+            }
+        }
+        
+        return cList;
+    }
+
+    
     public static Payment findPaymentByMethod(ArrayList<Payment> list, String code)
     {
         for (Payment c : list)

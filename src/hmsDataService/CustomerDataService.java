@@ -229,6 +229,29 @@ public class CustomerDataService {
         return customer;
     }
     
+        public List<Customer> findCustomerByName(String fname, String lname) throws Exception
+    {
+        List<Customer> customers =  null;
+        
+        open();
+        try
+        {
+            entitymanager.getTransaction().begin();
+
+            customers = entitymanager.createNamedQuery("Customer.findByName")
+                    .setParameter("firstName", fname).setParameter("lastName", lname).getResultList();
+
+            entitymanager.getTransaction().commit();
+        }
+        catch (Exception e)
+        {
+            // Error in finding customer
+            throw new Exception("Error in doing the database operation.");
+        }
+        close();
+        return customers;
+    }
+    
     public Customer findCustomerById(int customerId) throws Exception
     {
         Customer customer =  null;

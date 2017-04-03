@@ -77,15 +77,32 @@ public class MainFrame extends javax.swing.JFrame {
     DefaultTableModel customerTableModel = new DefaultTableModel();
     DefaultTableModel membershipTableModel = new DefaultTableModel();
 
+    DefaultComboBoxModel hotelTypeCBModel = new DefaultComboBoxModel();
+    DefaultComboBoxModel paymentMethodCBModel = new DefaultComboBoxModel();
+    DefaultComboBoxModel roomFacilityCBModel = new DefaultComboBoxModel();
+    DefaultComboBoxModel customerCBModel = new DefaultComboBoxModel();
+    DefaultComboBoxModel membershipTierCBModel = new DefaultComboBoxModel();
+    
+    ArrayList<String> htcString = new ArrayList<>();
+    ArrayList<String> htc2String = new ArrayList<>();
+    ArrayList<String> pmcString = new ArrayList<>();
+    ArrayList<String> rfString = new ArrayList<>();
+    ArrayList<String> customerString = new ArrayList<>();
+    ArrayList<String> customer2String = new ArrayList<>();
+    ArrayList<String> membershipString = new ArrayList<>();
+    ArrayList<String> membership2String = new ArrayList<>();
     
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         defaultController = new DefaultDataService();
+       
+        
         initComponents();
         
         addListeners();
+
         
         try
         {
@@ -121,6 +138,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         }
        
+        fillUpComboBoxes();
         
     }
     
@@ -188,10 +206,100 @@ public class MainFrame extends javax.swing.JFrame {
         };
         
         tblPayment.getSelectionModel().addListSelectionListener(paymentTableListener);
-
-
-
         
+    }
+    
+    private void fillUpComboBoxes()
+    {
+        try
+        {
+
+            htcString = new ArrayList<>();
+            htc2String = new ArrayList<>();
+            pmcString = new ArrayList<>();
+            
+            rfString = new ArrayList<>();
+            customerString = new ArrayList<>();
+            membershipString = new ArrayList<>();
+            
+            htcString.add("ALL-See all");
+            pmcString.add("ALL-See all");
+            rfString.add("ALL-See all");
+            customerString.add("ALL-See all");
+            membershipString.add("ALL-See all");
+            
+
+            for (HotelTypeCode htc : HotelTypeCode.values())
+            {
+                htcString.add(htc.code() + '-'+ htc.name());
+                htc2String.add(htc.code() + '-'+ htc.name());
+            }
+
+            for (PaymentMethodCode pmc : PaymentMethodCode.values())
+            {
+                pmcString.add(pmc.code() + '-'+ pmc.name());
+                
+            }
+
+
+            //ArrayList<Facility> facilities = new ArrayList<>(roomController.getRoomFacilities());
+
+            /*
+            List<Facility> facilities = roomController.getRoomFacilities();
+            
+            for (Facility f : facilities)
+            {
+                String a = f.getFacilityNumber() + "-" + f.getFacilityName();
+                rfString.add(a);
+                
+            }
+            */
+            
+            for (Customer c : customers)
+            {
+                String a = c.getCustomerId() + "-" + c.getFirstName() + " " + c.getLastName();
+                customerString.add(a);
+            }
+            
+            for (Membership m : memberships)
+            {
+                String a = m.getMembershipTierCode() + "-" + m.getMembershipTier();
+                membershipString.add(a);
+                membership2String.add(a);
+            }
+            
+            hotelTypeCBModel = new DefaultComboBoxModel(htcString.toArray());
+            paymentMethodCBModel = new DefaultComboBoxModel(pmcString.toArray());
+            //roomFacilityCBModel = new DefaultComboBoxModel(rfString.toArray());
+            customerCBModel = new DefaultComboBoxModel(customerString.toArray());
+            membershipTierCBModel = new DefaultComboBoxModel(membershipString.toArray());
+           
+            
+            hotelTypeCodeComboBox.setModel(hotelTypeCBModel);
+            
+            DefaultComboBoxModel htc2CBModel = new DefaultComboBoxModel(htc2String.toArray());
+            
+            hotelTypeCodeComboBox2.setModel(htc2CBModel);
+            
+            paymentMethodComboBox.setModel(paymentMethodCBModel);
+            membershipTierComboBox.setModel(membershipTierCBModel);
+            
+            DefaultComboBoxModel mtc2CBModel = new DefaultComboBoxModel(membership2String.toArray());
+            
+            membershipTierComboBox2.setModel(mtc2CBModel);
+            
+            hotelTypeCodeComboBox.repaint();
+            hotelTypeCodeComboBox2.repaint();
+            paymentMethodComboBox.repaint();
+            membershipTierComboBox.repaint();
+            membershipTierComboBox2.repaint();
+            
+        }
+        catch (Exception e)
+        {
+            
+        }
+    
     }
 
     /**
@@ -217,7 +325,7 @@ public class MainFrame extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         hotelPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        hotelTypeCodeComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblHotel = new javax.swing.JTable();
         addHotelBtn = new javax.swing.JButton();
@@ -232,7 +340,6 @@ public class MainFrame extends javax.swing.JFrame {
         hotelContactNumber = new javax.swing.JLabel();
         hotelEmailAddress = new javax.swing.JLabel();
         textHotelName = new javax.swing.JTextField();
-        textHotelType = new javax.swing.JTextField();
         textHotelConstructionYear = new javax.swing.JTextField();
         textHotelCountry = new javax.swing.JTextField();
         textHotelCity = new javax.swing.JTextField();
@@ -242,10 +349,11 @@ public class MainFrame extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JSeparator();
         jLabel62 = new javax.swing.JLabel();
         textHotelId = new javax.swing.JTextField();
-        searchHotelBtn = new javax.swing.JButton();
+        jLabel68 = new javax.swing.JLabel();
+        hotelTypeCodeComboBox2 = new javax.swing.JComboBox<>();
         roomPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        roomFacilityComboBox = new javax.swing.JComboBox<>();
         addRoomBtn = new javax.swing.JButton();
         editRoomBtn = new javax.swing.JButton();
         delRoomBtn = new javax.swing.JButton();
@@ -267,13 +375,12 @@ public class MainFrame extends javax.swing.JFrame {
         textRoomId = new javax.swing.JTextField();
         customerPanel = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        membershipTierComboBox = new javax.swing.JComboBox<>();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblCustomer = new javax.swing.JTable();
         addCustBtn = new javax.swing.JButton();
         editCustomerBtn = new javax.swing.JButton();
         delCustomerBtn = new javax.swing.JButton();
-        textCustomerMembershipTier = new javax.swing.JTextField();
         textCustomerTitle = new javax.swing.JTextField();
         textCustomerFirstName = new javax.swing.JTextField();
         textCustomerLastName = new javax.swing.JTextField();
@@ -301,6 +408,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel65 = new javax.swing.JLabel();
         textCustomerId = new javax.swing.JTextField();
         jLabel66 = new javax.swing.JLabel();
+        membershipTierComboBox2 = new javax.swing.JComboBox<>();
         guestPanel = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -308,9 +416,9 @@ public class MainFrame extends javax.swing.JFrame {
         addGuestBtn = new javax.swing.JButton();
         editGuestBtn = new javax.swing.JButton();
         delGuestBtn = new javax.swing.JButton();
-        jTextField7 = new javax.swing.JTextField();
+        searchGuestFirstName = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
+        searchGuestLastName = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         labelGuestBookingId = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -338,6 +446,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel63 = new javax.swing.JLabel();
         textGuestId = new javax.swing.JTextField();
         searchGuestBtn = new javax.swing.JButton();
+        jLabel69 = new javax.swing.JLabel();
         membershipPanel = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -374,7 +483,6 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel48 = new javax.swing.JLabel();
         jLabel49 = new javax.swing.JLabel();
         textPaymentBookingId = new javax.swing.JTextField();
-        textPaymentMethodCode = new javax.swing.JTextField();
         textPaymentAmount = new javax.swing.JTextField();
         jSeparator6 = new javax.swing.JSeparator();
         jLabel61 = new javax.swing.JLabel();
@@ -382,6 +490,8 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel67 = new javax.swing.JLabel();
         textPaymentDate = new javax.swing.JTextField();
         searchPaymentBtn = new javax.swing.JButton();
+        paymentMethodComboBox = new javax.swing.JComboBox<>();
+        jLabel70 = new javax.swing.JLabel();
         bookingPanel = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         addBookingBtn = new javax.swing.JButton();
@@ -594,11 +704,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel2.setText("Search hotel by type");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.setDoubleBuffered(true);
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        hotelTypeCodeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        hotelTypeCodeComboBox.setDoubleBuffered(true);
+        hotelTypeCodeComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                hotelTypeCodeComboBoxActionPerformed(evt);
             }
         });
 
@@ -642,26 +752,18 @@ public class MainFrame extends javax.swing.JFrame {
 
         hotelEmailAddress.setText("Email Address");
 
-        textHotelType.setText("jTextField9");
-
-        textHotelConstructionYear.setText("jTextField10");
-
-        textHotelCountry.setText("jTextField11");
-
-        textHotelCity.setText("jTextField12");
-
-        textHotelAddress.setText("jTextField13");
-
-        textHotelContactNumber.setText("jTextField14");
-
-        textHotelEmailAddress.setText("jTextField15");
-
         jLabel62.setText("Hotel Id");
 
-        textHotelId.setText("jTextField1");
         textHotelId.setEnabled(false);
 
-        searchHotelBtn.setText("Search");
+        jLabel68.setText("must be in yyyy");
+
+        hotelTypeCodeComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        hotelTypeCodeComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hotelTypeCodeComboBox2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout hotelPanelLayout = new javax.swing.GroupLayout(hotelPanel);
         hotelPanel.setLayout(hotelPanelLayout);
@@ -669,22 +771,8 @@ public class MainFrame extends javax.swing.JFrame {
             hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, hotelPanelLayout.createSequentialGroup()
                 .addContainerGap(136, Short.MAX_VALUE)
-                .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(hotelPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(75, 75, 75)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55)
-                        .addComponent(searchHotelBtn))
-                    .addGroup(hotelPanelLayout.createSequentialGroup()
-                        .addGap(480, 480, 480)
-                        .addComponent(addHotelBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(editHotelBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(deleteHotelBtn))
-                    .addGroup(hotelPanelLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
                         .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(hotelName)
                             .addComponent(hotelType)
@@ -694,11 +782,13 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(96, 96, 96)
                         .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(textHotelName)
-                            .addComponent(textHotelType)
                             .addComponent(textHotelConstructionYear)
-                            .addComponent(textHotelCountry, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-                            .addComponent(textHotelId))
-                        .addGap(44, 44, 44)
+                            .addComponent(textHotelCountry)
+                            .addComponent(textHotelId, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
+                            .addComponent(hotelTypeCodeComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel68)
+                        .addGap(79, 79, 79)
                         .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(hotelCity)
                             .addComponent(hotelAddress)
@@ -710,8 +800,20 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(textHotelAddress)
                             .addComponent(textHotelContactNumber)
                             .addComponent(textHotelEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 977, Short.MAX_VALUE)
-                    .addComponent(jSeparator4))
+                    .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(hotelPanelLayout.createSequentialGroup()
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(75, 75, 75)
+                            .addComponent(hotelTypeCodeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(hotelPanelLayout.createSequentialGroup()
+                            .addGap(480, 480, 480)
+                            .addComponent(addHotelBtn)
+                            .addGap(18, 18, 18)
+                            .addComponent(editHotelBtn)
+                            .addGap(18, 18, 18)
+                            .addComponent(deleteHotelBtn))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 977, Short.MAX_VALUE)
+                        .addComponent(jSeparator4)))
                 .addGap(76, 76, 76))
         );
 
@@ -720,7 +822,7 @@ public class MainFrame extends javax.swing.JFrame {
         hotelPanelLayout.setVerticalGroup(
             hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(hotelPanelLayout.createSequentialGroup()
-                .addGap(56, 56, 56)
+                .addGap(70, 70, 70)
                 .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(hotelPanelLayout.createSequentialGroup()
                         .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -733,11 +835,12 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(hotelType)
-                            .addComponent(textHotelType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(hotelTypeCodeComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(hotelConstructionYear)
-                            .addComponent(textHotelConstructionYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(textHotelConstructionYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel68))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(hotelCountry)
@@ -758,22 +861,19 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(hotelEmailAddress)
                             .addComponent(textHotelEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(95, 95, 95)
+                .addGap(81, 81, 81)
                 .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addHotelBtn)
                     .addComponent(editHotelBtn)
                     .addComponent(deleteHotelBtn))
                 .addGap(18, 18, 18)
-                .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(hotelPanelLayout.createSequentialGroup()
-                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(hotelPanelLayout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(searchHotelBtn))
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(hotelTypeCodeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(131, Short.MAX_VALUE))
@@ -789,11 +889,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Search room by facility");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox3.setDoubleBuffered(true);
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+        roomFacilityComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        roomFacilityComboBox.setDoubleBuffered(true);
+        roomFacilityComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
+                roomFacilityComboBoxActionPerformed(evt);
             }
         });
 
@@ -828,16 +928,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel41.setText("Room Type Code");
 
-        textRoomNumber.setText("jTextField1");
-
-        textRoomDescription.setText("jTextField9");
-
-        textRoomPrice.setText("jTextField10");
-
-        textRoomHotelId.setText("jTextField11");
-
-        textRoomTypeCode.setText("jTextField12");
-
         jLabel42.setText("AUD");
 
         tblRoom.setModel(new javax.swing.table.DefaultTableModel(
@@ -855,7 +945,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel64.setText("Room Id");
 
-        textRoomId.setText("jTextField9");
         textRoomId.setEnabled(false);
 
         javax.swing.GroupLayout roomPanelLayout = new javax.swing.GroupLayout(roomPanel);
@@ -867,7 +956,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(roomPanelLayout.createSequentialGroup()
                         .addGap(149, 149, 149)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(roomFacilityComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(roomPanelLayout.createSequentialGroup()
                         .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(roomPanelLayout.createSequentialGroup()
@@ -954,7 +1043,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(roomFacilityComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -972,11 +1061,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel4.setText("Search customer by membership tier");
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox4.setDoubleBuffered(true);
-        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+        membershipTierComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        membershipTierComboBox.setDoubleBuffered(true);
+        membershipTierComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox4ActionPerformed(evt);
+                membershipTierComboBoxActionPerformed(evt);
             }
         });
 
@@ -1014,32 +1103,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        textCustomerMembershipTier.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textCustomerMembershipTierActionPerformed(evt);
-            }
-        });
-
-        textCustomerTitle.setText("jTextField9");
-
-        textCustomerFirstName.setText("jTextField10");
-
-        textCustomerLastName.setText("jTextField11");
-
-        textCustomerDob.setText("jTextField12");
-
-        textCustomerCountry.setText("jTextField13");
-
-        textCustomerCity.setText("jTextField14");
-
-        textCustomerStreet.setText("jTextField15");
-
-        textCustomerPostalCode.setText("jTextField16");
-
-        textCustomerPhoneNumber.setText("jTextField17");
-
-        textCustomerEmailAddress.setText("jTextField18");
-
         jLabel15.setText("Membership Tier Code");
 
         jLabel26.setText("Title");
@@ -1064,14 +1127,13 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel36.setText("Membership Credits");
 
-        textCustomerMembershipCredits.setText("jTextField1");
-
         jLabel65.setText("Customer Id");
 
-        textCustomerId.setText("jTextField1");
         textCustomerId.setEnabled(false);
 
         jLabel66.setText("in yyyy-mm-dd");
+
+        membershipTierComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout customerPanelLayout = new javax.swing.GroupLayout(customerPanel);
         customerPanel.setLayout(customerPanelLayout);
@@ -1085,28 +1147,30 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(customerPanelLayout.createSequentialGroup()
                             .addComponent(jLabel4)
                             .addGap(41, 41, 41)
-                            .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(membershipTierComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1061, Short.MAX_VALUE)
                         .addComponent(jSeparator3))
                     .addGroup(customerPanelLayout.createSequentialGroup()
-                        .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(customerPanelLayout.createSequentialGroup()
+                        .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customerPanelLayout.createSequentialGroup()
                                 .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel36)
                                     .addComponent(jLabel26)
                                     .addComponent(jLabel27)
                                     .addComponent(jLabel28)
                                     .addComponent(jLabel29))
-                                .addGap(37, 37, 37)
-                                .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(textCustomerMembershipCredits, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                    .addComponent(textCustomerMembershipTier, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                    .addComponent(textCustomerTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                    .addComponent(textCustomerFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
-                                    .addComponent(textCustomerLastName)
-                                    .addComponent(textCustomerDob)
-                                    .addComponent(textCustomerId))))
+                                .addGap(37, 37, 37))
+                            .addGroup(customerPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addGap(21, 21, 21)))
+                        .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(textCustomerMembershipCredits, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(textCustomerTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(textCustomerFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                            .addComponent(textCustomerLastName)
+                            .addComponent(textCustomerDob)
+                            .addComponent(textCustomerId)
+                            .addComponent(membershipTierComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(customerPanelLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1158,7 +1222,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         customerPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {textCustomerCity, textCustomerCountry, textCustomerEmailAddress, textCustomerPhoneNumber, textCustomerPostalCode, textCustomerStreet});
 
-        customerPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {textCustomerDob, textCustomerFirstName, textCustomerLastName, textCustomerMembershipCredits, textCustomerMembershipTier, textCustomerTitle});
+        customerPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {textCustomerDob, textCustomerFirstName, textCustomerLastName, textCustomerMembershipCredits, textCustomerTitle});
 
         customerPanelLayout.setVerticalGroup(
             customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1199,8 +1263,8 @@ public class MainFrame extends javax.swing.JFrame {
                                     .addComponent(jLabel35)))))
                     .addGroup(customerPanelLayout.createSequentialGroup()
                         .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(textCustomerMembershipTier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15))
+                            .addComponent(jLabel15)
+                            .addComponent(membershipTierComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel36)
@@ -1231,7 +1295,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(membershipTierComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1284,11 +1348,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jTextField7.setText("jTextField3");
-
         jLabel13.setText("First Name");
-
-        jTextField8.setText("jTextField4");
 
         jLabel14.setText("Last Name");
 
@@ -1321,32 +1381,18 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        textGuestTitle.setText("jTextField9");
-
-        textGuestFirstName.setText("jTextField10");
-
-        textGuestLastName.setText("jTextField11");
-
-        textGuestDob.setText("jTextField12");
-
-        textGuestCountry.setText("jTextField13");
-
-        textGuestCity.setText("jTextField14");
-
-        textGuestStreet.setText("jTextField15");
-
-        textGuestPostalCode.setText("jTextField16");
-
-        textGuestPhoneNumber.setText("jTextField17");
-
-        textGuestEmailAddress.setText("jTextField18");
-
         jLabel63.setText("Guest Id");
 
-        textGuestId.setText("jTextField1");
         textGuestId.setEnabled(false);
 
         searchGuestBtn.setText("Search");
+        searchGuestBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchGuestBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel69.setText("in yyyy-mm-dd");
 
         javax.swing.GroupLayout guestPanelLayout = new javax.swing.GroupLayout(guestPanel);
         guestPanel.setLayout(guestPanelLayout);
@@ -1398,7 +1444,7 @@ public class MainFrame extends javax.swing.JFrame {
                                             .addGroup(guestPanelLayout.createSequentialGroup()
                                                 .addComponent(jLabel13)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(searchGuestFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, guestPanelLayout.createSequentialGroup()
                                                 .addComponent(jLabel17)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1421,10 +1467,15 @@ public class MainFrame extends javax.swing.JFrame {
                                                 .addComponent(jLabel19)
                                                 .addGap(29, 29, 29)
                                                 .addComponent(textGuestDob)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel14)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(guestPanelLayout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel14)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(searchGuestLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(guestPanelLayout.createSequentialGroup()
+                                                .addGap(21, 21, 21)
+                                                .addComponent(jLabel69))))
                                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 1010, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(78, 78, 78))))
@@ -1472,7 +1523,8 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel19)
-                            .addComponent(textGuestDob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(textGuestDob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel69)))
                     .addComponent(jLabel22)
                     .addGroup(guestPanelLayout.createSequentialGroup()
                         .addComponent(textGuestStreet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1499,10 +1551,10 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchGuestFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
                     .addComponent(jLabel14)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(searchGuestLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchGuestBtn)
                 .addGap(18, 18, 18)
@@ -1554,8 +1606,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jTextField2.setText("jTextField2");
-
         jLabel43.setText("Tier Code");
 
         jLabel44.setText("Tier Name");
@@ -1565,16 +1615,6 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel101.setText("Discount");
 
         jLabel100.setText("Other Rewards");
-
-        textMembershipTierCode.setText("jTextField9");
-
-        textMembershipTierName.setText("jTextField10");
-
-        textMembershipCredit.setText("jTextField11");
-
-        textMembershipDiscount.setText("jTextField12");
-
-        textMembershipOtherRewards.setText("jTextField13");
 
         searchMemberBtn.setText("Search");
 
@@ -1723,22 +1763,19 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel49.setText("AUD");
 
-        textPaymentBookingId.setText("jTextField9");
-        textPaymentBookingId.setEnabled(false);
-
-        textPaymentAmount.setText("jTextField11");
-
         jLabel61.setText("Payment Number");
 
-        textPaymentNumber.setText("jTextField16");
         textPaymentNumber.setEnabled(false);
 
         jLabel67.setText("Payment Date");
 
-        textPaymentDate.setText("jTextField1");
         textPaymentDate.setEnabled(false);
 
         searchPaymentBtn.setText("Search");
+
+        paymentMethodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel70.setText("Note: the current date will always be used for commit");
 
         javax.swing.GroupLayout paymentPanelLayout = new javax.swing.GroupLayout(paymentPanel);
         paymentPanel.setLayout(paymentPanelLayout);
@@ -1749,7 +1786,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel61)
                     .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1031, Short.MAX_VALUE)
+                        .addComponent(jScrollPane6)
                         .addComponent(jSeparator6)
                         .addGroup(paymentPanelLayout.createSequentialGroup()
                             .addGap(12, 12, 12)
@@ -1772,10 +1809,11 @@ public class MainFrame extends javax.swing.JFrame {
                             .addGap(69, 69, 69)
                             .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(paymentPanelLayout.createSequentialGroup()
-                                    .addComponent(textPaymentAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(paymentMethodComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(textPaymentAmount, javax.swing.GroupLayout.Alignment.LEADING))
                                     .addGap(18, 18, 18)
                                     .addComponent(jLabel49))
-                                .addComponent(textPaymentMethodCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(paymentPanelLayout.createSequentialGroup()
                                     .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(textPaymentNumber, javax.swing.GroupLayout.Alignment.LEADING)
@@ -1783,7 +1821,9 @@ public class MainFrame extends javax.swing.JFrame {
                                     .addGap(184, 184, 184)
                                     .addComponent(jLabel67)
                                     .addGap(29, 29, 29)
-                                    .addComponent(textPaymentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(textPaymentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel70)))))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, paymentPanelLayout.createSequentialGroup()
                             .addComponent(addPaymentBtn)
                             .addGap(18, 18, 18)
@@ -1796,7 +1836,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         paymentPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addPaymentBtn, delPaymentBtn, editPaymentBtn});
 
-        paymentPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {textPaymentAmount, textPaymentBookingId, textPaymentMethodCode});
+        paymentPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {textPaymentAmount, textPaymentBookingId});
 
         paymentPanelLayout.setVerticalGroup(
             paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1807,14 +1847,19 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(textPaymentBookingId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel67)
                     .addComponent(textPaymentDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel61)
-                    .addComponent(textPaymentNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(paymentPanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel61)
+                            .addComponent(textPaymentNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(paymentPanelLayout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(jLabel70)))
                 .addGap(24, 24, 24)
                 .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel47)
-                    .addComponent(textPaymentMethodCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(paymentMethodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel48)
@@ -1882,11 +1927,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jTextField5.setText("jTextField3");
-
         jLabel11.setText("First Name");
-
-        jTextField6.setText("jTextField4");
 
         jLabel12.setText("Last Name");
 
@@ -1921,22 +1962,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel58.setText("AUD");
 
-        textBookingId.setText("jTextField1");
         textBookingId.setEnabled(false);
-
-        textBookingCheckInDate.setText("jTextField9");
-
-        textBookingCheckOutDate.setText("jTextField10");
-
-        textBookingContactPerson.setText("jTextField11");
-
-        textBookingContactEmail.setText("jTextField12");
-
-        textBookingCustomerId.setText("jTextField13");
-
-        textBookingPaymentStatusCode.setText("jTextField14");
-
-        textBookingTotalAmount.setText("jTextField15");
 
         jLabel59.setText("must be in yyyy-mm-dd");
 
@@ -2151,7 +2177,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         btnRooms.setBackground(Color.decode("#86BBD8"));
 
-        refreshHotelTableModel();
+        refreshHotelTableModel(true);
         
         
         hotelPanel.setVisible(true);
@@ -2183,7 +2209,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             btnRooms.setBackground(Color.decode("#86BBD8"));
             
-            refreshGuestTableModel();
+            refreshGuestTableModel(true);
             
             hotelPanel.setVisible(false);
             roomPanel.setVisible(false);
@@ -2214,7 +2240,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             btnHotels.setBackground(Color.decode("#86BBD8"));
             
-            refreshRoomTableModel();
+            refreshRoomTableModel(true);
             
             hotelPanel.setVisible(false);
             roomPanel.setVisible(true);
@@ -2227,17 +2253,39 @@ public class MainFrame extends javax.swing.JFrame {
             this.repaint();
     }//GEN-LAST:event_btnRoomsActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void hotelTypeCodeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotelTypeCodeComboBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+        
+        try
+        {
+            // Search by hotelTypeCode
+            String code = hotelTypeCodeComboBox.getSelectedItem().toString().split("-")[0];
 
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
+            if (!code.equals("ALL"))
+            {
+                hotels = new ArrayList<>(hotelController.getHotelByType(code));
+                refreshHotelTableModel(false);
+            }
+            else
+            {
+                refreshHotelTableModel(true);
+            }
+            
+        }
+        catch (Exception e)
+        {
+            
+        }
+        
+    }//GEN-LAST:event_hotelTypeCodeComboBoxActionPerformed
 
-    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+    private void roomFacilityComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomFacilityComboBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox4ActionPerformed
+    }//GEN-LAST:event_roomFacilityComboBoxActionPerformed
+
+    private void membershipTierComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_membershipTierComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_membershipTierComboBoxActionPerformed
 
     private void btnCustomersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomersActionPerformed
         
@@ -2273,7 +2321,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         hotel = new Hotel();
         hotel.setHotelName(textHotelName.getText());
-        hotel.setHotelTypeCode(textHotelType.getText());
+        hotel.setHotelTypeCode(hotelTypeCodeComboBox2.getSelectedItem().toString().split("-")[0]);
         
         try{
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy");
@@ -2285,12 +2333,11 @@ public class MainFrame extends javax.swing.JFrame {
             hotel.setCity(textHotelCity.getText());
             hotel.setAddress(textHotelAddress.getText());
             hotel.setEmailAddress(textHotelEmailAddress.getText());
-            hotel.setHotelTypeCode(textHotelType.getText()); // TODO: should be drop down
             
             // Add hotel
             hotelController.createHotel(hotel);
 
-            refreshHotelTableModel();
+            refreshHotelTableModel(true);
             
         }
         catch(Exception e)
@@ -2362,7 +2409,7 @@ public class MainFrame extends javax.swing.JFrame {
         membershipPanel.setVisible(false);
         guestPanel.setVisible(false);
         
-        refreshBookingTableModel();
+        refreshBookingTableModel(true);
         
         this.repaint();
     }//GEN-LAST:event_btnBookingsActionPerformed
@@ -2382,7 +2429,10 @@ public class MainFrame extends javax.swing.JFrame {
                 payment.setPaymentDate(new Date()); // this must always be the latest date you edited the payment
                 payment.setPaymentAmount(Double.parseDouble(textPaymentAmount.getText()));
                 payment.setCurrencyCode("AUD");
-                payment.setPaymentMethodCode(textPaymentMethodCode.getText()); //TODO: make this dropdown
+                
+                String code = paymentMethodComboBox.getSelectedItem().toString().split("-")[0];
+                
+                payment.setPaymentMethodCode(code); //TODO: make this dropdown
                 
                 paymentController.updatePayment(payment);
                 
@@ -2451,7 +2501,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
                 
             
-            refreshBookingTableModel();
+            refreshBookingTableModel(true);
             
         }
         catch (Exception e)
@@ -2490,7 +2540,7 @@ public class MainFrame extends javax.swing.JFrame {
             // Add guest
             guestController.createGuest(guest);
 
-            refreshGuestTableModel();
+            refreshGuestTableModel(true);
             
             // TODO: Sort JTables by ID
             // TODO: Check for duplicates
@@ -2505,16 +2555,13 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_textGuestBookingIdActionPerformed
 
-    private void textCustomerMembershipTierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textCustomerMembershipTierActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textCustomerMembershipTierActionPerformed
-
     private void addCustBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCustBtnActionPerformed
         // TODO add your handling code here:
         try
         {
             customer = new Customer();
-            membership = membershipController.findMembershipByTierCode(textCustomerMembershipTier.getText());
+            String mc = membershipTierComboBox2.getSelectedItem().toString().split("-")[0];
+            membership = membershipController.findMembershipByTierCode(mc);
             
             customer.setMembership(membership);
             customer.setMembershipCredits(Integer.parseInt(textCustomerMembershipCredits.getText()));
@@ -2572,7 +2619,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             roomController.createRoom(room);
             
-            refreshRoomTableModel();
+            refreshRoomTableModel(true);
             
         }
         catch (Exception e)
@@ -2630,7 +2677,8 @@ public class MainFrame extends javax.swing.JFrame {
                 payment.setPaymentDate(new Date()); // TODO: verify this
                 payment.setPaymentAmount(Double.parseDouble(textPaymentAmount.getText()));
                 payment.setCurrencyCode("AUD");
-                payment.setPaymentMethodCode(textPaymentMethodCode.getText()); //TODO: make this dropdown
+                String mc = paymentMethodComboBox.getSelectedItem().toString().split("-")[0];
+                payment.setPaymentMethodCode(mc); //TODO: make this dropdown
                 
                 paymentController.createPayment(payment);
                 
@@ -2674,7 +2722,7 @@ public class MainFrame extends javax.swing.JFrame {
 
             bookingController.createBooking(booking);
             
-            refreshBookingTableModel();
+            refreshBookingTableModel(true);
         }
         catch (Exception e)
         {
@@ -2692,7 +2740,19 @@ public class MainFrame extends javax.swing.JFrame {
         textHotelId.setText(data.get(0).toString());
         // data[1] - hotel name
         textHotelName.setText(data.get(1).toString());
-        textHotelType.setText(data.get(2).toString());
+        //textHotelType.setText(data.get(2).toString());
+        
+        int index = 0;
+        for (String a : htc2String)
+        {
+            if (a.split("-")[0].equals(data.get(2).toString()))
+            {
+                index = htc2String.indexOf(a);
+                break;
+            }
+        }
+        
+        hotelTypeCodeComboBox2.setSelectedIndex(index);
         textHotelConstructionYear.setText(data.get(3).toString());
         textHotelCountry.setText(data.get(4).toString());
         textHotelCity.setText(data.get(5).toString());
@@ -2738,7 +2798,21 @@ public class MainFrame extends javax.swing.JFrame {
     {
         Vector data = (Vector)customerTableModel.getDataVector().elementAt(tblCustomer.getSelectedRow());
         textCustomerId.setText(data.get(0).toString());
-        textCustomerMembershipTier.setText(data.get(1).toString());
+        
+        int index = 0;
+        String dataCode = data.get(1).toString();
+        
+        for (String a : membership2String)
+        {
+            if (a.split("-")[0].equals(dataCode))
+            {
+                index = membership2String.indexOf(a);
+                break;
+            }
+        }
+        
+        //textCustomerMembershipTier.setText(data.get(1).toString());
+        membershipTierComboBox2.setSelectedIndex(index);
         textCustomerMembershipCredits.setText(data.get(2).toString());
         textCustomerTitle.setText(data.get(3).toString());
         textCustomerFirstName.setText(data.get(4).toString());
@@ -2784,7 +2858,18 @@ public class MainFrame extends javax.swing.JFrame {
          textPaymentNumber.setText(data.get(1).toString());
          textPaymentDate.setText(data.get(2).toString());
          textPaymentAmount.setText(data.get(3).toString());
-         textPaymentMethodCode.setText(data.get(4).toString());
+         
+         int index = 0;
+         for (String a : pmcString)
+         {
+             if (a.split("-")[0].equals(data.get(4).toString()))
+             {
+                 index = pmcString.indexOf(a);
+                 break;
+             }
+         }
+         paymentMethodComboBox.setSelectedIndex(index);
+         //textPaymentMethodCode.setText(data.get(4).toString());
     }
     
     
@@ -2803,9 +2888,7 @@ public class MainFrame extends javax.swing.JFrame {
            }
            
            hotel.setHotelName(textHotelName.getText());
-           hotel.setHotelTypeCode(textHotelType.getText());
-           
-
+       
            try{
                SimpleDateFormat fmt = new SimpleDateFormat("yyyy");
                Date date1 = fmt.parse(textHotelConstructionYear.getText());
@@ -2815,12 +2898,12 @@ public class MainFrame extends javax.swing.JFrame {
                hotel.setCity(textHotelCity.getText());
                hotel.setAddress(textHotelAddress.getText());
                hotel.setEmailAddress(textHotelEmailAddress.getText());
-               hotel.setHotelTypeCode(textHotelType.getText()); // TODO: should be drop down
+               hotel.setHotelTypeCode(hotelTypeCodeComboBox2.getSelectedItem().toString().split("-")[0]); // TODO: should be drop down
 
                // Add hotel
                hotelController.updateHotel(hotel);
 
-               refreshHotelTableModel();
+               refreshHotelTableModel(true);
 
            }
            catch(Exception e)
@@ -2868,7 +2951,7 @@ public class MainFrame extends javax.swing.JFrame {
             // Add guest
             guestController.updateGuest(guest);
 
-            refreshGuestTableModel();
+            refreshGuestTableModel(true);
             
             // TODO: Sort JTables by ID
             // TODO: Check for duplicates
@@ -2907,7 +2990,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             roomController.updateRoom(room);
             
-            refreshRoomTableModel();
+            refreshRoomTableModel(true);
             
         }
         catch (Exception e)
@@ -2924,7 +3007,9 @@ public class MainFrame extends javax.swing.JFrame {
             int id = Integer.parseInt(textCustomerId.getText());
             customer = FinderService.findCustomerByCustomerId(customers, id);
             
-            membership = membershipController.findMembershipByTierCode(textCustomerMembershipTier.getText());
+            String code = membershipTierComboBox2.getSelectedItem().toString().split("-")[0];
+            
+            membership = membershipController.findMembershipByTierCode(code);
             
             customer.setMembership(membership);
             customer.setMembershipCredits(Integer.parseInt(textCustomerMembershipCredits.getText()));
@@ -3005,7 +3090,7 @@ public class MainFrame extends javax.swing.JFrame {
 
             bookingController.updateBooking(booking);
             
-            refreshBookingTableModel();
+            refreshBookingTableModel(true);
         }
         catch (Exception e)
         {
@@ -3034,7 +3119,7 @@ public class MainFrame extends javax.swing.JFrame {
            }
            
            tblHotel.addNotify();
-           refreshHotelTableModel();
+           refreshHotelTableModel(true);
           
         }
         catch (Exception e)
@@ -3071,7 +3156,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             roomController.deleteRoom(id);
             tblRoom.addNotify();
-            refreshRoomTableModel();
+            refreshRoomTableModel(true);
             
         }
         catch (Exception e)
@@ -3139,7 +3224,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             guestController.deleteGuest(guest);
             tblGuest.addNotify();
-            refreshGuestTableModel();
+            refreshGuestTableModel(true);
             
         }
         catch (Exception e)
@@ -3200,14 +3285,52 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_delPaymentBtnActionPerformed
 
+    private void hotelTypeCodeComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotelTypeCodeComboBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hotelTypeCodeComboBox2ActionPerformed
+
+    private void searchGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGuestBtnActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+            String fname = searchGuestFirstName.getText();
+            String lname = searchGuestLastName.getText();
+            
+            guests = new ArrayList<>(guestController.getGuests());
+            
+            if (!fname.isEmpty() && !lname.isEmpty())
+            {
+                guests = FinderService.listGuestByGuestName(guests, fname, lname);
+            }
+            else if (fname.isEmpty() && !lname.isEmpty())
+            {
+                guests = FinderService.findGuestByLastName(guests, lname);
+            }
+            else if (!fname.isEmpty() && lname.isEmpty())
+            {
+                guests = FinderService.findGuestByFirstName(guests, fname);
+            }
+            
+            refreshGuestTableModel(false);
+        }
+        catch(Exception e)
+        {
+            
+        }
+    }//GEN-LAST:event_searchGuestBtnActionPerformed
+
     
-    private void refreshHotelTableModel()
+    private void refreshHotelTableModel(boolean getAll)
     {
         try
         {
             Object dataHotel [][] = {{}};
             hotelTableModel = new DefaultTableModel(dataHotel, hotelColumnHeaders);
-            hotels = new ArrayList<>(hotelController.getHotels());
+            
+            if (getAll)
+            {
+                hotels = new ArrayList<>(hotelController.getHotels());
+            }
 
             for (Hotel h : hotels)
             {
@@ -3240,13 +3363,17 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     
-    private void refreshBookingTableModel()
+    private void refreshBookingTableModel(boolean getAll)
     {
         try
         {
             Object dataBooking [][] = {{}};
             bookingTableModel = new DefaultTableModel(dataBooking, bookingColumnHeaders);
-            bookings = new ArrayList<>(bookingController.getBookings());
+            
+            if (getAll)
+            {
+                bookings = new ArrayList<>(bookingController.getBookings());
+            }
 
             for (Booking h : bookings)
             {
@@ -3276,13 +3403,17 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     
-    private void refreshRoomTableModel()
+    private void refreshRoomTableModel(boolean getAll)
     {
         try
         {
             Object dataRoom [][] = {{}};
             roomTableModel = new DefaultTableModel(dataRoom, roomColumnHeaders);
-            rooms = new ArrayList<>(roomController.getRooms());
+            
+            if (getAll)
+            {
+                rooms = new ArrayList<>(roomController.getRooms());
+            }
 
             for (Room h : rooms)
             {
@@ -3309,13 +3440,17 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     
-    private void refreshGuestTableModel()
+    private void refreshGuestTableModel(boolean getAll)
     {
         try 
         {
             Object dataGuest [][] = {{}};
             guestTableModel = new DefaultTableModel(dataGuest, guestColumnHeaders);
-            guests = new ArrayList<>(guestController.getGuests());
+            
+            if(getAll)
+            {
+                guests = new ArrayList<>(guestController.getGuests());
+            }
             
             for (Guest h : guests)
             {
@@ -3463,10 +3598,10 @@ public class MainFrame extends javax.swing.JFrame {
     {
         try{
             
-            refreshHotelTableModel();
-            refreshBookingTableModel();
-            refreshRoomTableModel();
-            refreshGuestTableModel();
+            refreshHotelTableModel(true);
+            refreshBookingTableModel(true);
+            refreshRoomTableModel(true);
+            refreshGuestTableModel(true);
             refreshCustomerTableModel();
             refreshMembershipTableModel();
             refreshPaymentTableModel();
@@ -3574,9 +3709,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel hotelName;
     private javax.swing.JPanel hotelPanel;
     private javax.swing.JLabel hotelType;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
+    private javax.swing.JComboBox<String> hotelTypeCodeComboBox;
+    private javax.swing.JComboBox<String> hotelTypeCodeComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel100;
@@ -3643,7 +3777,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel65;
     private javax.swing.JLabel jLabel66;
     private javax.swing.JLabel jLabel67;
+    private javax.swing.JLabel jLabel68;
+    private javax.swing.JLabel jLabel69;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel70;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
@@ -3666,17 +3803,20 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
     private javax.swing.JLabel labelGuestBookingId;
     private javax.swing.JPanel membershipPanel;
+    private javax.swing.JComboBox<String> membershipTierComboBox;
+    private javax.swing.JComboBox<String> membershipTierComboBox2;
     private javax.swing.JPanel menuPanel;
     private javax.swing.JPanel menuPanel2;
+    private javax.swing.JComboBox<String> paymentMethodComboBox;
     private javax.swing.JPanel paymentPanel;
+    private javax.swing.JComboBox<String> roomFacilityComboBox;
     private javax.swing.JPanel roomPanel;
     private javax.swing.JButton searchBookingsBtn;
     private javax.swing.JButton searchGuestBtn;
-    private javax.swing.JButton searchHotelBtn;
+    private javax.swing.JTextField searchGuestFirstName;
+    private javax.swing.JTextField searchGuestLastName;
     private javax.swing.JButton searchMemberBtn;
     private javax.swing.JButton searchPaymentBtn;
     private javax.swing.JTable tblBooking;
@@ -3702,7 +3842,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField textCustomerId;
     private javax.swing.JTextField textCustomerLastName;
     private javax.swing.JTextField textCustomerMembershipCredits;
-    private javax.swing.JTextField textCustomerMembershipTier;
     private javax.swing.JTextField textCustomerPhoneNumber;
     private javax.swing.JTextField textCustomerPostalCode;
     private javax.swing.JTextField textCustomerStreet;
@@ -3727,7 +3866,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField textHotelEmailAddress;
     private javax.swing.JTextField textHotelId;
     private javax.swing.JTextField textHotelName;
-    private javax.swing.JTextField textHotelType;
     private javax.swing.JTextField textMembershipCredit;
     private javax.swing.JTextField textMembershipDiscount;
     private javax.swing.JTextField textMembershipOtherRewards;
@@ -3736,7 +3874,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField textPaymentAmount;
     private javax.swing.JTextField textPaymentBookingId;
     private javax.swing.JTextField textPaymentDate;
-    private javax.swing.JTextField textPaymentMethodCode;
     private javax.swing.JTextField textPaymentNumber;
     private javax.swing.JTextField textRoomDescription;
     private javax.swing.JTextField textRoomHotelId;
