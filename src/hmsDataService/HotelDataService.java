@@ -54,6 +54,11 @@ public class HotelDataService {
             entitymanager.getTransaction().begin();
 
             hotels = entitymanager.createNamedQuery("Hotel.findAll").getResultList();
+            
+            for (Hotel h : hotels)
+            {
+                entitymanager.refresh(h);
+            }
 
             entitymanager.getTransaction().commit();
         }

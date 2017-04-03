@@ -49,6 +49,11 @@ public class MembershipDataService {
             entitymanager.getTransaction().begin();
 
             memberships = entitymanager.createNamedQuery("Membership.findAll").getResultList();
+            
+            for (Membership m : memberships)
+            {
+                entitymanager.refresh(m);
+            }
 
             entitymanager.getTransaction().commit();
         }

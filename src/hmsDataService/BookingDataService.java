@@ -52,6 +52,12 @@ public class BookingDataService {
             entitymanager.getTransaction().begin();
             bookings = entitymanager.createNamedQuery("Booking.findAll").getResultList();
             entitymanager.getTransaction().commit();
+            
+            for (Booking b : bookings)
+            {
+                entitymanager.refresh(b);
+            }
+            
         } catch (Exception e) {
             throw new Exception("Error in doing the database operation.");
         }

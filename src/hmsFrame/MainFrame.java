@@ -182,7 +182,6 @@ public class MainFrame extends javax.swing.JFrame {
         textRoomHotelId = new javax.swing.JTextField();
         textRoomTypeCode = new javax.swing.JTextField();
         jLabel42 = new javax.swing.JLabel();
-        textRoomCurrencyCode = new javax.swing.JTextField();
         jSeparator5 = new javax.swing.JSeparator();
         jScrollPane8 = new javax.swing.JScrollPane();
         tblRoom = new javax.swing.JTable();
@@ -257,7 +256,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tblMembership = new javax.swing.JTable();
-        jButton13 = new javax.swing.JButton();
+        addMembershipBtn = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
@@ -276,7 +275,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tblPayment = new javax.swing.JTable();
-        jButton16 = new javax.swing.JButton();
+        addPaymentBtn = new javax.swing.JButton();
         jButton17 = new javax.swing.JButton();
         jButton18 = new javax.swing.JButton();
         jTextField3 = new javax.swing.JTextField();
@@ -290,11 +289,12 @@ public class MainFrame extends javax.swing.JFrame {
         textPaymentBookingId = new javax.swing.JTextField();
         textPaymentMethodCode = new javax.swing.JTextField();
         textPaymentAmount = new javax.swing.JTextField();
-        textPaymentCurrencyCode = new javax.swing.JTextField();
         jSeparator6 = new javax.swing.JSeparator();
+        jLabel61 = new javax.swing.JLabel();
+        textPaymentNumber = new javax.swing.JTextField();
         bookingPanel = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jButton19 = new javax.swing.JButton();
+        addBookingBtn = new javax.swing.JButton();
         jButton20 = new javax.swing.JButton();
         jButton21 = new javax.swing.JButton();
         jTextField5 = new javax.swing.JTextField();
@@ -303,6 +303,25 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
         tblBooking = new javax.swing.JTable();
+        jLabel50 = new javax.swing.JLabel();
+        jLabel51 = new javax.swing.JLabel();
+        jLabel52 = new javax.swing.JLabel();
+        jLabel53 = new javax.swing.JLabel();
+        jLabel54 = new javax.swing.JLabel();
+        jLabel55 = new javax.swing.JLabel();
+        jLabel56 = new javax.swing.JLabel();
+        jLabel57 = new javax.swing.JLabel();
+        jLabel58 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField9 = new javax.swing.JTextField();
+        jTextField10 = new javax.swing.JTextField();
+        jTextField11 = new javax.swing.JTextField();
+        jTextField12 = new javax.swing.JTextField();
+        jTextField13 = new javax.swing.JTextField();
+        jTextField14 = new javax.swing.JTextField();
+        jTextField15 = new javax.swing.JTextField();
+        jLabel59 = new javax.swing.JLabel();
+        jLabel60 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 102, 204));
@@ -684,9 +703,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         textRoomTypeCode.setText("jTextField12");
 
-        jLabel42.setText("Price Currency Code");
-
-        textRoomCurrencyCode.setText("jTextField13");
+        jLabel42.setText("AUD");
 
         tblRoom.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -728,23 +745,20 @@ public class MainFrame extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 238, Short.MAX_VALUE)
                             .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(roomPanelLayout.createSequentialGroup()
-                                    .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel39)
-                                        .addComponent(jLabel42))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(textRoomPrice)
-                                        .addComponent(textRoomCurrencyCode, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(roomPanelLayout.createSequentialGroup()
                                     .addComponent(addRoomBtn)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(jButton5)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jButton6)))
-                            .addGap(190, 190, 190))
+                                    .addComponent(jButton6))
+                                .addGroup(roomPanelLayout.createSequentialGroup()
+                                    .addComponent(jLabel39)
+                                    .addGap(69, 69, 69)
+                                    .addComponent(textRoomPrice)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jLabel42))))
                         .addComponent(jSeparator5))
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 975, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         roomPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addRoomBtn, jButton5, jButton6});
@@ -779,12 +793,9 @@ public class MainFrame extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel39)
-                            .addComponent(textRoomPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel42)
-                            .addComponent(textRoomCurrencyCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(77, 77, 77)
+                            .addComponent(textRoomPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel42))
+                        .addGap(114, 114, 114)
                         .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton6)
                             .addComponent(jButton5)
@@ -1147,8 +1158,8 @@ public class MainFrame extends javax.swing.JFrame {
         guestPanelLayout.setHorizontalGroup(
             guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, guestPanelLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
-                .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(104, Short.MAX_VALUE)
+                .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(guestPanelLayout.createSequentialGroup()
                         .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -1207,9 +1218,9 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(jButton11)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton12))))
-                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 1146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 1072, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
+                    .addComponent(jSeparator2)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 1010, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(78, 78, 78))
         );
 
         guestPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addGuestBtn, jButton11, jButton12});
@@ -1256,7 +1267,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(addGuestBtn)
                     .addComponent(jButton11)
                     .addComponent(jButton12))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1296,7 +1307,12 @@ public class MainFrame extends javax.swing.JFrame {
         ));
         jScrollPane5.setViewportView(tblMembership);
 
-        jButton13.setText("Add");
+        addMembershipBtn.setText("Add");
+        addMembershipBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addMembershipBtnActionPerformed(evt);
+            }
+        });
 
         jButton14.setText("Edit");
 
@@ -1330,7 +1346,7 @@ public class MainFrame extends javax.swing.JFrame {
             membershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, membershipPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton13)
+                .addComponent(addMembershipBtn)
                 .addGap(27, 27, 27)
                 .addComponent(jButton14)
                 .addGap(18, 18, 18)
@@ -1341,10 +1357,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(membershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(membershipPanelLayout.createSequentialGroup()
                         .addGroup(membershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(membershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel43, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel44))
-                            .addComponent(jLabel45))
+                            .addComponent(jLabel44)
+                            .addComponent(jLabel45)
+                            .addComponent(jLabel43))
                         .addGap(69, 69, 69)
                         .addGroup(membershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(textMembershipCredit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1367,7 +1382,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap(67, Short.MAX_VALUE))
         );
 
-        membershipPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton13, jButton14, jButton15});
+        membershipPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addMembershipBtn, jButton14, jButton15});
 
         membershipPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {textMembershipCredit, textMembershipDiscount, textMembershipOtherRewards, textMembershipTierCode, textMembershipTierName});
 
@@ -1392,7 +1407,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(textMembershipCredit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
                 .addGroup(membershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton13)
+                    .addComponent(addMembershipBtn)
                     .addComponent(jButton14)
                     .addComponent(jButton15))
                 .addGap(17, 17, 17)
@@ -1429,7 +1444,13 @@ public class MainFrame extends javax.swing.JFrame {
         ));
         jScrollPane6.setViewportView(tblPayment);
 
-        jButton16.setText("Add");
+        addPaymentBtn.setText("Add");
+        addPaymentBtn.setToolTipText("");
+        addPaymentBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addPaymentBtnActionPerformed(evt);
+            }
+        });
 
         jButton17.setText("Edit");
         jButton17.addActionListener(new java.awt.event.ActionListener() {
@@ -1454,7 +1475,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel48.setText("Payment Amount");
 
-        jLabel49.setText("Payment Currency Code");
+        jLabel49.setText("AUD");
 
         textPaymentBookingId.setText("jTextField9");
 
@@ -1462,7 +1483,10 @@ public class MainFrame extends javax.swing.JFrame {
 
         textPaymentAmount.setText("jTextField11");
 
-        textPaymentCurrencyCode.setText("jTextField14");
+        jLabel61.setText("Payment Number");
+
+        textPaymentNumber.setText("jTextField16");
+        textPaymentNumber.setEnabled(false);
 
         javax.swing.GroupLayout paymentPanelLayout = new javax.swing.GroupLayout(paymentPanel);
         paymentPanel.setLayout(paymentPanelLayout);
@@ -1470,43 +1494,47 @@ public class MainFrame extends javax.swing.JFrame {
             paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(paymentPanelLayout.createSequentialGroup()
                 .addGap(149, 149, 149)
-                .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(paymentPanelLayout.createSequentialGroup()
-                        .addComponent(jButton16)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton17)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton18))
-                    .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jLabel7)
+                .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel61)
+                    .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(paymentPanelLayout.createSequentialGroup()
+                            .addComponent(addPaymentBtn)
+                            .addGap(18, 18, 18)
+                            .addComponent(jButton17)
+                            .addGap(18, 18, 18)
+                            .addComponent(jButton18))
+                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, paymentPanelLayout.createSequentialGroup()
                             .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel9)
                                 .addComponent(jLabel10))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1031, Short.MAX_VALUE)
-                    .addGroup(paymentPanelLayout.createSequentialGroup()
-                        .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel46)
-                            .addComponent(jLabel47)
-                            .addComponent(jLabel48)
-                            .addComponent(jLabel49))
-                        .addGap(60, 60, 60)
-                        .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textPaymentCurrencyCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textPaymentAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textPaymentMethodCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textPaymentBookingId, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jSeparator6))
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1031, Short.MAX_VALUE)
+                        .addGroup(paymentPanelLayout.createSequentialGroup()
+                            .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel46)
+                                .addComponent(jLabel47)
+                                .addComponent(jLabel48))
+                            .addGap(69, 69, 69)
+                            .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(paymentPanelLayout.createSequentialGroup()
+                                    .addComponent(textPaymentAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jLabel49))
+                                .addComponent(textPaymentMethodCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(textPaymentNumber, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(textPaymentBookingId, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE))))
+                        .addComponent(jSeparator6)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        paymentPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton16, jButton17, jButton18});
+        paymentPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addPaymentBtn, jButton17, jButton18});
 
-        paymentPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {textPaymentAmount, textPaymentBookingId, textPaymentCurrencyCode, textPaymentMethodCode});
+        paymentPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {textPaymentAmount, textPaymentBookingId, textPaymentMethodCode});
 
         paymentPanelLayout.setVerticalGroup(
             paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1517,19 +1545,21 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(textPaymentBookingId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel61)
+                    .addComponent(textPaymentNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel47)
                     .addComponent(textPaymentMethodCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel48)
-                    .addComponent(textPaymentAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(textPaymentAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel49)))
+                .addGap(46, 46, 46)
                 .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel49)
-                    .addComponent(textPaymentCurrencyCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(52, 52, 52)
-                .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton16)
+                    .addComponent(addPaymentBtn)
                     .addComponent(jButton17)
                     .addComponent(jButton18))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
@@ -1559,7 +1589,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel8.setText("Search bookings by customer");
 
-        jButton19.setText("Add");
+        addBookingBtn.setText("Add");
 
         jButton20.setText("Edit");
 
@@ -1591,10 +1621,57 @@ public class MainFrame extends javax.swing.JFrame {
         ));
         jScrollPane7.setViewportView(tblBooking);
 
+        jLabel50.setText("Booking Id");
+
+        jLabel51.setText("Check In Date");
+
+        jLabel52.setText("Check Out Date");
+
+        jLabel53.setText("Contact Person");
+
+        jLabel54.setText("Contact Email");
+
+        jLabel55.setText("Customer Id");
+
+        jLabel56.setText("Payment Status Code");
+
+        jLabel57.setText("Total Amount");
+
+        jLabel58.setText("AUD");
+
+        jTextField1.setText("jTextField1");
+        jTextField1.setEnabled(false);
+
+        jTextField9.setText("jTextField9");
+
+        jTextField10.setText("jTextField10");
+
+        jTextField11.setText("jTextField11");
+
+        jTextField12.setText("jTextField12");
+
+        jTextField13.setText("jTextField13");
+
+        jTextField14.setText("jTextField14");
+
+        jTextField15.setText("jTextField15");
+
+        jLabel59.setText("must be in yyyy-mm-dd");
+
+        jLabel60.setText("must be in yyyy-mm-dd");
+
         javax.swing.GroupLayout bookingPanelLayout = new javax.swing.GroupLayout(bookingPanel);
         bookingPanel.setLayout(bookingPanelLayout);
         bookingPanelLayout.setHorizontalGroup(
             bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bookingPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(addBookingBtn)
+                .addGap(18, 18, 18)
+                .addComponent(jButton20)
+                .addGap(18, 18, 18)
+                .addComponent(jButton21)
+                .addGap(96, 96, 96))
             .addGroup(bookingPanelLayout.createSequentialGroup()
                 .addGap(124, 124, 124)
                 .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1608,28 +1685,99 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(jLabel11)
                             .addGap(122, 122, 122)
                             .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1003, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1003, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(bookingPanelLayout.createSequentialGroup()
+                        .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(bookingPanelLayout.createSequentialGroup()
+                                .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel50)
+                                    .addComponent(jLabel51))
+                                .addGap(58, 58, 58)
+                                .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(bookingPanelLayout.createSequentialGroup()
+                                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel59))))
+                            .addGroup(bookingPanelLayout.createSequentialGroup()
+                                .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel52)
+                                    .addComponent(jLabel53)
+                                    .addComponent(jLabel54))
+                                .addGap(49, 49, 49)
+                                .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(bookingPanelLayout.createSequentialGroup()
+                                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel60)))))
+                        .addGap(149, 149, 149)
+                        .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(bookingPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel57)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bookingPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel56)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bookingPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel55)
+                                .addGap(83, 83, 83)
+                                .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel58)))
                 .addContainerGap(65, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bookingPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton19)
-                .addGap(18, 18, 18)
-                .addComponent(jButton20)
-                .addGap(18, 18, 18)
-                .addComponent(jButton21)
-                .addGap(96, 96, 96))
         );
 
-        bookingPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton19, jButton20, jButton21});
+        bookingPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addBookingBtn, jButton20, jButton21});
+
+        bookingPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jTextField1, jTextField10, jTextField11, jTextField12, jTextField13, jTextField14, jTextField15, jTextField9});
 
         bookingPanelLayout.setVerticalGroup(
             bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bookingPanelLayout.createSequentialGroup()
-                .addContainerGap(250, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
+                .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel50)
+                    .addComponent(jLabel55)
+                    .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(bookingPanelLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel51)
+                            .addComponent(jLabel56)
+                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel59)))
+                    .addGroup(bookingPanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(31, 31, 31)
+                .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel57)
+                        .addComponent(jLabel58)
+                        .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel52)
+                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel60)))
+                .addGap(23, 23, 23)
+                .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel53)
+                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel54)
+                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton21)
                     .addComponent(jButton20)
-                    .addComponent(jButton19))
+                    .addComponent(addBookingBtn))
                 .addGap(46, 46, 46)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1703,7 +1851,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         btnRooms.setBackground(Color.decode("#86BBD8"));
 
-        refreshDataTableModels();
+        refreshHotelTableModel();
         
         
         hotelPanel.setVisible(true);
@@ -1735,7 +1883,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             btnRooms.setBackground(Color.decode("#86BBD8"));
             
-            refreshDataTableModels();
+            refreshGuestTableModel();
             
             hotelPanel.setVisible(false);
             roomPanel.setVisible(false);
@@ -1766,7 +1914,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             btnHotels.setBackground(Color.decode("#86BBD8"));
             
-            refreshDataTableModels();
+            refreshRoomTableModel();
             
             hotelPanel.setVisible(false);
             roomPanel.setVisible(true);
@@ -1808,7 +1956,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         btnRooms.setBackground(Color.decode("#86BBD8"));
         
-        refreshDataTableModels();
+        refreshCustomerTableModel();
         
         hotelPanel.setVisible(false);
         roomPanel.setVisible(false);
@@ -1873,6 +2021,8 @@ public class MainFrame extends javax.swing.JFrame {
         btnRooms.setBackground(Color.decode("#86BBD8"));
         
 
+        refreshMembershipTableModel();
+        
         hotelPanel.setVisible(false);
         roomPanel.setVisible(false);
         customerPanel.setVisible(false);
@@ -1911,6 +2061,7 @@ public class MainFrame extends javax.swing.JFrame {
         membershipPanel.setVisible(false);
         guestPanel.setVisible(false);
         
+        refreshBookingTableModel();
         
         this.repaint();
     }//GEN-LAST:event_btnBookingsActionPerformed
@@ -2030,7 +2181,7 @@ public class MainFrame extends javax.swing.JFrame {
             room.setRoomNumber(textRoomNumber.getText());
             room.setRoomDescription(textRoomDescription.getText());
             room.setRoomPrice(Double.parseDouble(textRoomPrice.getText()));
-            room.setCurrencyCode(textRoomCurrencyCode.getText());
+            room.setCurrencyCode("AUD");
             room.setRoomType(roomType);
             
             roomController.createRoom(room);
@@ -2045,34 +2196,77 @@ public class MainFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_addRoomBtnActionPerformed
 
-    
-    private void refreshDataTableModels()
-    {
-        try{
+    private void addMembershipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMembershipBtnActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+            membership = new Membership();
+            membership.setMembershipTier(textMembershipTierName.getText());
+            membership.setMembershipTierCode(textMembershipTierCode.getText());
+            membership.setDiscount(Long.parseLong(textMembershipDiscount.getText()));
+            membership.setOtherRewards(textMembershipOtherRewards.getText());
             
-            Object dataHotel [][] = {{}};
-            Object dataBooking [][] = {{}};
-            Object dataRoom [][] = {{}};
-            Object dataGuest [][] = {{}};
-            Object dataPayment [][] = {{}};
-            Object dataCustomer [][] = {{}};
-            Object dataMembership [][] = {{}};
+            membershipController.createMembership(membership);
+            
+            refreshDataTableModels();
+            
+        }
+        catch (Exception e)
+        {
+            
+        }
+    }//GEN-LAST:event_addMembershipBtnActionPerformed
 
+    private void addPaymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPaymentBtnActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+            payment = new Payment();
+            int id = Integer.parseInt(textPaymentBookingId.getText());
+            Booking bkg = bookingController.getBookingByBookingId(id);
+            
+            if (bkg != null)
+            {
+                Collection<Payment> bkgPayments = bkg.getPaymentCollection();
+                int pnum = 1;
+
+                if (bkgPayments != null)
+                {
+                    pnum = bkgPayments.size() + 1;
+                }
+
+                PaymentPK pk = new PaymentPK();
+                pk.setBookingId(id);
+                pk.setPaymentNumber(pnum);
+                payment.setPaymentPK(pk);
+                payment.setBooking(bkg);
+                payment.setPaymentDate(new Date()); // TODO: verify this
+                payment.setPaymentAmount(Double.parseDouble(textPaymentAmount.getText()));
+                payment.setCurrencyCode("AUD");
+                payment.setPaymentMethodCode(textPaymentMethodCode.getText()); //TODO: make this dropdown
+                
+                paymentController.createPayment(payment);
+                
+                refreshDataTableModels();
+            }
+            else{
+                // TODO: error! booking is not found
+            }
+        }
+        catch (Exception e)
+        {
+            
+        }
+    }//GEN-LAST:event_addPaymentBtnActionPerformed
+
+    
+    private void refreshHotelTableModel()
+    {
+        try
+        {
+            Object dataHotel [][] = {{}};
             hotelTableModel = new DefaultTableModel(dataHotel, hotelColumnHeaders);
-            bookingTableModel = new DefaultTableModel(dataBooking, bookingColumnHeaders);
-            roomTableModel = new DefaultTableModel(dataRoom, roomColumnHeaders);
-            guestTableModel = new DefaultTableModel(dataGuest, guestColumnHeaders);
-            paymentTableModel = new DefaultTableModel(dataPayment, paymentColumnHeaders);
-            customerTableModel = new DefaultTableModel(dataCustomer, customerColumnHeaders);
-            membershipTableModel = new DefaultTableModel(dataMembership, membershipColumnHeaders);
-  
             hotels = new ArrayList<>(hotelController.getHotels());
-            bookings = new ArrayList<>(bookingController.getBookings());
-            rooms = new ArrayList<>(roomController.getRooms());
-            guests = new ArrayList<>(guestController.getGuests());
-            payments = new ArrayList<>(paymentController.getPayments());
-            customers = new ArrayList<>(customerController.getCustomers());
-            memberships = new ArrayList<>(membershipController.getMemberships());
 
             for (Hotel h : hotels)
             {
@@ -2094,6 +2288,63 @@ public class MainFrame extends javax.swing.JFrame {
 
             tblHotel.setModel(hotelTableModel);
 
+            
+        }
+        catch (Exception e)
+        {
+            
+        }
+    }
+    
+    private void refreshBookingTableModel()
+    {
+        try
+        {
+            Object dataBooking [][] = {{}};
+            bookingTableModel = new DefaultTableModel(dataBooking, bookingColumnHeaders);
+            bookings = new ArrayList<>(bookingController.getBookings());
+
+            for (Booking h : bookings)
+            {
+                Object [] rowData = new Object[9];
+                rowData[0] = h.getBookingId();
+                rowData[1] = h.getCustomer().getCustomerId();
+
+                Calendar cal1 = Calendar.getInstance();
+                cal1.setTime(h.getCheckInDate());
+
+                Calendar cal2 = Calendar.getInstance();
+                cal2.setTime(h.getCheckOutDate());
+
+
+                rowData[2] = h.getCheckInDate();
+                rowData[3] = h.getCheckOutDate();
+                rowData[4] = h.getContactPerson();
+                rowData[5] = h.getContactEmail();
+                rowData[6] = h.getTotalAmount();
+                rowData[7] = h.getCurrencyCode();
+                rowData[8] = h.getPaymentStatusCode();
+
+                bookingTableModel.addRow(rowData);
+            }
+
+            tblBooking.setModel(bookingTableModel);
+
+            
+        }
+        catch (Exception e)
+        {
+            
+        }
+    }
+    
+    private void refreshRoomTableModel()
+    {
+        try
+        {
+            Object dataRoom [][] = {{}};
+            roomTableModel = new DefaultTableModel(dataRoom, roomColumnHeaders);
+            rooms = new ArrayList<>(roomController.getRooms());
 
             for (Room h : rooms)
             {
@@ -2111,6 +2362,21 @@ public class MainFrame extends javax.swing.JFrame {
 
             tblRoom.setModel(roomTableModel);
 
+        }
+        catch (Exception e)
+        {
+            
+        }
+    }
+    
+    private void refreshGuestTableModel()
+    {
+        try 
+        {
+            Object dataGuest [][] = {{}};
+            guestTableModel = new DefaultTableModel(dataGuest, guestColumnHeaders);
+            guests = new ArrayList<>(guestController.getGuests());
+            
             for (Guest h : guests)
             {
                 Object [] rowData = new Object[12];
@@ -2132,7 +2398,58 @@ public class MainFrame extends javax.swing.JFrame {
 
             tblGuest.setModel(guestTableModel);
 
+            
+        }
+        catch(Exception e)
+        {
+            
+        }
+    }
+    
+    private void refreshPaymentTableModel()
+    {
+        try
+        {
+            Object dataPayment [][] = {{}};
+            paymentTableModel = new DefaultTableModel(dataPayment, paymentColumnHeaders);
+            payments = new ArrayList<>(paymentController.getPayments());
 
+            
+            for (Payment p : payments)
+            {
+                Object [] rowData = new Object[6];
+                rowData[0] = p.getPaymentPK().getBookingId();
+                rowData[1] = p.getPaymentPK().getPaymentNumber();
+
+                Calendar cal1 = Calendar.getInstance();
+                cal1.setTime(p.getPaymentDate());
+
+                rowData[2] = p.getPaymentDate();
+                rowData[3] = p.getPaymentAmount();
+                rowData[4] = p.getCurrencyCode();
+                rowData[5] = p.getPaymentMethodCode();
+
+                paymentTableModel.addRow(rowData);
+            }
+
+            tblPayment.setModel(paymentTableModel);
+            
+            
+        }
+        catch (Exception e)
+        {
+            
+        }
+    }
+    
+    private void refreshCustomerTableModel()
+    {
+        try
+        {
+            Object dataCustomer [][] = {{}};
+            customerTableModel = new DefaultTableModel(dataCustomer, customerColumnHeaders);
+            customers = new ArrayList<>(customerController.getCustomers());
+            
             for (Customer h : customers)
             {
                 Object [] rowData = new Object[13];
@@ -2155,31 +2472,23 @@ public class MainFrame extends javax.swing.JFrame {
 
             tblCustomer.setModel(customerTableModel);
 
-            for (Booking h : bookings)
-            {
-                Object [] rowData = new Object[9];
-                rowData[0] = h.getBookingId();
-                rowData[1] = h.getCustomer().getCustomerId();
 
-                Calendar cal1 = Calendar.getInstance();
-                cal1.setTime(h.getCheckInDate());
+        }
+        catch (Exception e)
+        {
+            
+        }
+    }
+    
+    private void refreshMembershipTableModel()
+    {
+        try
+        {
+            Object dataMembership [][] = {{}};
 
-                Calendar cal2 = Calendar.getInstance();
-                cal2.setTime(h.getCheckOutDate());
+            membershipTableModel = new DefaultTableModel(dataMembership, membershipColumnHeaders);
 
-
-                rowData[2] = cal1.get(Calendar.DATE);
-                rowData[3] = cal2.get(Calendar.DATE);
-                rowData[4] = h.getContactPerson();
-                rowData[5] = h.getContactEmail();
-                rowData[6] = h.getTotalAmount();
-                rowData[7] = h.getCurrencyCode();
-                rowData[8] = h.getPaymentStatusCode();
-
-                bookingTableModel.addRow(rowData);
-            }
-
-            tblBooking.setModel(bookingTableModel);
+            memberships = new ArrayList<>(membershipController.getMemberships());
 
             for (Membership m : memberships)
             {
@@ -2194,25 +2503,26 @@ public class MainFrame extends javax.swing.JFrame {
             }
 
             tblMembership.setModel(membershipTableModel);
+        }
+        catch (Exception e)
+        {
+            
+        }
 
-            for (Payment p : payments)
-            {
-                Object [] rowData = new Object[6];
-                rowData[0] = p.getPaymentPK().getBookingId();
-                rowData[1] = p.getPaymentPK().getPaymentNumber();
-
-                Calendar cal1 = Calendar.getInstance();
-                cal1.setTime(p.getPaymentDate());
-
-                rowData[2] = cal1.get(Calendar.DATE);
-                rowData[3] = p.getPaymentAmount();
-                rowData[4] = p.getCurrencyCode();
-                rowData[5] = p.getPaymentMethodCode();
-
-                paymentTableModel.addRow(rowData);
-            }
-
-            tblPayment.setModel(paymentTableModel);
+    }
+    
+    private void refreshDataTableModels()
+    {
+        try{
+            
+            refreshHotelTableModel();
+            refreshBookingTableModel();
+            refreshRoomTableModel();
+            refreshGuestTableModel();
+            refreshCustomerTableModel();
+            refreshMembershipTableModel();
+            refreshPaymentTableModel();
+           
         }
         catch (Exception e)
         {
@@ -2257,9 +2567,12 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addBookingBtn;
     private javax.swing.JButton addCustBtn;
     private javax.swing.JButton addGuestBtn;
     private javax.swing.JButton addHotelBtn;
+    private javax.swing.JButton addMembershipBtn;
+    private javax.swing.JButton addPaymentBtn;
     private javax.swing.JButton addRoomBtn;
     private javax.swing.JPanel bookingPanel;
     private javax.swing.JButton btnBookings;
@@ -2284,13 +2597,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel hotelType;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton20;
     private javax.swing.JButton jButton21;
     private javax.swing.JButton jButton5;
@@ -2347,7 +2657,19 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel50;
+    private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
+    private javax.swing.JLabel jLabel55;
+    private javax.swing.JLabel jLabel56;
+    private javax.swing.JLabel jLabel57;
+    private javax.swing.JLabel jLabel58;
+    private javax.swing.JLabel jLabel59;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel60;
+    private javax.swing.JLabel jLabel61;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -2365,6 +2687,13 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField10;
+    private javax.swing.JTextField jTextField11;
+    private javax.swing.JTextField jTextField12;
+    private javax.swing.JTextField jTextField13;
+    private javax.swing.JTextField jTextField14;
+    private javax.swing.JTextField jTextField15;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
@@ -2372,6 +2701,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextField9;
     private javax.swing.JLabel labelGuestBookingId;
     private javax.swing.JPanel membershipPanel;
     private javax.swing.JPanel menuPanel;
@@ -2423,9 +2753,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField textMembershipTierName;
     private javax.swing.JTextField textPaymentAmount;
     private javax.swing.JTextField textPaymentBookingId;
-    private javax.swing.JTextField textPaymentCurrencyCode;
     private javax.swing.JTextField textPaymentMethodCode;
-    private javax.swing.JTextField textRoomCurrencyCode;
+    private javax.swing.JTextField textPaymentNumber;
     private javax.swing.JTextField textRoomDescription;
     private javax.swing.JTextField textRoomHotelId;
     private javax.swing.JTextField textRoomNumber;

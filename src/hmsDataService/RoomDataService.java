@@ -62,6 +62,7 @@ public class RoomDataService {
                 {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
+                    entitymanager.refresh(g);
                     System.out.println("");                
                 }
             }

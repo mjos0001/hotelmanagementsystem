@@ -58,7 +58,10 @@ public class GuestDataService {
 
             if (guests.size() > 0)
             {
-                
+                for (Guest g : guests)
+                {
+                    entitymanager.refresh(g);
+                }
             }
 
             entitymanager.getTransaction().commit();

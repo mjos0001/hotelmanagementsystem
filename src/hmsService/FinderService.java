@@ -54,6 +54,19 @@ public class FinderService {
         return null;
     }
     
+        public static Booking findBookingById(ArrayList<Booking> list, int id)
+    {
+        for (Booking b : list)
+        {
+            if (b.getBookingId() == id)
+            {
+                return b;
+            }
+        }
+        
+        return null;
+    }
+    
     public static Room findRoomByRoomId(ArrayList<Room> list, int id)
     {
         for (Room r : list)

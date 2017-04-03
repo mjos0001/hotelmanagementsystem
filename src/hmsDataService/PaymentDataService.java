@@ -31,6 +31,7 @@ public class PaymentDataService {
         }
         emfactory = emf;
         entitymanager = emfactory.createEntityManager();
+        
     }
     
     public void close()
@@ -50,7 +51,10 @@ public class PaymentDataService {
 
             if (payments.size() > 0)
             {
-                
+                for (Payment p : payments)
+                {
+                    entitymanager.refresh(p);
+                }
             }
 
             entitymanager.getTransaction().commit();
@@ -60,7 +64,8 @@ public class PaymentDataService {
             throw new Exception("Error in doing the database operation.");
         }
       
-      return payments;
+        
+        return payments;
     }
     
     public List<Payment> getPaymentsByBookingId(int bookingId) throws Exception
