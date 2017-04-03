@@ -111,7 +111,7 @@ public class CustomerDataService {
 
             if (dataCustomer != null)
             {
-                entitymanager.remove(room);
+                entitymanager.remove(dataCustomer);
             }
             else
             {

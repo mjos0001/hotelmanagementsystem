@@ -108,8 +108,6 @@ public class GuestDataService {
             if (dataGuest != null)
             {
                 entitymanager.remove(guest);
-
-                getGuests();
             }
             
             entitymanager.getTransaction().commit();

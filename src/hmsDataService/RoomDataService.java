@@ -169,10 +169,10 @@ public class RoomDataService {
             if (dataRoom != null)
             {
                 entitymanager.remove(dataRoom);
-                entitymanager.getTransaction().commit();
 
-                getRooms();
             }
+            
+            entitymanager.getTransaction().commit();
             
             return true;
         }
@@ -197,8 +197,6 @@ public class RoomDataService {
             roomData.setRoomNumber(newRoom.getRoomNumber());
             
             entitymanager.getTransaction().commit();
-
-            getRooms();
 
         }
         catch (Exception e)

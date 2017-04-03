@@ -282,6 +282,24 @@ public class BookingDataService {
 
         return updatedBRG;
     }
+    
+    public List<BookingRoomGuest> getBookingRoomGuest () throws Exception {
+        List<BookingRoomGuest> brgList = null;
+    
+        try {
+            entitymanager.getTransaction().begin();
+          
+            brgList = entitymanager.createNamedQuery("BookingRoomGuest.findAll").getResultList();
+
+            entitymanager.getTransaction().commit();
+
+        } catch (Exception e) {
+            throw new Exception("Error in doing the database operation.");
+        }
+        
+        return brgList;
+
+    }
 
     public static void main(String args[]) {
 

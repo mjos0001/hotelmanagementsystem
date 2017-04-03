@@ -101,10 +101,10 @@ public class HotelDataService {
             if (dataHotel != null)
             {
                 entitymanager.remove(hotel);
-                entitymanager.getTransaction().commit();
 
-                getHotels();
             }
+            
+            entitymanager.getTransaction().commit();
             
             return true;
         }

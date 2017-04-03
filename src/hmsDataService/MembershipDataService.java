@@ -96,8 +96,6 @@ public class MembershipDataService {
             if (dataMembership != null)
             {
                 entitymanager.remove(membership);
-
-                getMemberships();
             }
 
             entitymanager.getTransaction().commit();
