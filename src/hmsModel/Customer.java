@@ -218,11 +218,11 @@ public class Customer implements Serializable {
         this.emailAddress = emailAddress;
     }
 
-    public Membership getMembershipTierCode() {
+    public Membership getMembership() {
         return membership;
     }
 
-    public void setMembershipTierCode(Membership membership) {
+    public void setMembership(Membership membership) {
         this.membership = membership;
     }
 

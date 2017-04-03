@@ -132,7 +132,7 @@ public class CustomerDataService {
                 customerData.setFirstName(newCustomer.getFirstName());
                 customerData.setLastName(newCustomer.getLastName());
                 customerData.setMembershipCredits(newCustomer.getMembershipCredits());
-                customerData.setMembershipTierCode(newCustomer.getMembershipTierCode());
+                customerData.setMembership(newCustomer.getMembership());
                 customerData.setPhoneNumber(newCustomer.getPhoneNumber());
                 customerData.setPostalCode(newCustomer.getPostalCode());
                 customerData.setStreet(newCustomer.getStreet());

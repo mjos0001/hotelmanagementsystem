@@ -7,6 +7,7 @@ package hmsDataService;
 
 import hmsModel.Room;
 import hmsModel.RoomType;
+import hmsModel.Facility;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -95,6 +96,25 @@ public class RoomDataService {
       return rooms;
     }
     
+    public List<Facility> getRoomFacilities() throws Exception
+    {   
+        List<Facility> facilities = null;
+        
+        try
+        {
+            entitymanager.getTransaction().begin();
+
+            facilities = entitymanager.createNamedQuery("Facility.findAll").getResultList();
+
+            entitymanager.getTransaction().commit();
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error in doing the database operation.");
+        }
+      
+      return facilities;
+    }
     
     public boolean createRoom(Room room) throws Exception
     {
