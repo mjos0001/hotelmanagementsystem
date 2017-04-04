@@ -724,7 +724,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        editHotelBtn.setText("Edit");
+        editHotelBtn.setText("Update");
         editHotelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editHotelBtnActionPerformed(evt);
@@ -757,6 +757,11 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel62.setText("Hotel Id");
 
         textHotelId.setEnabled(false);
+        textHotelId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textHotelIdActionPerformed(evt);
+            }
+        });
 
         jLabel68.setText("must be in yyyy");
 
@@ -906,7 +911,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        editRoomBtn.setText("Edit");
+        editRoomBtn.setText("Update");
         editRoomBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editRoomBtnActionPerformed(evt);
@@ -929,6 +934,18 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel40.setText("Hotel Id");
 
         jLabel41.setText("Room Type Code");
+
+        textRoomNumber.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textRoomNumberActionPerformed(evt);
+            }
+        });
+
+        textRoomDescription.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textRoomDescriptionActionPerformed(evt);
+            }
+        });
 
         jLabel42.setText("AUD");
 
@@ -1104,7 +1121,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        editCustomerBtn.setText("Edit");
+        editCustomerBtn.setText("Update");
         editCustomerBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editCustomerBtnActionPerformed(evt);
@@ -1115,6 +1132,12 @@ public class MainFrame extends javax.swing.JFrame {
         delCustomerBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delCustomerBtnActionPerformed(evt);
+            }
+        });
+
+        textCustomerTitle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textCustomerTitleActionPerformed(evt);
             }
         });
 
@@ -1349,7 +1372,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        editGuestBtn.setText("Edit");
+        editGuestBtn.setText("Update");
         editGuestBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editGuestBtnActionPerformed(evt);
@@ -1607,7 +1630,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        editMembershipBtn.setText("Edit");
+        editMembershipBtn.setText("Update");
         editMembershipBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editMembershipBtnActionPerformed(evt);
@@ -1753,7 +1776,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        editPaymentBtn.setText("Edit");
+        editPaymentBtn.setText("Update");
         editPaymentBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editPaymentBtnActionPerformed(evt);
@@ -1795,6 +1818,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         paymentMethodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        paymentMethodComboBox.setToolTipText("");
 
         jLabel70.setText("Note: the current date will always be used for commit");
 
@@ -1932,7 +1956,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        editBookingBtn.setText("Edit");
+        editBookingBtn.setText("Update");
         editBookingBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editBookingBtnActionPerformed(evt);
@@ -3635,6 +3659,26 @@ public class MainFrame extends javax.swing.JFrame {
         BookingCreator bookingCreator = new BookingCreator(emfactoryList);
         bookingCreator.setVisible(true);
     }//GEN-LAST:event_createBookingBtnActionPerformed
+
+    private void textHotelIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textHotelIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textHotelIdActionPerformed
+
+    private void textRoomDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textRoomDescriptionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textRoomDescriptionActionPerformed
+
+    private void textRoomNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textRoomNumberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textRoomNumberActionPerformed
+
+    private void textCustomerTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textCustomerTitleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textCustomerTitleActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
 
     
     private void refreshHotelTableModel(boolean getAll)
