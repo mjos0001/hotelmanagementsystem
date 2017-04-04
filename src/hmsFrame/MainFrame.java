@@ -22,13 +22,12 @@ import javax.swing.event.ListSelectionListener;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author mrkjse
  */
-public class MainFrame extends javax.swing.JFrame { 
-    
+public class MainFrame extends javax.swing.JFrame {
+
     ArrayList<EntityManagerFactory> emfactoryList = null;
     DefaultDataService defaultController = null;
     HotelDataService hotelController = null;
@@ -38,7 +37,7 @@ public class MainFrame extends javax.swing.JFrame {
     PaymentDataService paymentController = null;
     MembershipDataService membershipController = null;
     GuestDataService guestController = null;
-    
+
     Hotel hotel = new Hotel();
     ArrayList<Hotel> hotels = new ArrayList<>();
     Room room = new Room();
@@ -54,23 +53,20 @@ public class MainFrame extends javax.swing.JFrame {
     Customer customer = new Customer();
     ArrayList<Customer> customers = new ArrayList<>();
     ArrayList<RoomType> roomTypes = new ArrayList<>();
-    
+
     ArrayList<Facility> facilities = new ArrayList<>();
-    
+
     BookingService bookingService = null;
     FinderService finderService = null;
     RoomAllocatorService roomAllocatorService = null;
-    
-     
-    Object hotelColumnHeaders [] = {"HOTEL ID", "HOTEL NAME", "HOTEL TYPE CODE", "CONSTRUCTION YEAR", "COUNTRY", "CITY", "ADDRESS", "CONTACT NUMBER", "EMAIL ADDRESS"};
-    Object bookingColumnHeaders [] = {"BOOKING ID", "CUSTOMER ID", "CHECK IN DATE", "CHECK OUT DATE", "CONTACT PERSON", "CONTACT EMAIL", "TOTAL AMOUNT", "CURRENCY CODE", "PAYMENT STATUS"};
-    Object roomColumnHeaders [] = {"HOTEL ID", "ROOM ID", "ROOM NUMBER", "ROOM TYPE", "ROOM PRICE", "ROOM PRICE CURRENCY CODE", "ROOM DESCRIPTION"};
-    Object guestColumnHeaders [] = {"GUEST ID", "BOOKING ID", "TITLE", "FIRST NAME", "LAST NAME", "BIRTH DATE", "COUNTRY", "CITY", "STREET", "POSTAL CODE", "PHONE NUMBER", "EMAIL ADDRESS"};
-    Object customerColumnHeaders [] = {"CUSTOMER ID", "MEMBERSHIP TIER", "MEMBERSHIP CREDITS", "TITLE", "FIRST NAME", "LAST NAME", "BIRTH DATE", "COUNTRY", "CITY", "STREET", "POSTAL CODE", "PHONE NUMBER", "EMAIL ADDRESS"};
-    Object membershipColumnHeaders [] = {"MEMBERSHIP TIER CODE", "MEMBERSHIP TIER", "TIER CREDITS", "DISCOUNT", "OTHER REWARDS"};
-    Object paymentColumnHeaders [] = {"BOOKING ID", "PAYMENT NUMBER", "PAYMENT DATE", "PAYMENT AMOUNT", "PAYMENT CURRENCY CODE", "PAYMENT METHOD"};
 
-   
+    Object hotelColumnHeaders[] = {"HOTEL ID", "HOTEL NAME", "HOTEL TYPE CODE", "CONSTRUCTION YEAR", "COUNTRY", "CITY", "ADDRESS", "CONTACT NUMBER", "EMAIL ADDRESS"};
+    Object bookingColumnHeaders[] = {"BOOKING ID", "CUSTOMER ID", "CHECK IN DATE", "CHECK OUT DATE", "CONTACT PERSON", "CONTACT EMAIL", "TOTAL AMOUNT", "CURRENCY CODE", "PAYMENT STATUS"};
+    Object roomColumnHeaders[] = {"HOTEL ID", "ROOM ID", "ROOM NUMBER", "ROOM TYPE", "ROOM PRICE", "ROOM PRICE CURRENCY CODE", "ROOM DESCRIPTION"};
+    Object guestColumnHeaders[] = {"GUEST ID", "BOOKING ID", "TITLE", "FIRST NAME", "LAST NAME", "BIRTH DATE", "COUNTRY", "CITY", "STREET", "POSTAL CODE", "PHONE NUMBER", "EMAIL ADDRESS"};
+    Object customerColumnHeaders[] = {"CUSTOMER ID", "MEMBERSHIP TIER", "MEMBERSHIP CREDITS", "TITLE", "FIRST NAME", "LAST NAME", "BIRTH DATE", "COUNTRY", "CITY", "STREET", "POSTAL CODE", "PHONE NUMBER", "EMAIL ADDRESS"};
+    Object membershipColumnHeaders[] = {"MEMBERSHIP TIER CODE", "MEMBERSHIP TIER", "TIER CREDITS", "DISCOUNT", "OTHER REWARDS"};
+    Object paymentColumnHeaders[] = {"BOOKING ID", "PAYMENT NUMBER", "PAYMENT DATE", "PAYMENT AMOUNT", "PAYMENT CURRENCY CODE", "PAYMENT METHOD"};
 
     DefaultTableModel hotelTableModel = new DefaultTableModel();
     DefaultTableModel bookingTableModel = new DefaultTableModel();
@@ -85,7 +81,7 @@ public class MainFrame extends javax.swing.JFrame {
     DefaultComboBoxModel roomFacilityCBModel = new DefaultComboBoxModel();
     DefaultComboBoxModel customerCBModel = new DefaultComboBoxModel();
     DefaultComboBoxModel membershipTierCBModel = new DefaultComboBoxModel();
-    
+
     ArrayList<String> htcString = new ArrayList<>();
     ArrayList<String> htc2String = new ArrayList<>();
     ArrayList<String> pmcString = new ArrayList<>();
@@ -94,31 +90,30 @@ public class MainFrame extends javax.swing.JFrame {
     ArrayList<String> customer2String = new ArrayList<>();
     ArrayList<String> membershipString = new ArrayList<>();
     ArrayList<String> membership2String = new ArrayList<>();
-    
+
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         defaultController = new DefaultDataService();
-        
+
         initComponents();
-        
+
         addListeners();
-        
-        try
-        {
+
+        try {
             emfactoryList = defaultController.LogIn();
-            hotelController = new  HotelDataService(emfactoryList.get(0));
+            hotelController = new HotelDataService(emfactoryList.get(0));
             bookingController = new BookingDataService(emfactoryList.get(1));
             roomController = new RoomDataService(emfactoryList.get(1));
             guestController = new GuestDataService(emfactoryList.get(1));
             paymentController = new PaymentDataService(emfactoryList.get(1));
             customerController = new CustomerDataService(emfactoryList.get(1));
-            membershipController = new MembershipDataService(emfactoryList.get(1)); 
-            
+            membershipController = new MembershipDataService(emfactoryList.get(1));
+
             roomAllocatorService = new RoomAllocatorService(emfactoryList.get(1));
             bookingService = new BookingService();
-            
+
             hotelPanel.setVisible(true);
             roomPanel.setVisible(false);
             customerPanel.setVisible(false);
@@ -126,70 +121,67 @@ public class MainFrame extends javax.swing.JFrame {
             bookingPanel.setVisible(false);
             membershipPanel.setVisible(false);
             guestPanel.setVisible(false);
-                       
+
             roomTypes = new ArrayList<>(roomController.getRoomTypes());
-            
+
             facilities = new ArrayList<>(roomController.getRoomFacilities());
-            
+
             refreshDataTableModels();
-            
+
             btnHotels.setBackground(Color.decode("#f18973"));
-        
-        }
-        catch (Exception e)
-        {
+
+        } catch (Exception e) {
 
         }
-       
+
         fillUpComboBoxes();
-        
+
     }
-    
-    private void addListeners()
-    {
+
+    private void addListeners() {
         ListSelectionListener hotelTableListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent evt) {
                 // call method
                 tblHotelValueChanged(evt);
             }
         };
-        
+
         tblHotel.getSelectionModel().addListSelectionListener(hotelTableListener);
-        
+
         ListSelectionListener bookingTableListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent evt) {
                 // call method
                 tblBookingValueChanged(evt);
             }
         };
-        
+
         tblBooking.getSelectionModel().addListSelectionListener(bookingTableListener);
-        
+
         ListSelectionListener roomTableListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent evt) {
                 // call method
                 tblRoomValueChanged(evt);
             }
         };
-        
+
         tblRoom.getSelectionModel().addListSelectionListener(roomTableListener);
-        
+
         ListSelectionListener guestTableListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent evt) {
                 // call method
                 tblGuestValueChanged(evt);
             }
         };
-        
+
         tblGuest.getSelectionModel().addListSelectionListener(guestTableListener);
-        
+
         ListSelectionListener customerTableListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent evt) {
                 // call method
                 tblCustomerValueChanged(evt);
             }
         };
-        
+
         tblCustomer.getSelectionModel().addListSelectionListener(customerTableListener);
 
         ListSelectionListener membershipTableListener = new ListSelectionListener() {
@@ -198,7 +190,7 @@ public class MainFrame extends javax.swing.JFrame {
                 tblMembershipValueChanged(evt);
             }
         };
-        
+
         tblMembership.getSelectionModel().addListSelectionListener(membershipTableListener);
 
         ListSelectionListener paymentTableListener = new ListSelectionListener() {
@@ -207,100 +199,87 @@ public class MainFrame extends javax.swing.JFrame {
                 tblPaymentValueChanged(evt);
             }
         };
-        
+
         tblPayment.getSelectionModel().addListSelectionListener(paymentTableListener);
-        
+
     }
-    
-    private void fillUpComboBoxes()
-    {
-        try
-        {
+
+    private void fillUpComboBoxes() {
+        try {
 
             htcString = new ArrayList<>();
             htc2String = new ArrayList<>();
             pmcString = new ArrayList<>();
-            
+
             rfString = new ArrayList<>();
             customerString = new ArrayList<>();
             membershipString = new ArrayList<>();
-            
+
             htcString.add("ALL-See all");
             pmcString.add("ALL-See all");
             rfString.add("ALL-See all");
             customerString.add("ALL-See all");
             membershipString.add("ALL-See all");
-            
 
-            for (HotelTypeCode htc : HotelTypeCode.values())
-            {
-                htcString.add(htc.code() + '-'+ htc.name());
-                htc2String.add(htc.code() + '-'+ htc.name());
+            for (HotelTypeCode htc : HotelTypeCode.values()) {
+                htcString.add(htc.code() + '-' + htc.name());
+                htc2String.add(htc.code() + '-' + htc.name());
             }
 
-            for (PaymentMethodCode pmc : PaymentMethodCode.values())
-            {
-                pmcString.add(pmc.code() + '-'+ pmc.name());
-                
+            for (PaymentMethodCode pmc : PaymentMethodCode.values()) {
+                pmcString.add(pmc.code() + '-' + pmc.name());
+
             }
 
-
-            for (Facility f : facilities)
-            {
+            for (Facility f : facilities) {
                 String a = f.getFacilityNumber() + "-" + f.getFacilityName();
                 rfString.add(a);
-               
+
             }
-            
-            
-            for (Customer c : customers)
-            {
+
+            for (Customer c : customers) {
                 String a = c.getCustomerId() + "-" + c.getFirstName() + " " + c.getLastName();
                 customerString.add(a);
             }
-            
-            for (Membership m : memberships)
-            {
+
+            for (Membership m : memberships) {
                 String a = m.getMembershipTierCode() + "-" + m.getMembershipTier();
                 membershipString.add(a);
                 membership2String.add(a);
             }
-            
+
             hotelTypeCBModel = new DefaultComboBoxModel(htcString.toArray());
             paymentMethodCBModel = new DefaultComboBoxModel(pmcString.toArray());
             roomFacilityCBModel = new DefaultComboBoxModel(rfString.toArray());
             customerCBModel = new DefaultComboBoxModel(customerString.toArray());
             membershipTierCBModel = new DefaultComboBoxModel(membershipString.toArray());
-           
-            
+
             hotelTypeCodeComboBox.setModel(hotelTypeCBModel);
-            
+
             DefaultComboBoxModel htc2CBModel = new DefaultComboBoxModel(htc2String.toArray());
-            
+
             hotelTypeCodeComboBox2.setModel(htc2CBModel);
-            
+
             paymentMethodComboBox.setModel(paymentMethodCBModel);
             membershipTierComboBox.setModel(membershipTierCBModel);
-            
+
             DefaultComboBoxModel mtc2CBModel = new DefaultComboBoxModel(membership2String.toArray());
-            
+
             membershipTierComboBox2.setModel(mtc2CBModel);
-            
+
             roomFacilityComboBox.setModel(roomFacilityCBModel);
-            
+
             hotelTypeCodeComboBox.repaint();
             roomFacilityComboBox.repaint();
             hotelTypeCodeComboBox2.repaint();
             paymentMethodComboBox.repaint();
             membershipTierComboBox.repaint();
             membershipTierComboBox2.repaint();
-            
+
+        } catch (Exception e) {
+
         }
-        catch (Exception e)
-        {
-            
-        }
-    
+
     }
 
     /**
@@ -2199,9 +2178,9 @@ public class MainFrame extends javax.swing.JFrame {
         btnHotels.setBackground(Color.decode("#86BBD8"));
 
         btnRooms.setBackground(Color.decode("#86BBD8"));
-        
+
         refreshDataTableModels();
-        
+
         hotelPanel.setVisible(false);
         roomPanel.setVisible(false);
         customerPanel.setVisible(false);
@@ -2231,8 +2210,7 @@ public class MainFrame extends javax.swing.JFrame {
         btnRooms.setBackground(Color.decode("#86BBD8"));
 
         refreshHotelTableModel(true);
-        
-        
+
         hotelPanel.setVisible(true);
         roomPanel.setVisible(false);
         customerPanel.setVisible(false);
@@ -2241,69 +2219,68 @@ public class MainFrame extends javax.swing.JFrame {
         membershipPanel.setVisible(false);
         guestPanel.setVisible(false);
         this.repaint();
-        
+
     }//GEN-LAST:event_btnHotelsActionPerformed
 
     private void btnGuestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuestsActionPerformed
         // TODO add your handling code here:
-            
-            btnGuests.setBackground(Color.decode("#f18973"));
-            //btnGuests.setForeground(Color.decode("#86BBD8"));
-            
-            btnBookings.setBackground(Color.decode("#86BBD8"));
-            
-            btnCustomers.setBackground(Color.decode("#86BBD8"));
-            
-            btnHotels.setBackground(Color.decode("#86BBD8"));
-            
-            btnMemberships.setBackground(Color.decode("#86BBD8"));
-            
-            btnPayments.setBackground(Color.decode("#86BBD8"));
-            
-            btnRooms.setBackground(Color.decode("#86BBD8"));
-            
-            refreshGuestTableModel(true);
-            
-            hotelPanel.setVisible(false);
-            roomPanel.setVisible(false);
-            customerPanel.setVisible(false);
-            paymentPanel.setVisible(false);
-            bookingPanel.setVisible(false);
-            membershipPanel.setVisible(false);
-            guestPanel.setVisible(true);
-            this.repaint();
-        
+
+        btnGuests.setBackground(Color.decode("#f18973"));
+        //btnGuests.setForeground(Color.decode("#86BBD8"));
+
+        btnBookings.setBackground(Color.decode("#86BBD8"));
+
+        btnCustomers.setBackground(Color.decode("#86BBD8"));
+
+        btnHotels.setBackground(Color.decode("#86BBD8"));
+
+        btnMemberships.setBackground(Color.decode("#86BBD8"));
+
+        btnPayments.setBackground(Color.decode("#86BBD8"));
+
+        btnRooms.setBackground(Color.decode("#86BBD8"));
+
+        refreshGuestTableModel(true);
+
+        hotelPanel.setVisible(false);
+        roomPanel.setVisible(false);
+        customerPanel.setVisible(false);
+        paymentPanel.setVisible(false);
+        bookingPanel.setVisible(false);
+        membershipPanel.setVisible(false);
+        guestPanel.setVisible(true);
+        this.repaint();
+
     }//GEN-LAST:event_btnGuestsActionPerformed
 
     private void btnRoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRoomsActionPerformed
         // TODO add your handling code here:
-            
-            btnRooms.setBackground(Color.decode("#f18973"));
-   
-            
-            btnBookings.setBackground(Color.decode("#86BBD8"));
-            
-            btnCustomers.setBackground(Color.decode("#86BBD8"));
-            
-            btnGuests.setBackground(Color.decode("#86BBD8"));
-            
-            btnMemberships.setBackground(Color.decode("#86BBD8"));
-            
-            btnPayments.setBackground(Color.decode("#86BBD8"));
-            
-            btnHotels.setBackground(Color.decode("#86BBD8"));
-            
-            refreshRoomTableModel(true);
-            
-            hotelPanel.setVisible(false);
-            roomPanel.setVisible(true);
-            customerPanel.setVisible(false);
-            paymentPanel.setVisible(false);
-            bookingPanel.setVisible(false);
-            membershipPanel.setVisible(false);
-            guestPanel.setVisible(false);
-            
-            /*
+
+        btnRooms.setBackground(Color.decode("#f18973"));
+
+        btnBookings.setBackground(Color.decode("#86BBD8"));
+
+        btnCustomers.setBackground(Color.decode("#86BBD8"));
+
+        btnGuests.setBackground(Color.decode("#86BBD8"));
+
+        btnMemberships.setBackground(Color.decode("#86BBD8"));
+
+        btnPayments.setBackground(Color.decode("#86BBD8"));
+
+        btnHotels.setBackground(Color.decode("#86BBD8"));
+
+        refreshRoomTableModel(true);
+
+        hotelPanel.setVisible(false);
+        roomPanel.setVisible(true);
+        customerPanel.setVisible(false);
+        paymentPanel.setVisible(false);
+        bookingPanel.setVisible(false);
+        membershipPanel.setVisible(false);
+        guestPanel.setVisible(false);
+
+        /*
             try
             {
                 ArrayList<Facility> facilities = new ArrayList<>(roomController.getRoomFacilities());
@@ -2323,103 +2300,84 @@ public class MainFrame extends javax.swing.JFrame {
             {
                 
             }
-            */
-            this.repaint();
+         */
+        this.repaint();
     }//GEN-LAST:event_btnRoomsActionPerformed
 
     private void hotelTypeCodeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotelTypeCodeComboBoxActionPerformed
         // TODO add your handling code here:
-        
-        try
-        {
+
+        try {
             // Search by hotelTypeCode
             String code = hotelTypeCodeComboBox.getSelectedItem().toString().split("-")[0];
 
-            if (!code.equals("ALL"))
-            {
+            if (!code.equals("ALL")) {
                 hotels = new ArrayList<>(hotelController.getHotelByType(code));
                 refreshHotelTableModel(false);
-            }
-            else
-            {
+            } else {
                 refreshHotelTableModel(true);
             }
-            
+
+        } catch (Exception e) {
+
         }
-        catch (Exception e)
-        {
-            
-        }
-        
+
     }//GEN-LAST:event_hotelTypeCodeComboBoxActionPerformed
 
     private void roomFacilityComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomFacilityComboBoxActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             // Search by hotelTypeCode
             String code = roomFacilityComboBox.getSelectedItem().toString().split("-")[0];
 
-            if (!code.equals("ALL"))
-            {
+            if (!code.equals("ALL")) {
                 rooms = new ArrayList<>(roomController.getRoomByFacilityNumber(Integer.parseInt(code)));
                 refreshRoomTableModel(false);
-            }
-            else
-            {
+            } else {
                 refreshRoomTableModel(true);
             }
-            
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_roomFacilityComboBoxActionPerformed
 
     private void membershipTierComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_membershipTierComboBoxActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             // Search by hotelTypeCode
             String code = membershipTierComboBox.getSelectedItem().toString().split("-")[0];
 
-            if (!code.equals("ALL"))
-            {
+            if (!code.equals("ALL")) {
                 customers = new ArrayList<>(customerController.findCustomerByMembership(code));
                 refreshCustomerTableModel(false);
-            }
-            else
-            {
+            } else {
                 refreshCustomerTableModel(true);
             }
-            
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_membershipTierComboBoxActionPerformed
 
     private void btnCustomersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomersActionPerformed
-        
+
         btnCustomers.setBackground(Color.decode("#f18973"));
-       
 
         btnBookings.setBackground(Color.decode("#86BBD8"));
-        
+
         btnHotels.setBackground(Color.decode("#86BBD8"));
-        
+
         btnGuests.setBackground(Color.decode("#86BBD8"));
-        
+
         btnMemberships.setBackground(Color.decode("#86BBD8"));
-        
+
         btnPayments.setBackground(Color.decode("#86BBD8"));
-        
+
         btnRooms.setBackground(Color.decode("#86BBD8"));
-        
+
         refreshCustomerTableModel(true);
-        
+
         hotelPanel.setVisible(false);
         roomPanel.setVisible(false);
         customerPanel.setVisible(true);
@@ -2427,7 +2385,7 @@ public class MainFrame extends javax.swing.JFrame {
         bookingPanel.setVisible(false);
         membershipPanel.setVisible(false);
         guestPanel.setVisible(false);
-        
+
         this.repaint();
     }//GEN-LAST:event_btnCustomersActionPerformed
 
@@ -2435,59 +2393,50 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean hasError = false;
         String error = "";
-        
+
         hotel = new Hotel();
         hotel.setHotelName(textHotelName.getText());
         hotel.setHotelTypeCode(hotelTypeCodeComboBox2.getSelectedItem().toString().split("-")[0]);
-        
-        try{
+
+        try {
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy");
             Date date1 = fmt.parse(textHotelConstructionYear.getText());
             // TODO: validate, should be just YYYY
-            hotel.setConstructionYear(date1);            
-        }
-        catch(Exception e)
-        {
+            hotel.setConstructionYear(date1);
+        } catch (Exception e) {
             //TODO: Unable to parse date
             hasError = true;
             error += "Error in parsing dates.\n";
         }
-        
-        try
-        {
+
+        try {
             hotel.setContactNumber(textHotelContactNumber.getText());
             hotel.setCountry(textHotelCountry.getText());
             hotel.setCity(textHotelCity.getText());
             hotel.setAddress(textHotelAddress.getText());
             hotel.setEmailAddress(textHotelEmailAddress.getText());
-            
+
             // Add hotel
             hotelController.createHotel(hotel);
 
             refreshHotelTableModel(true);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             hasError = true;
-            
+
             error += "Error in adding new hotel.\n";
         }
-        
-        if (!hasError)
-        {
+
+        if (!hasError) {
             JOptionPane.showMessageDialog(this, "Hotel successfully added.");
             clearHotelFields();
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, error);
         }
-                
+
     }//GEN-LAST:event_addHotelBtnActionPerformed
 
-    private void clearHotelFields()
-    {
+    private void clearHotelFields() {
         textHotelAddress.setText("");
         textHotelCity.setText("");
         textHotelConstructionYear.setText("");
@@ -2497,9 +2446,8 @@ public class MainFrame extends javax.swing.JFrame {
         textHotelId.setText("");
         textHotelName.setText("");
     }
-    
-    private void clearRoomFields()
-    {
+
+    private void clearRoomFields() {
         textRoomDescription.setText("");
         textRoomHotelId.setText("");
         textRoomNumber.setText("");
@@ -2508,9 +2456,8 @@ public class MainFrame extends javax.swing.JFrame {
         textRoomPrice.setText("");
         textRoomTypeCode.setText("");
     }
-    
-    private void clearBookingFields()
-    {
+
+    private void clearBookingFields() {
         textBookingCheckInDate.setText("");
         textBookingCheckOutDate.setText("");
         textBookingContactEmail.setText("");
@@ -2519,26 +2466,23 @@ public class MainFrame extends javax.swing.JFrame {
         textBookingPaymentStatusCode.setText("");
         textBookingTotalAmount.setText("");
     }
-    
-    private void clearPaymentFields()
-    {
+
+    private void clearPaymentFields() {
         textPaymentAmount.setText("");
         textPaymentBookingId.setText("");
         textPaymentDate.setText("");
         textPaymentNumber.setText("");
     }
-    
-    private void clearMembershipFields()
-    {
+
+    private void clearMembershipFields() {
         textMembershipCredit.setText("");
         textMembershipDiscount.setText("");
         textMembershipOtherRewards.setText("");
         textMembershipTierCode.setText("");
         textMembershipTierName.setText("");
     }
-    
-    private void clearCustomerFields()
-    {
+
+    private void clearCustomerFields() {
         textCustomerCity.setText("");
         textCustomerCountry.setText("");
         textCustomerDob.setText("");
@@ -2552,9 +2496,8 @@ public class MainFrame extends javax.swing.JFrame {
         textCustomerStreet.setText("");
         textCustomerTitle.setText("");
     }
-    
-    private void clearGuestFields()
-    {
+
+    private void clearGuestFields() {
         textGuestCity.setText("");
         textGuestCountry.setText("");
         textGuestDob.setText("");
@@ -2569,27 +2512,26 @@ public class MainFrame extends javax.swing.JFrame {
         textGuestStreet.setText("");
         textGuestTitle.setText("");
     }
-    
+
     private void btnMembershipsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMembershipsActionPerformed
         // TODO add your handling code here:
-        
+
         btnMemberships.setBackground(Color.decode("#f18973"));
-        
+
         btnBookings.setBackground(Color.decode("#86BBD8"));
-        
+
         btnCustomers.setBackground(Color.decode("#86BBD8"));
-        
+
         btnGuests.setBackground(Color.decode("#86BBD8"));
-        
+
         btnHotels.setBackground(Color.decode("#86BBD8"));
-        
+
         btnPayments.setBackground(Color.decode("#86BBD8"));
-        
+
         btnRooms.setBackground(Color.decode("#86BBD8"));
-        
 
         refreshMembershipTableModel(true);
-        
+
         hotelPanel.setVisible(false);
         roomPanel.setVisible(false);
         customerPanel.setVisible(false);
@@ -2597,29 +2539,27 @@ public class MainFrame extends javax.swing.JFrame {
         bookingPanel.setVisible(false);
         membershipPanel.setVisible(true);
         guestPanel.setVisible(false);
-        
 
-        
         this.repaint();
     }//GEN-LAST:event_btnMembershipsActionPerformed
 
     private void btnBookingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookingsActionPerformed
         // TODO add your handling code here:
-        
+
         btnBookings.setBackground(Color.decode("#f18973"));
 
         btnHotels.setBackground(Color.decode("#86BBD8"));
-        
+
         btnCustomers.setBackground(Color.decode("#86BBD8"));
-        
+
         btnGuests.setBackground(Color.decode("#86BBD8"));
-        
+
         btnMemberships.setBackground(Color.decode("#86BBD8"));
-        
+
         btnPayments.setBackground(Color.decode("#86BBD8"));
-        
+
         btnRooms.setBackground(Color.decode("#86BBD8"));
-        
+
         hotelPanel.setVisible(false);
         roomPanel.setVisible(false);
         customerPanel.setVisible(false);
@@ -2627,9 +2567,9 @@ public class MainFrame extends javax.swing.JFrame {
         bookingPanel.setVisible(true);
         membershipPanel.setVisible(false);
         guestPanel.setVisible(false);
-        
+
         refreshBookingTableModel(true);
-        
+
         this.repaint();
     }//GEN-LAST:event_btnBookingsActionPerformed
 
@@ -2637,56 +2577,43 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean hasError = false;
         String error = "";
-        
-        try
-        {
-            try
-            {
+
+        try {
+            try {
                 int id = Integer.parseInt(textPaymentBookingId.getText());
                 int num = Integer.parseInt(textPaymentNumber.getText());
-                            
+
                 payment = FinderService.findPaymentById(payments, id, num);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 hasError = true;
                 error += "Error in parsing booking id and payment number.\n";
             }
-            
-            
-            if (payment != null)
-            {
+
+            if (payment != null) {
                 payment.setPaymentDate(new Date()); // this must always be the latest date you edited the payment
                 payment.setPaymentAmount(Double.parseDouble(textPaymentAmount.getText()));
                 payment.setCurrencyCode("AUD");
-                
+
                 String code = paymentMethodComboBox.getSelectedItem().toString().split("-")[0];
-                
+
                 payment.setPaymentMethodCode(code); //TODO: make this dropdown
-                
+
                 paymentController.updatePayment(payment);
-                
+
                 refreshPaymentTableModel(true);
-            }
-            else{
+            } else {
                 // TODO: error! booking is not found
                 hasError = true;
                 error += "Error - booking referenced by payment does not exist.\n";
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             hasError = true;
             error += "Error - cannot update payment.\n";
         }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record updated.");
         }
     }//GEN-LAST:event_editPaymentBtnActionPerformed
@@ -2696,75 +2623,61 @@ public class MainFrame extends javax.swing.JFrame {
         // can be deleted - also delete the booking room guest
         boolean hasError = true;
         String error = "";
-        
-        try
-        {
+
+        try {
             int id = Integer.parseInt(textBookingId.getText());
-            
+
             ArrayList<Guest> guestList = FinderService.findGuestByBookingId(guests, id);
-            
+
             ArrayList<BookingRoomGuest> brgList = new ArrayList<>(bookingController.getBookingRoomGuest());
-            
+
             ArrayList<BookingRoomGuest> rBrgList = null;
-            
+
             // Delete guests and booking-room-guests
-            for (int i = guestList.size() - 1; i >= 0; i--)
-            {
+            for (int i = guestList.size() - 1; i >= 0; i--) {
                 Guest g = guestList.get(i);
-                
+
                 int gid = g.getGuestId();
                 rBrgList = FinderService.findBookingRoomGuestByGuestId(brgList, gid);
-                
+
                 // Also delete the BookingRoomGuest if we're going to delete the room
                 // Works like CASCADE
-                if (rBrgList != null && rBrgList.size() > 0)
-                {
-                    for (int h = rBrgList.size() - 1; h >= 0; h--)
-                    {
+                if (rBrgList != null && rBrgList.size() > 0) {
+                    for (int h = rBrgList.size() - 1; h >= 0; h--) {
                         BookingRoomGuest brg = rBrgList.get(h);
                         bookingController.deleteBookingRoomGuest(brg);
                     }
                 }
-                
+
                 guestController.deleteGuest(g);
             }
-            
+
             // Delete payments
             ArrayList<Payment> paymentsList = FinderService.findPaymentByBookingId(payments, id);
-            
-            if (paymentsList != null && paymentsList.size() > 0)
-            {
-                for (int i = paymentsList.size() - 1 ; i >= 0; i--)
-                {
+
+            if (paymentsList != null && paymentsList.size() > 0) {
+                for (int i = paymentsList.size() - 1; i >= 0; i--) {
                     Payment p = paymentsList.get(i);
                     paymentController.deletePayment(p);
-                }   
-               
-            }
-            else{
+                }
+
+            } else {
                 // TODO: error! booking is not found
                 hasError = true;
                 error += "Error - booking referenced by the payment does not exist.\n";
             }
-                
-            
+
             refreshBookingTableModel(true);
             clearBookingFields();
-            
-        }
-        catch (Exception e)
-        {
+
+        } catch (Exception e) {
             hasError = true;
             error += "Error in deleting payment.\n";
         }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record deleted.");
         }
     }//GEN-LAST:event_delBookingBtnActionPerformed
@@ -2773,29 +2686,25 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean hasError = false;
         String error = "";
-        
-        try
-        {
+
+        try {
             guest = new Guest();
-            
+
             Booking bkg = new Booking();
             //bkg.setBookingId();
-            
+
             bkg = bookingController.getBookingByBookingId(Integer.parseInt(textGuestBookingId.getText()));
-            
+
             guest.setBooking(bkg);
             guest.setTitle(textGuestTitle.getText());
             guest.setFirstName(textGuestFirstName.getText());
             guest.setLastName(textGuestLastName.getText());
-            
-            try
-            {
+
+            try {
                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
                 Date date1 = fmt.parse(textGuestDob.getText());
                 guest.setDob(date1);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 hasError = true;
                 error += "Error in parsing date of birth.\n";
             }
@@ -2806,30 +2715,24 @@ public class MainFrame extends javax.swing.JFrame {
             guest.setPostalCode(textGuestPostalCode.getText());
             guest.setPhoneNumber(textGuestPhoneNumber.getText());
             guest.setEmailAddress(textGuestEmailAddress.getText());
-            
+
             // Add guest
             guestController.createGuest(guest);
 
             refreshGuestTableModel(true);
             clearGuestFields();
-            
+
             // TODO: Sort JTables by ID
             // TODO: Check for duplicates
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             // TODO: handle exception
             hasError = true;
             error += "Error in creating a guest.\n";
         }
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record added successfully.");
         }
     }//GEN-LAST:event_addGuestBtnActionPerformed
@@ -2842,28 +2745,24 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean hasError = false;
         String error = "";
-        
-        try
-        {
+
+        try {
             customer = new Customer();
             String mc = membershipTierComboBox2.getSelectedItem().toString().split("-")[0];
             membership = membershipController.findMembershipByTierCode(mc);
-            
+
             customer.setMembership(membership);
             customer.setMembershipCredits(Integer.parseInt(textCustomerMembershipCredits.getText()));
-             
+
             customer.setTitle(textCustomerTitle.getText());
             customer.setFirstName(textCustomerFirstName.getText());
             customer.setLastName(textCustomerLastName.getText());
 
-            try
-            {
+            try {
                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
                 Date date1 = fmt.parse(textCustomerDob.getText());
                 customer.setDob(date1);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 hasError = true;
                 error += "Error in parsing date of birth.\n";
             }
@@ -2874,26 +2773,20 @@ public class MainFrame extends javax.swing.JFrame {
             customer.setPostalCode(textCustomerPostalCode.getText());
             customer.setPhoneNumber(textCustomerPhoneNumber.getText());
             customer.setEmailAddress(textCustomerEmailAddress.getText());
-            
+
             customerController.createCustomer(customer);
 
             refreshCustomerTableModel(true);
             clearCustomerFields();
-            
-        }
-        catch (Exception e)
-        {
+
+        } catch (Exception e) {
             hasError = true;
             error += "Error in creating customer.\n";
         }
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record added successfully.");
         }
     }//GEN-LAST:event_addCustBtnActionPerformed
@@ -2902,24 +2795,20 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean hasError = false;
         String error = "";
-        
-        try
-        {
+
+        try {
             room = new Room();
-            
+
             int hotelId = Integer.parseInt(textRoomHotelId.getText());
             RoomType roomType = FinderService.findRoomTypeByCode(roomTypes, textRoomTypeCode.getText());
-            
+
             hotel = FinderService.findHotelById(hotels, hotelId);
-            
-            if (hotel != null)
-            {
+
+            if (hotel != null) {
                 room.setHotelId(hotelId);
-            }
-            else
-            {
+            } else {
                 //TODO: throw exception - hotel not found!
-                            
+
                 hasError = true;
                 error += "Error in hotel is not found.\n";
             }
@@ -2928,37 +2817,29 @@ public class MainFrame extends javax.swing.JFrame {
             room.setRoomPrice(Double.parseDouble(textRoomPrice.getText()));
             room.setCurrencyCode("AUD");
             room.setRoomType(roomType);
-            
+
             int newId = roomController.createRoom(room);
-            
+
             refreshRoomTableModel(true);
-            
+
             room = FinderService.findRoomByRoomId(rooms, newId);
-            
+
             //addFacilitiesToRoom(room);
-            
             clearRoomFields();
-            
-        }
-        catch (Exception e)
-        {
-                        
+
+        } catch (Exception e) {
+
             hasError = true;
             error += "Error in creating room.\n";
         }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-            
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record added successfully.");
         }
-        
-        
+
+
     }//GEN-LAST:event_addRoomBtnActionPerformed
 
     /*
@@ -3037,42 +2918,34 @@ public class MainFrame extends javax.swing.JFrame {
         }
             
     }
-    */
-    
+     */
+
     private void addMembershipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMembershipBtnActionPerformed
         // TODO add your handling code here:
         boolean hasError = false;
         String error = "";
-        
-        try
-        {
+
+        try {
             membership = new Membership();
             membership.setMembershipTier(textMembershipTierName.getText());
             membership.setMembershipTierCode(textMembershipTierCode.getText());
             membership.setDiscount(Long.parseLong(textMembershipDiscount.getText()));
             membership.setOtherRewards(textMembershipOtherRewards.getText());
             membership.setTierCredits(Integer.parseInt(textMembershipCredit.getText()));
-            
+
             membershipController.createMembership(membership);
-            
+
             refreshMembershipTableModel(true);
             fillUpComboBoxes();
             clearMembershipFields();
-            
+
+        } catch (Exception e) {
+
         }
-        catch (Exception e)
-        {
-            
-        }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record added successfully.");
         }
     }//GEN-LAST:event_addMembershipBtnActionPerformed
@@ -3081,20 +2954,17 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean hasError = false;
         String error = "";
-        
-        try
-        {
+
+        try {
             payment = new Payment();
             int id = Integer.parseInt(textPaymentBookingId.getText());
             Booking bkg = bookingController.getBookingByBookingId(id);
-            
-            if (bkg != null)
-            {
+
+            if (bkg != null) {
                 Collection<Payment> bkgPayments = bkg.getPaymentCollection();
                 int pnum = 1;
 
-                if (bkgPayments != null)
-                {
+                if (bkgPayments != null) {
                     pnum = bkgPayments.size() + 1;
                 }
 
@@ -3108,34 +2978,26 @@ public class MainFrame extends javax.swing.JFrame {
                 payment.setCurrencyCode("AUD");
                 String mc = paymentMethodComboBox.getSelectedItem().toString().split("-")[0];
                 payment.setPaymentMethodCode(mc); //TODO: make this dropdown
-                
+
                 paymentController.createPayment(payment);
-                
+
                 refreshPaymentTableModel(true);
                 clearPaymentFields();
-            }
-            else{
+            } else {
                 // TODO: error! booking is not found
-                            
+
                 hasError = true;
                 error += "Error in creating payment - booking referenced not found.\n";
             }
-        }
-        catch (Exception e)
-        {
-                        
+        } catch (Exception e) {
+
             hasError = true;
             error += "Error in creating payment.\n";
         }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record added successfully.");
         }
     }//GEN-LAST:event_addPaymentBtnActionPerformed
@@ -3144,28 +3006,24 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean hasError = false;
         String error = "";
-        
-        try
-        {
-        
+
+        try {
+
             booking = new Booking();
             booking.setBookingId(0);
-            
-            try
-            {
+
+            try {
 
                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
                 Date date1 = fmt.parse(textBookingCheckInDate.getText());
                 Date date2 = fmt.parse(textBookingCheckOutDate.getText());
                 booking.setCheckInDate(date1);
                 booking.setCheckOutDate(date2);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 hasError = true;
                 error += "Error in parsing check in or check out date.\n";
             }
-            
+
             booking.setContactEmail(textBookingContactEmail.getText());
             booking.setContactPerson(textBookingContactPerson.getText());
             booking.setCurrencyCode("AUD");
@@ -3179,49 +3037,39 @@ public class MainFrame extends javax.swing.JFrame {
             booking.setTotalAmount(Double.parseDouble(textBookingTotalAmount.getText()));
 
             bookingController.createBooking(booking);
-            
+
             refreshBookingTableModel(true);
             clearBookingFields();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             hasError = true;
             error += "Error in creating booking.\n";
         }
 
-        
-        if (hasError)
-        {
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record added successfully.");
         }
     }//GEN-LAST:event_addBookingBtnActionPerformed
 
-    private void tblHotelValueChanged(ListSelectionEvent evt)
-    {
+    private void tblHotelValueChanged(ListSelectionEvent evt) {
         // TODO add your handling code here:
-        Vector data = (Vector)hotelTableModel.getDataVector().elementAt(tblHotel.getSelectedRow());
-        
+        Vector data = (Vector) hotelTableModel.getDataVector().elementAt(tblHotel.getSelectedRow());
+
         // data[0] - hotel id
         textHotelId.setText(data.get(0).toString());
         // data[1] - hotel name
         textHotelName.setText(data.get(1).toString());
         //textHotelType.setText(data.get(2).toString());
-        
+
         int index = 0;
-        for (String a : htc2String)
-        {
-            if (a.split("-")[0].equals(data.get(2).toString()))
-            {
+        for (String a : htc2String) {
+            if (a.split("-")[0].equals(data.get(2).toString())) {
                 index = htc2String.indexOf(a);
                 break;
             }
         }
-        
+
         hotelTypeCodeComboBox2.setSelectedIndex(index);
         textHotelConstructionYear.setText(data.get(3).toString());
         textHotelCountry.setText(data.get(4).toString());
@@ -3230,11 +3078,10 @@ public class MainFrame extends javax.swing.JFrame {
         textHotelContactNumber.setText(data.get(7).toString());
         textHotelEmailAddress.setText(data.get(8).toString());
     }
-    
-    private void tblBookingValueChanged(ListSelectionEvent evt)
-    {
-        Vector data = (Vector)bookingTableModel.getDataVector().elementAt(tblBooking.getSelectedRow());
-        
+
+    private void tblBookingValueChanged(ListSelectionEvent evt) {
+        Vector data = (Vector) bookingTableModel.getDataVector().elementAt(tblBooking.getSelectedRow());
+
         textBookingId.setText(data.get(0).toString());
         textBookingCustomerId.setText(data.get(1).toString());
         textBookingCheckInDate.setText(data.get(2).toString());
@@ -3245,10 +3092,9 @@ public class MainFrame extends javax.swing.JFrame {
         // data.get(7).toString() is "AUD"
         textBookingPaymentStatusCode.setText(data.get(8).toString());
     }
-    
-    private void tblGuestValueChanged(ListSelectionEvent evt)
-    {
-        Vector data = (Vector)guestTableModel.getDataVector().elementAt(tblGuest.getSelectedRow());
+
+    private void tblGuestValueChanged(ListSelectionEvent evt) {
+        Vector data = (Vector) guestTableModel.getDataVector().elementAt(tblGuest.getSelectedRow());
         textGuestId.setText(data.get(0).toString());
         textGuestBookingId.setText(data.get(1).toString());
         textGuestTitle.setText(data.get(2).toString());
@@ -3261,26 +3107,23 @@ public class MainFrame extends javax.swing.JFrame {
         textGuestPostalCode.setText(data.get(9).toString());
         textGuestPhoneNumber.setText(data.get(10).toString());
         textGuestEmailAddress.setText(data.get(11).toString());
-        
+
     }
 
-    private void tblCustomerValueChanged(ListSelectionEvent evt)
-    {
-        Vector data = (Vector)customerTableModel.getDataVector().elementAt(tblCustomer.getSelectedRow());
+    private void tblCustomerValueChanged(ListSelectionEvent evt) {
+        Vector data = (Vector) customerTableModel.getDataVector().elementAt(tblCustomer.getSelectedRow());
         textCustomerId.setText(data.get(0).toString());
-        
+
         int index = 0;
         String dataCode = data.get(1).toString();
-        
-        for (String a : membership2String)
-        {
-            if (a.split("-")[0].equals(dataCode))
-            {
+
+        for (String a : membership2String) {
+            if (a.split("-")[0].equals(dataCode)) {
                 index = membership2String.indexOf(a);
                 break;
             }
         }
-        
+
         //textCustomerMembershipTier.setText(data.get(1).toString());
         membershipTierComboBox2.setSelectedIndex(index);
         textCustomerMembershipCredits.setText(data.get(2).toString());
@@ -3294,23 +3137,19 @@ public class MainFrame extends javax.swing.JFrame {
         textCustomerPostalCode.setText(data.get(10).toString());
         textCustomerPhoneNumber.setText(data.get(11).toString());
         textCustomerEmailAddress.setText(data.get(12).toString());
-        
+
     }
-    
-    private void tblRoomValueChanged(ListSelectionEvent evt)
-    {
-        Vector data = (Vector)roomTableModel.getDataVector().elementAt(tblRoom.getSelectedRow());
-        
+
+    private void tblRoomValueChanged(ListSelectionEvent evt) {
+        Vector data = (Vector) roomTableModel.getDataVector().elementAt(tblRoom.getSelectedRow());
+
         int id = 0;
-        try
-        {
+        try {
             id = Integer.parseInt(data.get(0).toString());
+        } catch (Exception e) {
+
         }
-        catch (Exception e)
-        {
-            
-        }
-        
+
         /*
         Room room = FinderService.findRoomByRoomId(rooms, id);
         airconFacility.setSelected(false);
@@ -3358,140 +3197,120 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         }
-        */
-        
+         */
         textRoomHotelId.setText(data.get(0).toString());
         textRoomId.setText(data.get(1).toString());
         textRoomNumber.setText(data.get(2).toString());
         textRoomTypeCode.setText(data.get(3).toString());
         textRoomPrice.setText(data.get(4).toString());
         textRoomDescription.setText(data.get(6).toString());
-        
-        
+
     }
-    
-    private void tblMembershipValueChanged(ListSelectionEvent evt)
-    {
-        Vector data = (Vector)membershipTableModel.getDataVector().elementAt(tblMembership.getSelectedRow());
-        
+
+    private void tblMembershipValueChanged(ListSelectionEvent evt) {
+        Vector data = (Vector) membershipTableModel.getDataVector().elementAt(tblMembership.getSelectedRow());
+
         textMembershipTierCode.setText(data.get(0).toString());
         textMembershipTierName.setText(data.get(1).toString());
         textMembershipCredit.setText(data.get(2).toString());
         textMembershipDiscount.setText(data.get(3).toString());
         textMembershipOtherRewards.setText(data.get(4).toString());
     }
-    
-    private void tblPaymentValueChanged(ListSelectionEvent evt)
-    {
-         Vector data = (Vector)paymentTableModel.getDataVector().elementAt(tblPayment.getSelectedRow());
 
-         textPaymentBookingId.setText(data.get(0).toString());
-         textPaymentNumber.setText(data.get(1).toString());
-         textPaymentDate.setText(data.get(2).toString());
-         textPaymentAmount.setText(data.get(3).toString());
-         
-         int index = 0;
-         for (String a : pmcString)
-         {
-             if (a.split("-")[0].equals(data.get(4).toString()))
-             {
-                 index = pmcString.indexOf(a);
-                 break;
-             }
-         }
-         paymentMethodComboBox.setSelectedIndex(index);
-         //textPaymentMethodCode.setText(data.get(4).toString());
+    private void tblPaymentValueChanged(ListSelectionEvent evt) {
+        Vector data = (Vector) paymentTableModel.getDataVector().elementAt(tblPayment.getSelectedRow());
+
+        textPaymentBookingId.setText(data.get(0).toString());
+        textPaymentNumber.setText(data.get(1).toString());
+        textPaymentDate.setText(data.get(2).toString());
+        textPaymentAmount.setText(data.get(3).toString());
+
+        int index = 0;
+        for (String a : pmcString) {
+            if (a.split("-")[0].equals(data.get(4).toString())) {
+                index = pmcString.indexOf(a);
+                break;
+            }
+        }
+        paymentMethodComboBox.setSelectedIndex(index);
+        //textPaymentMethodCode.setText(data.get(4).toString());
     }
-    
-    
+
+
     private void editHotelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editHotelBtnActionPerformed
         boolean hasError = false;
         String error = "";
-        
-        try
-        {
-            // TODO add your handling code here:
-           int id = Integer.parseInt(textHotelId.getText());
 
-           hotel = FinderService.findHotelById(hotels, id);
-           
-           if (hotel == null)
-           {
-               // TODO: dialogbox - no hotel found
-               hasError = true;
-               error += "Error - no hotel found.\n";
-           }
-           
-           hotel.setHotelName(textHotelName.getText());
-       
-           try{
-               try
-               {
+        try {
+            // TODO add your handling code here:
+            int id = Integer.parseInt(textHotelId.getText());
+
+            hotel = FinderService.findHotelById(hotels, id);
+
+            if (hotel == null) {
+                // TODO: dialogbox - no hotel found
+                hasError = true;
+                error += "Error - no hotel found.\n";
+            }
+
+            hotel.setHotelName(textHotelName.getText());
+
+            try {
+                try {
                     SimpleDateFormat fmt = new SimpleDateFormat("yyyy");
                     Date date1 = fmt.parse(textHotelConstructionYear.getText());
                     hotel.setConstructionYear(date1);
-               }
-               catch (Exception e)
-               {
+                } catch (Exception e) {
                     hasError = true;
                     error += "Error in parsing construction year.\n";
-               }
-               
-               hotel.setContactNumber(textHotelContactNumber.getText());
-               hotel.setCountry(textHotelCountry.getText());
-               hotel.setCity(textHotelCity.getText());
-               hotel.setAddress(textHotelAddress.getText());
-               hotel.setEmailAddress(textHotelEmailAddress.getText());
-               hotel.setHotelTypeCode(hotelTypeCodeComboBox2.getSelectedItem().toString().split("-")[0]); // TODO: should be drop down
+                }
 
-               // Add hotel
-               hotelController.updateHotel(hotel);
+                hotel.setContactNumber(textHotelContactNumber.getText());
+                hotel.setCountry(textHotelCountry.getText());
+                hotel.setCity(textHotelCity.getText());
+                hotel.setAddress(textHotelAddress.getText());
+                hotel.setEmailAddress(textHotelEmailAddress.getText());
+                hotel.setHotelTypeCode(hotelTypeCodeComboBox2.getSelectedItem().toString().split("-")[0]); // TODO: should be drop down
 
-               refreshHotelTableModel(true);
+                // Add hotel
+                hotelController.updateHotel(hotel);
 
-           }
-           catch(Exception e)
-           {
-               //TODO: Unable to parse date
-               hasError = true;
-               error += "Error in updating the hotel.\n";
+                refreshHotelTableModel(true);
 
-           }
-        }
-        catch (Exception e)
-        {
+            } catch (Exception e) {
+                //TODO: Unable to parse date
+                hasError = true;
+                error += "Error in updating the hotel.\n";
+
+            }
+        } catch (Exception e) {
             //TODO: Unable to parse date
-               hasError = true;
-               error += "Error in updating the hotel.\n";
+            hasError = true;
+            error += "Error in updating the hotel.\n";
         }
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record updated.");
         }
-        
+
     }//GEN-LAST:event_editHotelBtnActionPerformed
 
     private void editGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editGuestBtnActionPerformed
         // TODO add your handling code here:
         boolean hasError = false;
         String error = "";
-        
-        try
-        {
+
+        try {
             int id = Integer.parseInt(textGuestId.getText());
             guest = FinderService.findGuestByGuestId(guests, id);
-            
+
             Booking bkg = new Booking();
             //bkg.setBookingId();
-            
+
             bkg = bookingController.getBookingByBookingId(Integer.parseInt(textGuestBookingId.getText()));
-            
+
             guest.setBooking(bkg);
             guest.setTitle(textGuestTitle.getText());
             guest.setFirstName(textGuestFirstName.getText());
@@ -3507,28 +3326,21 @@ public class MainFrame extends javax.swing.JFrame {
             guest.setPostalCode(textGuestPostalCode.getText());
             guest.setPhoneNumber(textGuestPhoneNumber.getText());
             guest.setEmailAddress(textGuestEmailAddress.getText());
-            
+
             // Add guest
             guestController.updateGuest(guest);
 
             refreshGuestTableModel(true);
-            
+
             // TODO: Sort JTables by ID
             // TODO: Check for duplicates
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             // TODO: handle exception
         }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record updated.");
         }
     }//GEN-LAST:event_editGuestBtnActionPerformed
@@ -3538,24 +3350,20 @@ public class MainFrame extends javax.swing.JFrame {
         boolean hasError = false;
         String error = "";
 
-         try
-        {
+        try {
             int id = Integer.parseInt(textRoomId.getText());
             room = FinderService.findRoomByRoomId(rooms, id);
-            
+
             int hotelId = Integer.parseInt(textRoomHotelId.getText());
             RoomType roomType = FinderService.findRoomTypeByCode(roomTypes, textRoomTypeCode.getText());
-            
+
             hotel = FinderService.findHotelById(hotels, hotelId);
-            
-            if (hotel != null)
-            {
+
+            if (hotel != null) {
                 room.setHotelId(hotelId);
-            }
-            else
-            {
+            } else {
                 //TODO: throw exception - hotel not found!
-                            
+
                 hasError = true;
                 error += "Error in updating room - hotel referenced cannot be found.\n";
             }
@@ -3564,59 +3372,49 @@ public class MainFrame extends javax.swing.JFrame {
             room.setRoomPrice(Double.parseDouble(textRoomPrice.getText()));
             room.setCurrencyCode("AUD");
             room.setRoomType(roomType);
-            
+
             roomController.updateRoom(room);
-            
+
             refreshRoomTableModel(true);
-            
-        }
-        catch (Exception e)
-        {
-                        
+
+        } catch (Exception e) {
+
             hasError = true;
             error += "Error in updating room.\n";
         }
-         
-         
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record updated.");
         }
     }//GEN-LAST:event_editRoomBtnActionPerformed
 
     private void editCustomerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCustomerBtnActionPerformed
         // TODO add your handling code here:
-                boolean hasError = false;
+        boolean hasError = false;
         String error = "";
 
-        try
-        {
+        try {
             int id = Integer.parseInt(textCustomerId.getText());
             customer = FinderService.findCustomerByCustomerId(customers, id);
-            
+
             String code = membershipTierComboBox2.getSelectedItem().toString().split("-")[0];
-            
+
             membership = membershipController.findMembershipByTierCode(code);
-            
+
             customer.setMembership(membership);
             customer.setMembershipCredits(Integer.parseInt(textCustomerMembershipCredits.getText()));
-             
+
             customer.setTitle(textCustomerTitle.getText());
             customer.setFirstName(textCustomerFirstName.getText());
             customer.setLastName(textCustomerLastName.getText());
 
-            try
-            {
+            try {
                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
                 Date date1 = fmt.parse(textCustomerDob.getText());
                 customer.setDob(date1);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 hasError = true;
                 error += "Error in parsing date.\n";
             }
@@ -3627,36 +3425,29 @@ public class MainFrame extends javax.swing.JFrame {
             customer.setPostalCode(textCustomerPostalCode.getText());
             customer.setPhoneNumber(textCustomerPhoneNumber.getText());
             customer.setEmailAddress(textCustomerEmailAddress.getText());
-            
+
             customerController.updateCustomer(customer);
 
             refreshCustomerTableModel(true);
-            
-        }
-        catch (Exception e)
-        {
+
+        } catch (Exception e) {
             hasError = true;
             error += "Error in updating customer.\n";
         }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record updated.");
         }
     }//GEN-LAST:event_editCustomerBtnActionPerformed
 
     private void editMembershipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMembershipBtnActionPerformed
         // TODO add your handling code here:
-                boolean hasError = false;
+        boolean hasError = false;
         String error = "";
 
-        try
-        {
+        try {
             String code = textMembershipTierCode.getText();
             membership = FinderService.findMembershipByMembershipTierCode(memberships, code);
             membership.setMembershipTier(textMembershipTierName.getText());
@@ -3664,49 +3455,41 @@ public class MainFrame extends javax.swing.JFrame {
             membership.setDiscount(Long.parseLong(textMembershipDiscount.getText()));
             membership.setOtherRewards(textMembershipOtherRewards.getText());
             membership.setTierCredits(Integer.parseInt(textMembershipCredit.getText()));
-            
+
             membershipController.updateMembership(membership);
-            
+
             refreshMembershipTableModel(true);
-            
+
+        } catch (Exception e) {
+            hasError = true;
+            error += "Error in updating membership.\n";
         }
-        catch (Exception e)
-        {
-                            hasError = true;
-                error += "Error in updating membership.\n";
-        }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
         }
     }//GEN-LAST:event_editMembershipBtnActionPerformed
 
     private void editBookingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBookingBtnActionPerformed
         // TODO add your handling code here:
-                boolean hasError = false;
+        boolean hasError = false;
         String error = "";
 
-        try
-        {
+        try {
             int id = Integer.parseInt(textBookingId.getText());
             booking = FinderService.findBookingById(bookings, id);
-            
+
             Date date1 = null;
-                    Date date2 = null;
-            try
-            {
+            Date date2 = null;
+            try {
                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
                 date1 = fmt.parse(textBookingCheckInDate.getText());
                 date2 = fmt.parse(textBookingCheckOutDate.getText());
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 hasError = true;
                 error += "Error in parsing check in or check out date.\n";
             }
-            
+
             booking.setCheckInDate(date1);
             booking.setCheckOutDate(date2);
             booking.setContactEmail(textBookingContactEmail.getText());
@@ -3722,73 +3505,56 @@ public class MainFrame extends javax.swing.JFrame {
             booking.setTotalAmount(Double.parseDouble(textBookingTotalAmount.getText()));
 
             bookingController.updateBooking(booking);
-            
+
             refreshBookingTableModel(true);
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+
             hasError = true;
             error += "Error in updating booking.\n";
 
         }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        else
-        {
-           JOptionPane.showMessageDialog(this, "Record updated.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Record updated.");
         }
     }//GEN-LAST:event_editBookingBtnActionPerformed
 
     private void deleteHotelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteHotelBtnActionPerformed
         // TODO add your handling code here:
-                boolean hasError = false;
+        boolean hasError = false;
         String error = "";
 
+        try {
 
-        try 
-        {
+            int id = Integer.parseInt(textHotelId.getText());
 
-           int id = Integer.parseInt(textHotelId.getText());
+            hotel = FinderService.findHotelById(hotels, id);
+            ArrayList<Room> hotelRooms = FinderService.findRoomByHotelId(rooms, id);
 
-           hotel = FinderService.findHotelById(hotels, id);
-           ArrayList<Room> hotelRooms = FinderService.findRoomByHotelId(rooms, id);
-           
-           if (hotelRooms.size() <= 0)
-           {
-               hotelController.deleteHotel(hotel);
-           }
-           else
-           {
-               // TODO: Error, cannot delete hotel!
-           }
-           
-           tblHotel.addNotify();
-           refreshHotelTableModel(true);
-           clearHotelFields();
-          
-        }
-        catch (Exception e)
-        {
-                        
+            if (hotelRooms.size() <= 0) {
+                hotelController.deleteHotel(hotel);
+            } else {
+                // TODO: Error, cannot delete hotel!
+            }
+
+            tblHotel.addNotify();
+            refreshHotelTableModel(true);
+            clearHotelFields();
+
+        } catch (Exception e) {
+
             hasError = true;
             error += "Error in deleting hotel.\n";
         }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record deleted.");
         }
-        
+
     }//GEN-LAST:event_deleteHotelBtnActionPerformed
 
     private void delRoomBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delRoomBtnActionPerformed
@@ -3798,233 +3564,183 @@ public class MainFrame extends javax.swing.JFrame {
 
         // also delete the bookingroomguest
         // can be deleted
-        try
-        {
+        try {
             int id = Integer.parseInt(textRoomId.getText());
             room = FinderService.findRoomByRoomId(rooms, id);
-            
+
             ArrayList<BookingRoomGuest> brgList = new ArrayList<>(bookingController.getBookingRoomGuest());
-            
+
             ArrayList<BookingRoomGuest> rBrgList = FinderService.findBookingRoomGuestByRoomId(brgList, id);
-            
+
             // Also delete the BookingRoomGuest if we're going to delete the room
             // Works like CASCADE
-            if (rBrgList.size() > 0)
-            {
-                for (int i = rBrgList.size() - 1; i >= 0; i--)
-                {
+            if (rBrgList.size() > 0) {
+                for (int i = rBrgList.size() - 1; i >= 0; i--) {
                     BookingRoomGuest brg = rBrgList.get(i);
                     bookingController.deleteBookingRoomGuest(brg);
                 }
             }
-            
+
             roomController.deleteRoom(id);
             tblRoom.addNotify();
             refreshRoomTableModel(true);
-            
-        }
-        catch (Exception e)
-        {
-                        
+
+        } catch (Exception e) {
+
             hasError = true;
             error += "Error in deleting room.\n";
         }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record deleted.");
         }
     }//GEN-LAST:event_delRoomBtnActionPerformed
 
     private void delCustomerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delCustomerBtnActionPerformed
         // TODO add your handling code here:
-        
+
         // Check if the customer has any booking
-        
         // if none, delete!
-                boolean hasError = false;
+        boolean hasError = false;
         String error = "";
 
-        
-        try
-        {
+        try {
             int id = Integer.parseInt(textCustomerId.getText());
             customer = FinderService.findCustomerByCustomerId(customers, id);
-            
-            if (customer.getBookingCollection().size() > 0)
-            {
+
+            if (customer.getBookingCollection().size() > 0) {
                 // TODO: Error! Cannot delete customer with booking
-                            
+
                 hasError = true;
                 error += "Error Cannot delete customer with a booking.\n";
-            }
-            else
-            {
+            } else {
                 customerController.deleteCustomer(customer);
             }
-            
+
             tblCustomer.addNotify();
             refreshCustomerTableModel(true);
             clearCustomerFields();
 
-        }
-        catch (Exception e)
-        {
-                        
+        } catch (Exception e) {
+
             hasError = true;
             error += "Error in deleting customer.\n";
         }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record deleted.");
         }
-        
+
     }//GEN-LAST:event_delCustomerBtnActionPerformed
 
     private void delGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delGuestBtnActionPerformed
         // TODO add your handling code here:
-                boolean hasError = false;
+        boolean hasError = false;
         String error = "";
 
-        
         // can be deleted - also delete the booking room guest
-        try
-        {
+        try {
             int id = Integer.parseInt(textGuestId.getText());
             guest = FinderService.findGuestByGuestId(guests, id);
-            
+
             ArrayList<BookingRoomGuest> brgList = new ArrayList<>(bookingController.getBookingRoomGuest());
-            
+
             ArrayList<BookingRoomGuest> rBrgList = FinderService.findBookingRoomGuestByGuestId(brgList, id);
-            
+
             // Also delete the BookingRoomGuest if we're going to delete the room
             // Works like CASCADE
-            if (rBrgList.size() > 0)
-            {
-                for (int i = rBrgList.size() - 1; i >= 0; i--)
-                {
+            if (rBrgList.size() > 0) {
+                for (int i = rBrgList.size() - 1; i >= 0; i--) {
                     BookingRoomGuest brg = rBrgList.get(i);
                     bookingController.deleteBookingRoomGuest(brg);
                 }
             }
-            
+
             guestController.deleteGuest(guest);
             tblGuest.addNotify();
             refreshGuestTableModel(true);
             clearGuestFields();
-            
-        }
-        catch (Exception e)
-        {
-                        
+
+        } catch (Exception e) {
+
             hasError = true;
             error += "Error in deleting guest.\n";
         }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record deleted.");
         }
     }//GEN-LAST:event_delGuestBtnActionPerformed
 
     private void delMembershipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delMembershipBtnActionPerformed
         // TODO add your handling code here:
-                boolean hasError = false;
+        boolean hasError = false;
         String error = "";
 
-        try
-        {
+        try {
             String code = textMembershipTierCode.getText();
             membership = FinderService.findMembershipByMembershipTierCode(memberships, code);
-            
-            if (membership.getCustomerCollection().size() > 0)
-            {
+
+            if (membership.getCustomerCollection().size() > 0) {
                 // TODO: error - cannot delete membership
-            }
-            else
-            {
+            } else {
                 membershipController.deleteMembership(membership);
                 tblMembership.addNotify();
                 refreshMembershipTableModel(true);
                 clearMembershipFields();
             }
 
-        }
-        catch (Exception e)
-        {
-                        
+        } catch (Exception e) {
+
             hasError = true;
             error += "Error in deleting membership.\n";
         }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record deleted.");
         }
     }//GEN-LAST:event_delMembershipBtnActionPerformed
 
     private void delPaymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delPaymentBtnActionPerformed
         // TODO add your handling code here:
-                boolean hasError = false;
+        boolean hasError = false;
         String error = "";
 
-        try
-        {
+        try {
             int id = Integer.parseInt(textPaymentBookingId.getText());
             int num = Integer.parseInt(textPaymentNumber.getText());
-            
+
             payment = FinderService.findPaymentById(payments, id, num);
-            
-            if (payment != null)
-            {
-                
+
+            if (payment != null) {
+
                 paymentController.deletePayment(payment);
-                
+
                 tblPayment.addNotify();
                 refreshPaymentTableModel(true);
                 clearPaymentFields();
-            }
-            else{
+            } else {
                 // TODO: error! booking is not found
-                            
+
                 hasError = true;
                 error += "Error in deleting payment - booking is not found.\n";
             }
-        }
-        catch (Exception e)
-        {     
+        } catch (Exception e) {
             hasError = true;
             error += "Error in deleting payment.\n";
         }
-        
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Record deleted.");
         }
     }//GEN-LAST:event_delPaymentBtnActionPerformed
@@ -4035,126 +3751,96 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void searchGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGuestBtnActionPerformed
         // TODO add your handling code here:
-                boolean hasError = false;
+        boolean hasError = false;
         String error = "";
 
-        try
-        {
+        try {
             String fname = searchGuestFirstName.getText();
             String lname = searchGuestLastName.getText();
-            
+
             guests = new ArrayList<>(guestController.getGuests());
-            
-            if (!fname.isEmpty() && !lname.isEmpty())
-            {
+
+            if (!fname.isEmpty() && !lname.isEmpty()) {
                 guests = FinderService.listGuestByGuestName(guests, fname, lname);
-            }
-            else if (fname.isEmpty() && !lname.isEmpty())
-            {
+            } else if (fname.isEmpty() && !lname.isEmpty()) {
                 guests = FinderService.findGuestByLastName(guests, lname);
-            }
-            else if (!fname.isEmpty() && lname.isEmpty())
-            {
+            } else if (!fname.isEmpty() && lname.isEmpty()) {
                 guests = FinderService.findGuestByFirstName(guests, fname);
             }
-            
+
             refreshGuestTableModel(false);
-        }
-        catch(Exception e)
-        {
-                        
+        } catch (Exception e) {
+
             hasError = true;
             error += "Error in searching guests.\n";
         }
-        
-        if (hasError)
-        {
-            
+
+        if (hasError) {
+
         }
     }//GEN-LAST:event_searchGuestBtnActionPerformed
 
     private void searchBookingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBookingsBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             String fname = searchBookingFirstName.getText();
             String lname = searchBookingLastName.getText();
-            
+
             bookings = new ArrayList<>(bookingController.getBookings());
-            
-            if (!fname.isEmpty() && !lname.isEmpty())
-            {
+
+            if (!fname.isEmpty() && !lname.isEmpty()) {
                 bookings = FinderService.listBookingByCustomerName(bookings, fname, lname);
-            }
-            else if (fname.isEmpty() && !lname.isEmpty())
-            {
+            } else if (fname.isEmpty() && !lname.isEmpty()) {
                 bookings = FinderService.findBookingByLastName(bookings, lname);
-            }
-            else if (!fname.isEmpty() && lname.isEmpty())
-            {
+            } else if (!fname.isEmpty() && lname.isEmpty()) {
                 bookings = FinderService.findBookingByFirstName(bookings, fname);
             }
-            
+
             refreshBookingTableModel(false);
-        }
-        catch(Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_searchBookingsBtnActionPerformed
 
     private void searchPaymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchPaymentBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             String fname = searchPaymentFirstName.getText();
             String lname = searchPaymentLastName.getText();
-            
+
             payments = new ArrayList<>(paymentController.getPayments());
-            
-            if (!fname.isEmpty() && !lname.isEmpty())
-            {
+
+            if (!fname.isEmpty() && !lname.isEmpty()) {
                 payments = FinderService.listPaymentByCustomerName(payments, fname, lname);
-            }
-            else if (fname.isEmpty() && !lname.isEmpty())
-            {
+            } else if (fname.isEmpty() && !lname.isEmpty()) {
                 payments = FinderService.findPaymentByLastName(payments, lname);
-            }
-            else if (!fname.isEmpty() && lname.isEmpty())
-            {
+            } else if (!fname.isEmpty() && lname.isEmpty()) {
                 payments = FinderService.findPaymentByFirstName(payments, fname);
             }
-            
+
             refreshPaymentTableModel(false);
-        }
-        catch(Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_searchPaymentBtnActionPerformed
 
     private void searchMemberBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchMemberBtnActionPerformed
         // TODO add your handling code here:
-                boolean hasError = false;
+        boolean hasError = false;
         String error = "";
 
-        
-        try
-        {
+        try {
             int availableCredits = Integer.parseInt(searchMembershipAvailableCredit.getText());
-            
+
             memberships = new ArrayList<>(membershipController.findMembershipByTierCredits(availableCredits));
-            
+
             refreshMembershipTableModel(false);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             hasError = true;
             error += "Error in parsing member tier credits.\n";
         }
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
         }
     }//GEN-LAST:event_searchMemberBtnActionPerformed
@@ -4185,22 +3871,17 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
-    
-    private void refreshHotelTableModel(boolean getAll)
-    {
-        try
-        {
-            Object dataHotel [][] = {{}};
+    private void refreshHotelTableModel(boolean getAll) {
+        try {
+            Object dataHotel[][] = {{}};
             hotelTableModel = new DefaultTableModel(dataHotel, hotelColumnHeaders);
-            
-            if (getAll)
-            {
+
+            if (getAll) {
                 hotels = new ArrayList<>(hotelController.getHotels());
             }
 
-            for (Hotel h : hotels)
-            {
-                Object [] rowData = new Object[9];
+            for (Hotel h : hotels) {
+                Object[] rowData = new Object[9];
                 rowData[0] = h.getHotelId();
                 rowData[1] = h.getHotelName();
                 rowData[2] = h.getHotelTypeCode();
@@ -4218,32 +3899,26 @@ public class MainFrame extends javax.swing.JFrame {
 
             tblHotel.addNotify();
             tblHotel.setModel(hotelTableModel);
-            
+
             tblHotel.clearSelection();
             tblHotel.repaint();
-            
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+
         }
     }
-    
-    private void refreshBookingTableModel(boolean getAll)
-    {
-        try
-        {
-            Object dataBooking [][] = {{}};
+
+    private void refreshBookingTableModel(boolean getAll) {
+        try {
+            Object dataBooking[][] = {{}};
             bookingTableModel = new DefaultTableModel(dataBooking, bookingColumnHeaders);
-            
-            if (getAll)
-            {
+
+            if (getAll) {
                 bookings = new ArrayList<>(bookingController.getBookings());
             }
 
-            for (Booking h : bookings)
-            {
-                Object [] rowData = new Object[9];
+            for (Booking h : bookings) {
+                Object[] rowData = new Object[9];
                 rowData[0] = h.getBookingId();
                 rowData[1] = h.getCustomer().getCustomerId();
                 rowData[2] = getDateString(h.getCheckInDate());
@@ -4262,28 +3937,22 @@ public class MainFrame extends javax.swing.JFrame {
 
             tblBooking.clearSelection();
             tblBooking.repaint();
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
     }
-    
-    private void refreshRoomTableModel(boolean getAll)
-    {
-        try
-        {
-            Object dataRoom [][] = {{}};
+
+    private void refreshRoomTableModel(boolean getAll) {
+        try {
+            Object dataRoom[][] = {{}};
             roomTableModel = new DefaultTableModel(dataRoom, roomColumnHeaders);
-            
-            if (getAll)
-            {
+
+            if (getAll) {
                 rooms = new ArrayList<>(roomController.getRooms());
             }
 
-            for (Room h : rooms)
-            {
-                Object [] rowData = new Object[7];
+            for (Room h : rooms) {
+                Object[] rowData = new Object[7];
                 rowData[0] = h.getHotelId();
                 rowData[1] = h.getRoomId();
                 rowData[2] = h.getRoomNumber();
@@ -4299,28 +3968,22 @@ public class MainFrame extends javax.swing.JFrame {
             tblRoom.setModel(roomTableModel);
             tblRoom.clearSelection();
             tblRoom.repaint();
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
     }
-    
-    private void refreshGuestTableModel(boolean getAll)
-    {
-        try 
-        {
-            Object dataGuest [][] = {{}};
+
+    private void refreshGuestTableModel(boolean getAll) {
+        try {
+            Object dataGuest[][] = {{}};
             guestTableModel = new DefaultTableModel(dataGuest, guestColumnHeaders);
-            
-            if(getAll)
-            {
+
+            if (getAll) {
                 guests = new ArrayList<>(guestController.getGuests());
             }
-            
-            for (Guest h : guests)
-            {
-                Object [] rowData = new Object[12];
+
+            for (Guest h : guests) {
+                Object[] rowData = new Object[12];
                 rowData[0] = h.getGuestId();
                 rowData[1] = h.getBooking().getBookingId();
                 rowData[2] = h.getTitle();
@@ -4341,35 +4004,26 @@ public class MainFrame extends javax.swing.JFrame {
             tblGuest.setModel(guestTableModel);
             tblGuest.clearSelection();
             tblGuest.repaint();
-            
-        }
-        catch(Exception e)
-        {
-            
+
+        } catch (Exception e) {
+
         }
     }
-    
-    private void refreshPaymentTableModel(boolean getAll)
-    {
-        try
-        {
-            Object dataPayment [][] = {{}};
+
+    private void refreshPaymentTableModel(boolean getAll) {
+        try {
+            Object dataPayment[][] = {{}};
             paymentTableModel = new DefaultTableModel(dataPayment, paymentColumnHeaders);
-            
-            if (getAll)
-            {
+
+            if (getAll) {
                 payments = new ArrayList<>(paymentController.getPayments());
             }
 
-            
-            for (Payment p : payments)
-            {
-                Object [] rowData = new Object[6];
+            for (Payment p : payments) {
+                Object[] rowData = new Object[6];
                 rowData[0] = p.getPaymentPK().getBookingId();
                 rowData[1] = p.getPaymentPK().getPaymentNumber();
-   
-               
-                
+
                 rowData[2] = getDateString(p.getPaymentDate());//p.getPaymentDate();
                 rowData[3] = p.getPaymentAmount();
                 rowData[4] = p.getCurrencyCode();
@@ -4382,29 +4036,23 @@ public class MainFrame extends javax.swing.JFrame {
             tblPayment.setModel(paymentTableModel);
             tblPayment.clearSelection();
             tblPayment.repaint();
-            
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+
         }
     }
-    
-    private void refreshCustomerTableModel(boolean getAll)
-    {
-        try
-        {
-            Object dataCustomer [][] = {{}};
+
+    private void refreshCustomerTableModel(boolean getAll) {
+        try {
+            Object dataCustomer[][] = {{}};
             customerTableModel = new DefaultTableModel(dataCustomer, customerColumnHeaders);
-            
-            if (getAll)
-            {
+
+            if (getAll) {
                 customers = new ArrayList<>(customerController.getCustomers());
             }
-            
-            for (Customer h : customers)
-            {
-                Object [] rowData = new Object[13];
+
+            for (Customer h : customers) {
+                Object[] rowData = new Object[13];
                 rowData[0] = h.getCustomerId();
                 rowData[1] = h.getMembership().getMembershipTierCode();
                 rowData[2] = h.getMembershipCredits();
@@ -4427,29 +4075,23 @@ public class MainFrame extends javax.swing.JFrame {
             tblCustomer.clearSelection();
             tblCustomer.repaint();
 
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
     }
-    
-    private void refreshMembershipTableModel(boolean getAll)
-    {
-        try
-        {
-            Object dataMembership [][] = {{}};
+
+    private void refreshMembershipTableModel(boolean getAll) {
+        try {
+            Object dataMembership[][] = {{}};
 
             membershipTableModel = new DefaultTableModel(dataMembership, membershipColumnHeaders);
 
-            if (getAll)
-            {
+            if (getAll) {
                 memberships = new ArrayList<>(membershipController.getMemberships());
             }
 
-            for (Membership m : memberships)
-            {
-                Object [] rowData = new Object[5];
+            for (Membership m : memberships) {
+                Object[] rowData = new Object[5];
                 rowData[0] = m.getMembershipTierCode();
                 rowData[1] = m.getMembershipTier();
                 rowData[2] = m.getTierCredits();
@@ -4463,18 +4105,15 @@ public class MainFrame extends javax.swing.JFrame {
             tblMembership.setModel(membershipTableModel);
             tblMembership.clearSelection();
             tblMembership.repaint();
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
 
     }
-    
-    private void refreshDataTableModels()
-    {
-        try{
-            
+
+    private void refreshDataTableModels() {
+        try {
+
             refreshHotelTableModel(true);
             refreshBookingTableModel(true);
             refreshRoomTableModel(true);
@@ -4482,32 +4121,29 @@ public class MainFrame extends javax.swing.JFrame {
             refreshCustomerTableModel(true);
             refreshMembershipTableModel(true);
             refreshPaymentTableModel(true);
-           
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+
         }
     }
-    
-    private String getDateString(Date date)
-    {
+
+    private String getDateString(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
 
-        DecimalFormat mFormat= new DecimalFormat("00");
+        DecimalFormat mFormat = new DecimalFormat("00");
 
         String dataDate = date.toString();
 
         String mo = cal.getTime().toString();
-        mo = cal.get(Calendar.YEAR) + 
-                "-" + 
-                mFormat.format((cal.get(Calendar.MONTH) + 1)%12).toString() 
+        mo = cal.get(Calendar.YEAR)
+                + "-"
+                + mFormat.format((cal.get(Calendar.MONTH) + 1) % 12).toString()
                 + "-" + mFormat.format(cal.get(Calendar.DATE)).toString();
-        
+
         return mo;
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -4541,7 +4177,7 @@ public class MainFrame extends javax.swing.JFrame {
                 new MainFrame().setVisible(true);
             }
         });
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

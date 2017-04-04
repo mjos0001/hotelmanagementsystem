@@ -33,9 +33,8 @@ public class BookingCreator extends javax.swing.JFrame {
      */
     public BookingCreator(ArrayList<EntityManagerFactory> emfList) {
         initComponents();
-        
-        try
-        {
+
+        try {
             jTabbedPane3.setEnabledAt(1, false);
             jTabbedPane3.setEnabledAt(2, false);
             jTabbedPane3.setEnabledAt(3, false);
@@ -43,30 +42,26 @@ public class BookingCreator extends javax.swing.JFrame {
             jTabbedPane3.setEnabledAt(5, false);
 
             emfactoryList = emfList;
-              
-         
+
             allocatorService = new RoomAllocatorService(emfactoryList.get(1));
             hds = new HotelDataService(emfactoryList.get(0));
             hotels = new ArrayList<>(hds.getHotels());
-            
+
             cds = new CustomerDataService(emfactoryList.get(1));
             customers = new ArrayList<>(cds.getCustomers());
-            
+
             bds = new BookingDataService(emfactoryList.get(1));
             gds = new GuestDataService(emfactoryList.get(1));
             pds = new PaymentDataService(emfactoryList.get(1));
-            
+
             fillUpBookingComboBoxes();
-        }
-        
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
     }
-    
+
     ArrayList<EntityManagerFactory> emfactoryList = null;
-    
+
     boolean firstTabDone = false;
     boolean secondTabDone = false;
     boolean thirdTabDone = false;
@@ -74,34 +69,33 @@ public class BookingCreator extends javax.swing.JFrame {
 
     ArrayList<GuestForm> guestForms = new ArrayList<>();
     ArrayList<PaymentForm> paymentForms = new ArrayList<>();
-    
-    
+
     RoomAllocatorService allocatorService = null;
     HotelDataService hds = null;
     CustomerDataService cds = null;
     BookingDataService bds = null;
     GuestDataService gds = null;
     PaymentDataService pds = null;
-    
+
     ArrayList<Hotel> hotels = null;
     ArrayList<Customer> customers = null;
     ArrayList<Room> rooms = null;
     ArrayList<Room> takenRooms = null;
     ArrayList<Guest> guests = null;
-    
+
     SearchRoomRequest roomRequest = null;
- 
+
     ArrayList<RoomChoice> roomChoices = null;
     ArrayList<BookingRoomGuest> bookingRoomGuests = null;
-    
+
     Booking booking = new Booking();
-    
+
     int maxOccupancy = 0;
     int numOfGuests = 0;
     int numOfPayments = 0;
     double totalCost = 0.0;
     double totalPaid = 0.0;
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -786,334 +780,274 @@ public class BookingCreator extends javax.swing.JFrame {
 
     private void btnSubmitSearchRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitSearchRequestActionPerformed
         // TODO add your handling code here:
-        
+
         // TODO Verify if the request is ok
         boolean hasError = false;
         String error = "";
-        
+
         roomRequest = new SearchRoomRequest();
-       
-        
-        try
-        {
+
+        try {
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
             Date date1 = fmt.parse(textCheckInDate.getText());
             Date date2 = fmt.parse(textCheckOutDate.getText());
             roomRequest.setCheckInDate(date1);
             roomRequest.setCheckOutDate(date2);
-            
-            if (date1.compareTo(new Date()) < 0)
-            {
+
+            if (date1.compareTo(new Date()) < 0) {
                 hasError = true;
                 error += "Error - selected date has already passed.";
             }
-            
-            if (date1.compareTo(date2) > 0)
-            {
+
+            if (date1.compareTo(date2) > 0) {
                 hasError = true;
                 error += "Error - Check in date is later than check out date.\n";
             }
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             // Add error to error strings
             hasError = true;
             error += "Error in parsing dates.";
         }
-        
-        
+
         ArrayList<String> roomTypes = new ArrayList<>();
-        
-        if (cbSingle.isSelected())
-        {
+
+        if (cbSingle.isSelected()) {
             roomTypes.add("SGL");
         }
-        
-        if(cbDouble.isSelected())
-        {
+
+        if (cbDouble.isSelected()) {
             roomTypes.add("DBL");
         }
-        
-        if (cbQuadruple.isSelected())
-        {
+
+        if (cbQuadruple.isSelected()) {
             roomTypes.add("QPL");
         }
-        
-        if (cbDeluxe.isSelected())
-        {
+
+        if (cbDeluxe.isSelected()) {
             roomTypes.add("DLX");
         }
-        
-        if (cbSuite.isSelected())
-        {
+
+        if (cbSuite.isSelected()) {
             roomTypes.add("STE");
         }
-        
-        roomRequest.setRoomTypeCode(roomTypes);
-        
 
-        try
-        {
+        roomRequest.setRoomTypeCode(roomTypes);
+
+        try {
             String a = textMinPrice.getText();
             String b = textMaxPrice.getText();
-            
-            int minAmount = 0; 
+
+            int minAmount = 0;
             int maxAmount = 0;
-            
-            if (!a.isEmpty())
-            {
+
+            if (!a.isEmpty()) {
                 minAmount = Integer.parseInt(a);
             }
-            
-            if (!b.isEmpty())
-            {
+
+            if (!b.isEmpty()) {
                 maxAmount = Integer.parseInt(b);
             }
             roomRequest.setMinPrice(minAmount);
             roomRequest.setMaxPrice(maxAmount);
-       
-        }
-        catch (Exception e)
-        {
+
+        } catch (Exception e) {
             hasError = true;
             error += "Error in parsing minimum or maximum amounts.\n";
         }
 
-        try
-        {
+        try {
             int hotelId = Integer.parseInt(hotelComboBox.getSelectedItem().toString().split("-")[0]);
             roomRequest.setHotelId(hotelId);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             hasError = true;
             error += "Error in parsing hotel id.\n";
         }
-        
-        if (!hasError)
-        {
-            try
-            {
+
+        if (!hasError) {
+            try {
                 rooms = allocatorService.findAvailableRooms(roomRequest);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 hasError = true;
                 error += "Error in finding available rooms.\n";
             }
         }
-        
-        if (!hasError)
-        {
+
+        if (!hasError) {
             fillUpRoomChoiceComboBoxes();
             jTabbedPane3.setEnabledAt(1, true);
             jTabbedPane3.setSelectedIndex(1);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, error);
         }
     }//GEN-LAST:event_btnSubmitSearchRequestActionPerformed
 
-    private void fillUpBookingComboBoxes()
-    {
-         ArrayList<String> customerString = new ArrayList<>();
-        
-        for (Customer c : customers )
-        {
+    private void fillUpBookingComboBoxes() {
+        ArrayList<String> customerString = new ArrayList<>();
+
+        for (Customer c : customers) {
             String a = c.getCustomerId() + "-" + c.getFirstName() + " " + c.getLastName();
             customerString.add(a);
         }
-        
+
         ArrayList<String> hotelString = new ArrayList<>();
         hotelString.add("None");
-        
-        for (Hotel c : hotels)
-        {
+
+        for (Hotel c : hotels) {
             String a = c.getHotelId() + "-" + c.getHotelName();
             hotelString.add(a);
         }
-        
+
         DefaultComboBoxModel custCBModel = new DefaultComboBoxModel(customerString.toArray());
         DefaultComboBoxModel hotelCBModel = new DefaultComboBoxModel(hotelString.toArray());
-        
+
         customerComboBox.setModel(custCBModel);
         customerComboBox.repaint();
-        
+
         hotelComboBox.setModel(hotelCBModel);
         hotelComboBox.repaint();
     }
-    
-    private void fillUpRoomChoiceComboBoxes()
-    {
+
+    private void fillUpRoomChoiceComboBoxes() {
         int singleRooms = 0;
         int doubleRooms = 0;
         int quadrupleRooms = 0;
         int deluxeRooms = 0;
         int suiteRooms = 0;
-        
+
         singleRooms = FinderService.findRoomByRoomType(rooms, "SGL").size();
         doubleRooms = FinderService.findRoomByRoomType(rooms, "DBL").size();
         quadrupleRooms = FinderService.findRoomByRoomType(rooms, "QPL").size();
         deluxeRooms = FinderService.findRoomByRoomType(rooms, "DLX").size();
         suiteRooms = FinderService.findRoomByRoomType(rooms, "STE").size();
-        
 
         ArrayList<String> singleString = new ArrayList<>();
-        
-        for (int i = 0; i <= singleRooms; i++)
-        {
+
+        for (int i = 0; i <= singleRooms; i++) {
             singleString.add(Integer.toString(i));
         }
-        
+
         ArrayList<String> doubleString = new ArrayList<>();
-        
-        for (int i = 0; i <= doubleRooms; i++)
-        {
+
+        for (int i = 0; i <= doubleRooms; i++) {
             doubleString.add(Integer.toString(i));
         }
-        
+
         ArrayList<String> quadString = new ArrayList<>();
-        
-        for (int i = 0; i <= quadrupleRooms; i++)
-        {
+
+        for (int i = 0; i <= quadrupleRooms; i++) {
             quadString.add(Integer.toString(i));
         }
-        
+
         ArrayList<String> deluxeString = new ArrayList<>();
-        
-        for (int i = 0; i <= deluxeRooms; i++)
-        {
+
+        for (int i = 0; i <= deluxeRooms; i++) {
             deluxeString.add(Integer.toString(i));
         }
-        
+
         ArrayList<String> suiteString = new ArrayList<>();
-        
-        for (int i = 0; i <= suiteRooms; i++)
-        {
+
+        for (int i = 0; i <= suiteRooms; i++) {
             suiteString.add(Integer.toString(i));
         }
-       
-      
-        
+
         DefaultComboBoxModel singleCBModel = new DefaultComboBoxModel(singleString.toArray());
         DefaultComboBoxModel doubleCBModel = new DefaultComboBoxModel(doubleString.toArray());
         DefaultComboBoxModel quadCBModel = new DefaultComboBoxModel(quadString.toArray());
         DefaultComboBoxModel deluxeCBModel = new DefaultComboBoxModel(deluxeString.toArray());
         DefaultComboBoxModel suiteCBModel = new DefaultComboBoxModel(suiteString.toArray());
-       
-        
+
         singleComboBox.setModel(singleCBModel);
         singleComboBox.repaint();
-        
+
         doubleComboBox.setModel(doubleCBModel);
         doubleComboBox.repaint();
-        
+
         quadComboBox.setModel(quadCBModel);
         quadComboBox.repaint();
-        
+
         deluxeComboBox.setModel(deluxeCBModel);
         deluxeComboBox.repaint();
-        
+
         suiteComboBox.setModel(suiteCBModel);
         suiteComboBox.repaint();
 
     }
-    
-    private void calculateTotalCost()
-    {
+
+    private void calculateTotalCost() {
         takenRooms = new ArrayList<>();
         ArrayList<Room> availableRooms = new ArrayList<>(rooms);
-        
+
         totalCost = 0;
-        
-        for (RoomChoice rc : roomChoices)
-        {
+
+        for (RoomChoice rc : roomChoices) {
             int qty = rc.getAllocatedGuests();
             String code = rc.getRoomTypeCode();
-            
-            try
-            {
+
+            try {
                 ArrayList<Room> aRoomByType = FinderService.findRoomByRoomType(availableRooms, code);
-                
-                for (int i = 0; i < qty; i++)
-                {
-                    try
-                    {
+
+                for (int i = 0; i < qty; i++) {
+                    try {
                         Room takenRoom = aRoomByType.get(aRoomByType.size() - 1);
                         totalCost += takenRoom.getRoomPrice();
                         // remove the room we'll take
                         takenRooms.add(takenRoom);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
 
                     }
 
                 }
-                
+
                 Date date1 = roomRequest.getCheckInDate();
                 Date date2 = roomRequest.getCheckOutDate();
-                
+
                 long diff = date1.getTime() - date2.getTime();
                 long noOfDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
                 long duration = Math.abs(TimeUnit.DAYS.toDays(noOfDays));
-                
+
                 totalCost *= duration;
-            }
-            catch (Exception e)
-            {
-                
+            } catch (Exception e) {
+
             }
         }
     }
-    
-    private void calculateMaxOccupancy()
-    {
-        try
-        {
+
+    private void calculateMaxOccupancy() {
+        try {
             int sgl = Integer.parseInt(singleComboBox.getSelectedItem().toString());
             int dbl = Integer.parseInt(doubleComboBox.getSelectedItem().toString());
             int qpl = Integer.parseInt(quadComboBox.getSelectedItem().toString());
             int dlx = Integer.parseInt(deluxeComboBox.getSelectedItem().toString());
             int ste = Integer.parseInt(suiteComboBox.getSelectedItem().toString());
-            
+
             maxOccupancy = (sgl * 1) + (dbl * 2) + (qpl * 4) + (dlx * 4) + (ste * 6);
             textMaxOccupancy.setText(Integer.toString(maxOccupancy));
             textMaxOccupancy.repaint();
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
     }
-    
+
     private void submitRoomChoiceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitRoomChoiceBtnActionPerformed
         // TODO add your handling code here:
         boolean hasError = false;
         String errors = "";
-        
-        try
-        {
-            numOfGuests = Integer.parseInt(textNumGuests.getText());
-            
-            if (numOfGuests > maxOccupancy)
-            {
-               hasError = true;
-               errors += ("Number of guests cannot exceed max occupancy.\n");
-            }
-            
 
-        }
-        catch (Exception e)
-        {
+        try {
+            numOfGuests = Integer.parseInt(textNumGuests.getText());
+
+            if (numOfGuests > maxOccupancy) {
+                hasError = true;
+                errors += ("Number of guests cannot exceed max occupancy.\n");
+            }
+
+        } catch (Exception e) {
             hasError = true;
             errors += ("Error in reading number of guests.\n");
         }
-        
-        if (!hasError)
-        {
+
+        if (!hasError) {
             int sgl = Integer.parseInt(singleComboBox.getSelectedItem().toString());
             int dbl = Integer.parseInt(doubleComboBox.getSelectedItem().toString());
             int qpl = Integer.parseInt(quadComboBox.getSelectedItem().toString());
@@ -1124,8 +1058,7 @@ public class BookingCreator extends javax.swing.JFrame {
 
             RoomChoice rc = null;
 
-            if (sgl > 0)
-            {
+            if (sgl > 0) {
                 rc = new RoomChoice();
                 rc.setQuantity(sgl);
                 rc.setRoomTypeCode("SGL");
@@ -1133,8 +1066,7 @@ public class BookingCreator extends javax.swing.JFrame {
                 roomChoices.add(rc);
             }
 
-            if (dbl > 0)
-            {
+            if (dbl > 0) {
                 rc = new RoomChoice();
 
                 rc.setQuantity(dbl);
@@ -1144,8 +1076,7 @@ public class BookingCreator extends javax.swing.JFrame {
                 roomChoices.add(rc);
             }
 
-            if (qpl > 0)
-            {
+            if (qpl > 0) {
                 rc = new RoomChoice();
 
                 rc.setQuantity(qpl);
@@ -1155,8 +1086,7 @@ public class BookingCreator extends javax.swing.JFrame {
                 roomChoices.add(rc);
             }
 
-            if (dlx > 0)
-            {
+            if (dlx > 0) {
                 rc = new RoomChoice();
 
                 rc.setQuantity(dlx);
@@ -1166,8 +1096,7 @@ public class BookingCreator extends javax.swing.JFrame {
                 roomChoices.add(rc);
             }
 
-            if (ste > 0)
-            {
+            if (ste > 0) {
                 rc = new RoomChoice();
 
                 rc.setQuantity(ste);
@@ -1177,19 +1106,16 @@ public class BookingCreator extends javax.swing.JFrame {
                 roomChoices.add(rc);
             }
 
-            try
-            {
+            try {
                 roomChoices = allocatorService.allocateRoomPerGuest(roomChoices, numOfGuests);
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 hasError = true;
                 errors += "Error during room allocation for guests.\n";
             }
 
             String allocation = "You will be allocated:\n";
 
-            for (RoomChoice a : roomChoices)
-            {
+            for (RoomChoice a : roomChoices) {
                 String line = (a.getRoomTypeCode() + "- " + Integer.toString(a.getAllocatedGuests()) + " guests \n");
                 allocation += line;
 
@@ -1197,36 +1123,31 @@ public class BookingCreator extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(this, allocation);
         }
-            
-        if (!hasError)
-        {
+
+        if (!hasError) {
             calculateTotalCost();
             textTotalAmount.setText(Double.toString(totalCost));
             textTotalAmount.repaint();
             jTabbedPane3.setEnabledAt(2, true);
             // enable the boooking form
             jTabbedPane3.setSelectedIndex(2);
-        }
-        else
-        {
- 
+        } else {
+
             JOptionPane.showMessageDialog(this, errors);
-            
+
         }
     }//GEN-LAST:event_submitRoomChoiceBtnActionPerformed
 
     private void submitGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitGuestBtnActionPerformed
         // TODO add your handling code here:
-        
+
         String error = "";
         boolean hasError = false;
-        
+
         guests = new ArrayList<>();
-        
-        
-        for (GuestForm gf : guestForms)
-        {
-            
+
+        for (GuestForm gf : guestForms) {
+
             String a = gf.getTextGuestCity().getText().toString();
             String b = gf.getTextGuestCountry().getText().toString();
             String c = gf.getTextGuestDateOfBirth().getText().toString();
@@ -1235,35 +1156,30 @@ public class BookingCreator extends javax.swing.JFrame {
             String f = gf.getTextGuestPostalCode().getText().toString();
             String gg = gf.getTextGuestStreet().getText().toString();
             String h = gf.getTextGuestTitle().getText().toString();
-            
-            if (a.isEmpty() || b.isEmpty() || c.isEmpty() || d.isEmpty() || ee.isEmpty() || f.isEmpty() || gg.isEmpty() || h.isEmpty())
-            {
+
+            if (a.isEmpty() || b.isEmpty() || c.isEmpty() || d.isEmpty() || ee.isEmpty() || f.isEmpty() || gg.isEmpty() || h.isEmpty()) {
                 hasError = true;
                 error += "Error - the form is incomplete.\n";
             }
-            
+
             Guest newGuest = new Guest();
             newGuest.setBooking(booking);
             newGuest.setCity(gf.getTextGuestCity().getText().toString());
             newGuest.setCountry(gf.getTextGuestCountry().getText().toString());
-            
-            try
-            {
+
+            try {
                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
                 Date date3 = fmt.parse(gf.getTextGuestDateOfBirth().getText().toString());
                 newGuest.setDob(date3);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 hasError = true;
                 error += "Error in parsing date of birth.\n";
             }
-            
-            if (hasError)
-            {
+
+            if (hasError) {
                 break;
             }
-            
+
             newGuest.setEmailAddress(gf.getTextGuestEmailAddress().getText().toString());
             newGuest.setFirstName(gf.getTextGuestFirstName().getText().toString());
             newGuest.setLastName(gf.getTextGuestLastName().getText().toString());
@@ -1272,29 +1188,25 @@ public class BookingCreator extends javax.swing.JFrame {
             newGuest.setPostalCode(gf.getTextGuestPostalCode().getText().toString());
             newGuest.setStreet(gf.getTextGuestStreet().getText().toString());
             newGuest.setTitle(gf.getTextGuestTitle().getText().toString());
-            
-            try
-            {
+
+            try {
                 int newId = gds.createGuest(newGuest);
                 newGuest = gds.getGuestById(newId);
                 guests.add(newGuest);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 hasError = true;
                 error += "Error in creating guest.\n";
-                
+
             }
-            
-            if (hasError)
-            {
+
+            if (hasError) {
                 break;
             }
-            
+
         }
-        
+
         ArrayList<BookingRoomGuestPK> brgPKList = allocatorService.createBookingRoomGuest(booking.getBookingId(), roomChoices, rooms, guests);
-            ArrayList<Room> takenRooms = new ArrayList<>();
+        ArrayList<Room> takenRooms = new ArrayList<>();
 
         if (brgPKList != null) {
             for (BookingRoomGuestPK brgPK : brgPKList) {
@@ -1307,33 +1219,26 @@ public class BookingCreator extends javax.swing.JFrame {
                 Room r = FinderService.findRoomByRoomId(rooms, brgPK.getRoomId());
                 brg.setRoom(r);
 
-                try
-                {
+                try {
                     bds.createBookingRoomGuest(brg);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     hasError = true;
                     error += "Error in adding BookingRoomGuest record.\n";
                 }
 
-                if (hasError)
-                {
+                if (hasError) {
                     break;
                 }
             }
         }
-       
 
-        if (!hasError)
-        {
+        if (!hasError) {
             paymentForms = new ArrayList<>();
             jTabbedPane3.setEnabledAt(4, true);
             jTabbedPane3.setSelectedIndex(4);
         }
-        
-        if (hasError)
-        {
+
+        if (hasError) {
             JOptionPane.showMessageDialog(this, error);
         }
 
@@ -1344,38 +1249,32 @@ public class BookingCreator extends javax.swing.JFrame {
         String error = "";
         boolean hasError = false;
         int paymentNumber = 0;
-        
+
         totalPaid = 0;
-        
-        for (PaymentForm pf : paymentForms)
-        {
+
+        for (PaymentForm pf : paymentForms) {
             String pmc = pf.getPaymentMethodComboBox().getSelectedItem().toString().split("-")[0];
             String amount = pf.getTextPaymentAmount().getText().toString();
-            
-            if (amount.isEmpty())
-            {
+
+            if (amount.isEmpty()) {
                 hasError = true;
                 error += "Error - incomplete form.\n";
             }
-            
-            if (hasError)
-            {
+
+            if (hasError) {
                 break;
             }
-            
+
             double paymentAmount = 0;
-            try
-            {
+            try {
                 paymentAmount = Double.parseDouble(amount);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 hasError = true;
                 error += "Error in parsing payment amount.\n";
             }
-            
+
             totalPaid += paymentAmount;
-            
+
             Payment p1 = new Payment(paymentNumber++, booking.getBookingId());
             p1.setBooking(booking);
             p1.setPaymentAmount(paymentAmount);
@@ -1383,52 +1282,41 @@ public class BookingCreator extends javax.swing.JFrame {
             p1.setPaymentMethodCode(pmc);
             p1.setPaymentDate(new Date());
 
-            try
-            {
+            try {
                 pds.createPayment(p1);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 hasError = true;
                 error += "Error in adding payment.\n";
             }
 
         }
-        
-        if (totalPaid >= totalCost)
-        {
+
+        if (totalPaid >= totalCost) {
             booking.setPaymentStatusCode("PD");
 
-            try
-            {
+            try {
                 bds.updateBooking(booking);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 hasError = true;
                 error += "Error in updating booking.\n";
             }
         }
 
-        
-        if (!hasError)
-        {
+        if (!hasError) {
             textBookingId.setText(Integer.toString(booking.getBookingId()));
             textTotalAmountFinal.setText(Double.toString(totalCost));
             double balanceDue = totalCost - totalPaid;
             textBalanceDue.setText(Double.toString(balanceDue));
-            
+
             String bookingStat = "UNPAID";
-            
-            if (booking.getPaymentStatusCode().equals("PD"))
-            {
+
+            if (booking.getPaymentStatusCode().equals("PD")) {
                 bookingStat = "PAID";
             }
-            
+
             textBookingStatus.setText(bookingStat);
-            
-            for (GuestForm gf : guestForms)
-            {
+
+            for (GuestForm gf : guestForms) {
                 gf.getTextGuestCity().setEnabled(false);
                 gf.getTextGuestCountry().setEnabled(false);
                 gf.getTextGuestDateOfBirth().setEnabled(false);
@@ -1440,13 +1328,12 @@ public class BookingCreator extends javax.swing.JFrame {
                 gf.getTextGuestStreet().setEnabled(false);
                 gf.getTextGuestTitle().setEnabled(false);
             }
-            
-            for (PaymentForm pf : paymentForms)
-            {
+
+            for (PaymentForm pf : paymentForms) {
                 pf.getPaymentMethodComboBox().setEnabled(false);
                 pf.getTextPaymentAmount().setEnabled(false);
             }
-            
+
             textCheckInDate.setEnabled(false);
             textCheckOutDate.setEnabled(false);
             btnSubmitSearchRequest.setEnabled(false);
@@ -1457,16 +1344,13 @@ public class BookingCreator extends javax.swing.JFrame {
             submitGuestBtn.setEnabled(false);
             submitPaymentBtn.setEnabled(false);
             addPaymentBtn.setEnabled(false);
-           
-            
+
             jTabbedPane3.setSelectedIndex(5);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, error);
         }
-        
-        
+
+
     }//GEN-LAST:event_submitPaymentBtnActionPerformed
 
     private void addPaymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPaymentBtnActionPerformed
@@ -1476,7 +1360,7 @@ public class BookingCreator extends javax.swing.JFrame {
         paymentTabbedPane.add(gf);
         int tabIndex = paymentTabbedPane.getTabCount();
         paymentTabbedPane.setTitleAt(tabIndex - 1, "Payment " + tabIndex);
-        
+
     }//GEN-LAST:event_addPaymentBtnActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -1513,13 +1397,12 @@ public class BookingCreator extends javax.swing.JFrame {
         // TODO add your handling code here:
         String error = "";
         boolean hasError = false;
-        
+
         int cusId = Integer.parseInt(customerComboBox.getSelectedItem().toString().split("-")[0]);
-        
+
         Customer cust = FinderService.findCustomerByCustomerId(customers, cusId);
-        
-        try
-        {
+
+        try {
             Booking newBooking = new Booking();
             newBooking.setBookingId(0);
             newBooking.setCheckInDate(roomRequest.getCheckInDate());
@@ -1534,31 +1417,25 @@ public class BookingCreator extends javax.swing.JFrame {
             int newId = bds.createBooking(newBooking);
 
             booking = bds.getBookingByBookingId(newId);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             hasError = true;
             error += "Error in creating a new booking. \n";
         }
-        
-        if (!hasError)
-        {
+
+        if (!hasError) {
             guestForms = new ArrayList<>();
-            for (int i = 0; i < numOfGuests; i++)
-            {
+            for (int i = 0; i < numOfGuests; i++) {
                 GuestForm gf = new GuestForm();
                 guestForms.add(gf);
                 guestTabbedPane.add(gf);
                 int tabIndex = guestTabbedPane.getTabCount();
                 guestTabbedPane.setTitleAt(tabIndex - 1, "Guest " + tabIndex);
-                
+
             }
-            
+
             jTabbedPane3.setEnabledAt(3, true);
             jTabbedPane3.setSelectedIndex(3);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, error);
         }
     }//GEN-LAST:event_submitContactBtnActionPerformed
@@ -1566,7 +1443,7 @@ public class BookingCreator extends javax.swing.JFrame {
     private void closeCreateBookingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeCreateBookingBtnActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        
+
     }//GEN-LAST:event_closeCreateBookingBtnActionPerformed
 
     private void hotelComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotelComboBoxActionPerformed
@@ -1576,13 +1453,12 @@ public class BookingCreator extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html */
-         
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -1600,7 +1476,7 @@ public class BookingCreator extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(BookingCreator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         DefaultDataService ddfs = new DefaultDataService();
         ArrayList<EntityManagerFactory> emfL = ddfs.LogIn();
 
@@ -1610,7 +1486,7 @@ public class BookingCreator extends javax.swing.JFrame {
                 new BookingCreator(emfL).setVisible(true);
             }
         });
-    } 
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addPaymentBtn;
