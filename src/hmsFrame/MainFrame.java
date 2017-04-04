@@ -21,13 +21,12 @@ import javax.swing.event.ListSelectionListener;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author mrkjse
  */
-public class MainFrame extends javax.swing.JFrame { 
-    
+public class MainFrame extends javax.swing.JFrame {
+
     ArrayList<EntityManagerFactory> emfactoryList = null;
     DefaultDataService defaultController = null;
     HotelDataService hotelController = null;
@@ -37,7 +36,7 @@ public class MainFrame extends javax.swing.JFrame {
     PaymentDataService paymentController = null;
     MembershipDataService membershipController = null;
     GuestDataService guestController = null;
-    
+
     Hotel hotel = new Hotel();
     ArrayList<Hotel> hotels = new ArrayList<>();
     Room room = new Room();
@@ -53,21 +52,18 @@ public class MainFrame extends javax.swing.JFrame {
     Customer customer = new Customer();
     ArrayList<Customer> customers = new ArrayList<>();
     ArrayList<RoomType> roomTypes = new ArrayList<>();
-    
+
     BookingService bookingService = null;
     FinderService finderService = null;
     RoomAllocatorService roomAllocatorService = null;
-    
-     
-    Object hotelColumnHeaders [] = {"HOTEL ID", "HOTEL NAME", "HOTEL TYPE CODE", "CONSTRUCTION YEAR", "COUNTRY", "CITY", "ADDRESS", "CONTACT NUMBER", "EMAIL ADDRESS"};
-    Object bookingColumnHeaders [] = {"BOOKING ID", "CUSTOMER ID", "CHECK IN DATE", "CHECK OUT DATE", "CONTACT PERSON", "CONTACT EMAIL", "TOTAL AMOUNT", "CURRENCY CODE", "PAYMENT STATUS"};
-    Object roomColumnHeaders [] = {"HOTEL ID", "ROOM ID", "ROOM NUMBER", "ROOM TYPE", "ROOM PRICE", "ROOM PRICE CURRENCY CODE", "ROOM DESCRIPTION"};
-    Object guestColumnHeaders [] = {"GUEST ID", "BOOKING ID", "TITLE", "FIRST NAME", "LAST NAME", "BIRTH DATE", "COUNTRY", "CITY", "STREET", "POSTAL CODE", "PHONE NUMBER", "EMAIL ADDRESS"};
-    Object customerColumnHeaders [] = {"CUSTOMER ID", "MEMBERSHIP TIER", "MEMBERSHIP CREDITS", "TITLE", "FIRST NAME", "LAST NAME", "BIRTH DATE", "COUNTRY", "CITY", "STREET", "POSTAL CODE", "PHONE NUMBER", "EMAIL ADDRESS"};
-    Object membershipColumnHeaders [] = {"MEMBERSHIP TIER CODE", "MEMBERSHIP TIER", "TIER CREDITS", "DISCOUNT", "OTHER REWARDS"};
-    Object paymentColumnHeaders [] = {"BOOKING ID", "PAYMENT NUMBER", "PAYMENT DATE", "PAYMENT AMOUNT", "PAYMENT CURRENCY CODE", "PAYMENT METHOD"};
 
-   
+    Object hotelColumnHeaders[] = {"HOTEL ID", "HOTEL NAME", "HOTEL TYPE CODE", "CONSTRUCTION YEAR", "COUNTRY", "CITY", "ADDRESS", "CONTACT NUMBER", "EMAIL ADDRESS"};
+    Object bookingColumnHeaders[] = {"BOOKING ID", "CUSTOMER ID", "CHECK IN DATE", "CHECK OUT DATE", "CONTACT PERSON", "CONTACT EMAIL", "TOTAL AMOUNT", "CURRENCY CODE", "PAYMENT STATUS"};
+    Object roomColumnHeaders[] = {"HOTEL ID", "ROOM ID", "ROOM NUMBER", "ROOM TYPE", "ROOM PRICE", "ROOM PRICE CURRENCY CODE", "ROOM DESCRIPTION"};
+    Object guestColumnHeaders[] = {"GUEST ID", "BOOKING ID", "TITLE", "FIRST NAME", "LAST NAME", "BIRTH DATE", "COUNTRY", "CITY", "STREET", "POSTAL CODE", "PHONE NUMBER", "EMAIL ADDRESS"};
+    Object customerColumnHeaders[] = {"CUSTOMER ID", "MEMBERSHIP TIER", "MEMBERSHIP CREDITS", "TITLE", "FIRST NAME", "LAST NAME", "BIRTH DATE", "COUNTRY", "CITY", "STREET", "POSTAL CODE", "PHONE NUMBER", "EMAIL ADDRESS"};
+    Object membershipColumnHeaders[] = {"MEMBERSHIP TIER CODE", "MEMBERSHIP TIER", "TIER CREDITS", "DISCOUNT", "OTHER REWARDS"};
+    Object paymentColumnHeaders[] = {"BOOKING ID", "PAYMENT NUMBER", "PAYMENT DATE", "PAYMENT AMOUNT", "PAYMENT CURRENCY CODE", "PAYMENT METHOD"};
 
     DefaultTableModel hotelTableModel = new DefaultTableModel();
     DefaultTableModel bookingTableModel = new DefaultTableModel();
@@ -82,7 +78,7 @@ public class MainFrame extends javax.swing.JFrame {
     DefaultComboBoxModel roomFacilityCBModel = new DefaultComboBoxModel();
     DefaultComboBoxModel customerCBModel = new DefaultComboBoxModel();
     DefaultComboBoxModel membershipTierCBModel = new DefaultComboBoxModel();
-    
+
     ArrayList<String> htcString = new ArrayList<>();
     ArrayList<String> htc2String = new ArrayList<>();
     ArrayList<String> pmcString = new ArrayList<>();
@@ -91,33 +87,30 @@ public class MainFrame extends javax.swing.JFrame {
     ArrayList<String> customer2String = new ArrayList<>();
     ArrayList<String> membershipString = new ArrayList<>();
     ArrayList<String> membership2String = new ArrayList<>();
-    
+
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         defaultController = new DefaultDataService();
-       
-        
+
         initComponents();
-        
+
         addListeners();
 
-        
-        try
-        {
+        try {
             emfactoryList = defaultController.LogIn();
-            hotelController = new  HotelDataService(emfactoryList.get(0));
+            hotelController = new HotelDataService(emfactoryList.get(0));
             bookingController = new BookingDataService(emfactoryList.get(1));
             roomController = new RoomDataService(emfactoryList.get(1));
             guestController = new GuestDataService(emfactoryList.get(1));
             paymentController = new PaymentDataService(emfactoryList.get(1));
             customerController = new CustomerDataService(emfactoryList.get(1));
-            membershipController = new MembershipDataService(emfactoryList.get(1)); 
-            
+            membershipController = new MembershipDataService(emfactoryList.get(1));
+
             roomAllocatorService = new RoomAllocatorService(emfactoryList.get(1));
             bookingService = new BookingService();
-            
+
             hotelPanel.setVisible(true);
             roomPanel.setVisible(false);
             customerPanel.setVisible(false);
@@ -125,68 +118,65 @@ public class MainFrame extends javax.swing.JFrame {
             bookingPanel.setVisible(false);
             membershipPanel.setVisible(false);
             guestPanel.setVisible(false);
-                       
+
             roomTypes = new ArrayList<>(roomController.getRoomTypes());
-            
+
             refreshDataTableModels();
-            
+
             btnHotels.setBackground(Color.decode("#f18973"));
-        
-        }
-        catch (Exception e)
-        {
+
+        } catch (Exception e) {
 
         }
-       
+
         fillUpComboBoxes();
-        
+
     }
-    
-    private void addListeners()
-    {
+
+    private void addListeners() {
         ListSelectionListener hotelTableListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent evt) {
                 // call method
                 tblHotelValueChanged(evt);
             }
         };
-        
+
         tblHotel.getSelectionModel().addListSelectionListener(hotelTableListener);
-        
+
         ListSelectionListener bookingTableListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent evt) {
                 // call method
                 tblBookingValueChanged(evt);
             }
         };
-        
+
         tblBooking.getSelectionModel().addListSelectionListener(bookingTableListener);
-        
+
         ListSelectionListener roomTableListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent evt) {
                 // call method
                 tblRoomValueChanged(evt);
             }
         };
-        
+
         tblRoom.getSelectionModel().addListSelectionListener(roomTableListener);
-        
+
         ListSelectionListener guestTableListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent evt) {
                 // call method
                 tblGuestValueChanged(evt);
             }
         };
-        
+
         tblGuest.getSelectionModel().addListSelectionListener(guestTableListener);
-        
+
         ListSelectionListener customerTableListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent evt) {
                 // call method
                 tblCustomerValueChanged(evt);
             }
         };
-        
+
         tblCustomer.getSelectionModel().addListSelectionListener(customerTableListener);
 
         ListSelectionListener membershipTableListener = new ListSelectionListener() {
@@ -195,7 +185,7 @@ public class MainFrame extends javax.swing.JFrame {
                 tblMembershipValueChanged(evt);
             }
         };
-        
+
         tblMembership.getSelectionModel().addListSelectionListener(membershipTableListener);
 
         ListSelectionListener paymentTableListener = new ListSelectionListener() {
@@ -204,43 +194,37 @@ public class MainFrame extends javax.swing.JFrame {
                 tblPaymentValueChanged(evt);
             }
         };
-        
+
         tblPayment.getSelectionModel().addListSelectionListener(paymentTableListener);
-        
+
     }
-    
-    private void fillUpComboBoxes()
-    {
-        try
-        {
+
+    private void fillUpComboBoxes() {
+        try {
 
             htcString = new ArrayList<>();
             htc2String = new ArrayList<>();
             pmcString = new ArrayList<>();
-            
+
             rfString = new ArrayList<>();
             customerString = new ArrayList<>();
             membershipString = new ArrayList<>();
-            
+
             htcString.add("ALL-See all");
             pmcString.add("ALL-See all");
             rfString.add("ALL-See all");
             customerString.add("ALL-See all");
             membershipString.add("ALL-See all");
-            
 
-            for (HotelTypeCode htc : HotelTypeCode.values())
-            {
-                htcString.add(htc.code() + '-'+ htc.name());
-                htc2String.add(htc.code() + '-'+ htc.name());
+            for (HotelTypeCode htc : HotelTypeCode.values()) {
+                htcString.add(htc.code() + '-' + htc.name());
+                htc2String.add(htc.code() + '-' + htc.name());
             }
 
-            for (PaymentMethodCode pmc : PaymentMethodCode.values())
-            {
-                pmcString.add(pmc.code() + '-'+ pmc.name());
-                
-            }
+            for (PaymentMethodCode pmc : PaymentMethodCode.values()) {
+                pmcString.add(pmc.code() + '-' + pmc.name());
 
+            }
 
             //ArrayList<Facility> facilities = new ArrayList<>(roomController.getRoomFacilities());
 
@@ -253,53 +237,47 @@ public class MainFrame extends javax.swing.JFrame {
                 rfString.add(a);
                 
             }
-            */
-            
-            for (Customer c : customers)
-            {
+             */
+            for (Customer c : customers) {
                 String a = c.getCustomerId() + "-" + c.getFirstName() + " " + c.getLastName();
                 customerString.add(a);
             }
-            
-            for (Membership m : memberships)
-            {
+
+            for (Membership m : memberships) {
                 String a = m.getMembershipTierCode() + "-" + m.getMembershipTier();
                 membershipString.add(a);
                 membership2String.add(a);
             }
-            
+
             hotelTypeCBModel = new DefaultComboBoxModel(htcString.toArray());
             paymentMethodCBModel = new DefaultComboBoxModel(pmcString.toArray());
             //roomFacilityCBModel = new DefaultComboBoxModel(rfString.toArray());
             customerCBModel = new DefaultComboBoxModel(customerString.toArray());
             membershipTierCBModel = new DefaultComboBoxModel(membershipString.toArray());
-           
-            
+
             hotelTypeCodeComboBox.setModel(hotelTypeCBModel);
-            
+
             DefaultComboBoxModel htc2CBModel = new DefaultComboBoxModel(htc2String.toArray());
-            
+
             hotelTypeCodeComboBox2.setModel(htc2CBModel);
-            
+
             paymentMethodComboBox.setModel(paymentMethodCBModel);
             membershipTierComboBox.setModel(membershipTierCBModel);
-            
+
             DefaultComboBoxModel mtc2CBModel = new DefaultComboBoxModel(membership2String.toArray());
-            
+
             membershipTierComboBox2.setModel(mtc2CBModel);
-            
+
             hotelTypeCodeComboBox.repaint();
             hotelTypeCodeComboBox2.repaint();
             paymentMethodComboBox.repaint();
             membershipTierComboBox.repaint();
             membershipTierComboBox2.repaint();
-            
+
+        } catch (Exception e) {
+
         }
-        catch (Exception e)
-        {
-            
-        }
-    
+
     }
 
     /**
@@ -331,6 +309,7 @@ public class MainFrame extends javax.swing.JFrame {
         addHotelBtn = new javax.swing.JButton();
         editHotelBtn = new javax.swing.JButton();
         deleteHotelBtn = new javax.swing.JButton();
+        hotelClearBtn = new javax.swing.JButton();
         hotelName = new javax.swing.JLabel();
         hotelType = new javax.swing.JLabel();
         hotelConstructionYear = new javax.swing.JLabel();
@@ -357,6 +336,7 @@ public class MainFrame extends javax.swing.JFrame {
         addRoomBtn = new javax.swing.JButton();
         editRoomBtn = new javax.swing.JButton();
         delRoomBtn = new javax.swing.JButton();
+        clearRoomBtn = new javax.swing.JButton();
         jLabel37 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
         jLabel39 = new javax.swing.JLabel();
@@ -381,6 +361,7 @@ public class MainFrame extends javax.swing.JFrame {
         addCustBtn = new javax.swing.JButton();
         editCustomerBtn = new javax.swing.JButton();
         delCustomerBtn = new javax.swing.JButton();
+        clearCustomerBtn = new javax.swing.JButton();
         textCustomerTitle = new javax.swing.JTextField();
         textCustomerFirstName = new javax.swing.JTextField();
         textCustomerLastName = new javax.swing.JTextField();
@@ -416,6 +397,7 @@ public class MainFrame extends javax.swing.JFrame {
         addGuestBtn = new javax.swing.JButton();
         editGuestBtn = new javax.swing.JButton();
         delGuestBtn = new javax.swing.JButton();
+        clearGuestBtn = new javax.swing.JButton();
         searchGuestFirstName = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         searchGuestLastName = new javax.swing.JTextField();
@@ -454,6 +436,7 @@ public class MainFrame extends javax.swing.JFrame {
         addMembershipBtn = new javax.swing.JButton();
         editMembershipBtn = new javax.swing.JButton();
         delMembershipBtn = new javax.swing.JButton();
+        clearMemBtn = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
         jLabel43 = new javax.swing.JLabel();
         jLabel44 = new javax.swing.JLabel();
@@ -474,6 +457,7 @@ public class MainFrame extends javax.swing.JFrame {
         addPaymentBtn = new javax.swing.JButton();
         editPaymentBtn = new javax.swing.JButton();
         delPaymentBtn = new javax.swing.JButton();
+        clearPaymentBtn = new javax.swing.JButton();
         jTextField3 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
@@ -497,6 +481,7 @@ public class MainFrame extends javax.swing.JFrame {
         addBookingBtn = new javax.swing.JButton();
         editBookingBtn = new javax.swing.JButton();
         delBookingBtn = new javax.swing.JButton();
+        clearBookingBtn = new javax.swing.JButton();
         jTextField5 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
@@ -669,7 +654,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(menuPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(menuPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(183, Short.MAX_VALUE))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -736,6 +721,18 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        hotelClearBtn.setText("Clear");
+        hotelClearBtn.setToolTipText("");
+        hotelClearBtn.setMaximumSize(new java.awt.Dimension(70, 32));
+        hotelClearBtn.setMinimumSize(new java.awt.Dimension(70, 32));
+        hotelClearBtn.setPreferredSize(new java.awt.Dimension(70, 32));
+        hotelClearBtn.setSize(new java.awt.Dimension(72, 32));
+        hotelClearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hotelClearBtnActionPerformed(evt);
+            }
+        });
+
         hotelName.setText("Hotel Name");
 
         hotelType.setText("Hotel Type");
@@ -751,6 +748,12 @@ public class MainFrame extends javax.swing.JFrame {
         hotelContactNumber.setText("Contact Number");
 
         hotelEmailAddress.setText("Email Address");
+
+        textHotelAddress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textHotelAddressActionPerformed(evt);
+            }
+        });
 
         jLabel62.setText("Hotel Id");
 
@@ -775,7 +778,7 @@ public class MainFrame extends javax.swing.JFrame {
         hotelPanelLayout.setHorizontalGroup(
             hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, hotelPanelLayout.createSequentialGroup()
-                .addContainerGap(136, Short.MAX_VALUE)
+                .addContainerGap(108, Short.MAX_VALUE)
                 .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(hotelPanelLayout.createSequentialGroup()
                         .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -816,7 +819,9 @@ public class MainFrame extends javax.swing.JFrame {
                             .addGap(18, 18, 18)
                             .addComponent(editHotelBtn)
                             .addGap(18, 18, 18)
-                            .addComponent(deleteHotelBtn))
+                            .addComponent(deleteHotelBtn)
+                            .addGap(18, 18, 18)
+                            .addComponent(hotelClearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 977, Short.MAX_VALUE)
                         .addComponent(jSeparator4)))
                 .addGap(76, 76, 76))
@@ -870,7 +875,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addHotelBtn)
                     .addComponent(editHotelBtn)
-                    .addComponent(deleteHotelBtn))
+                    .addComponent(deleteHotelBtn)
+                    .addComponent(hotelClearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -881,7 +887,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(hotelTypeCodeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(127, Short.MAX_VALUE))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -920,6 +926,14 @@ public class MainFrame extends javax.swing.JFrame {
         delRoomBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delRoomBtnActionPerformed(evt);
+            }
+        });
+
+        clearRoomBtn.setText("Clear");
+        clearRoomBtn.setPreferredSize(new java.awt.Dimension(70, 32));
+        clearRoomBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearRoomBtnActionPerformed(evt);
             }
         });
 
@@ -1002,7 +1016,7 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(jLabel42))))
                     .addComponent(jSeparator5)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 975, Short.MAX_VALUE))
-                .addContainerGap(123, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roomPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(addRoomBtn)
@@ -1010,7 +1024,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(editRoomBtn)
                 .addGap(18, 18, 18)
                 .addComponent(delRoomBtn)
-                .addGap(173, 173, 173))
+                .addGap(18, 18, 18)
+                .addComponent(clearRoomBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(85, 85, 85))
         );
 
         roomPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addRoomBtn, delRoomBtn, editRoomBtn});
@@ -1054,14 +1070,15 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(delRoomBtn)
                     .addComponent(editRoomBtn)
-                    .addComponent(addRoomBtn))
+                    .addComponent(addRoomBtn)
+                    .addComponent(clearRoomBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
                 .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(roomFacilityComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -1117,6 +1134,13 @@ public class MainFrame extends javax.swing.JFrame {
         delCustomerBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delCustomerBtnActionPerformed(evt);
+            }
+        });
+
+        clearCustomerBtn.setText("Clear");
+        clearCustomerBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearCustomerBtnActionPerformed(evt);
             }
         });
 
@@ -1237,8 +1261,10 @@ public class MainFrame extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(editCustomerBtn)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(delCustomerBtn)))))))
-                .addContainerGap(74, Short.MAX_VALUE))
+                                        .addComponent(delCustomerBtn)))
+                                .addGap(18, 18, 18)
+                                .addComponent(clearCustomerBtn)))))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         customerPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addCustBtn, delCustomerBtn, editCustomerBtn});
@@ -1309,11 +1335,12 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(textCustomerDob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel29)
                             .addComponent(jLabel66))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addCustBtn)
                     .addComponent(editCustomerBtn)
-                    .addComponent(delCustomerBtn))
+                    .addComponent(delCustomerBtn)
+                    .addComponent(clearCustomerBtn))
                 .addGap(31, 31, 31)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1322,7 +1349,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
 
         jLabel4.getAccessibleContext().setAccessibleName("Customer");
@@ -1368,6 +1395,13 @@ public class MainFrame extends javax.swing.JFrame {
         delGuestBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delGuestBtnActionPerformed(evt);
+            }
+        });
+
+        clearGuestBtn.setText("Clear");
+        clearGuestBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearGuestBtnActionPerformed(evt);
             }
         });
 
@@ -1423,35 +1457,38 @@ public class MainFrame extends javax.swing.JFrame {
             guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, guestPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, guestPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(textGuestCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, guestPanelLayout.createSequentialGroup()
-                        .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel21)
-                            .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel23)
-                            .addComponent(jLabel22)
-                            .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(5, 5, Short.MAX_VALUE)
-                        .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textGuestStreet)
-                            .addComponent(textGuestPhoneNumber)
-                            .addComponent(textGuestEmailAddress)
-                            .addComponent(textGuestPostalCode, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textGuestCity, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, guestPanelLayout.createSequentialGroup()
+                            .addComponent(jLabel20)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(textGuestCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, guestPanelLayout.createSequentialGroup()
+                            .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel21)
+                                .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel23)
+                                .addComponent(jLabel22)
+                                .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addGap(5, 5, Short.MAX_VALUE)
+                            .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(textGuestStreet)
+                                .addComponent(textGuestPhoneNumber)
+                                .addComponent(textGuestEmailAddress)
+                                .addComponent(textGuestPostalCode, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(textGuestCity, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(guestPanelLayout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(addGuestBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(editGuestBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(delGuestBtn)))
-                .addGap(302, 302, 302))
+                        .addComponent(delGuestBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clearGuestBtn)))
+                .addGap(239, 239, 239))
             .addGroup(guestPanelLayout.createSequentialGroup()
-                .addContainerGap(104, Short.MAX_VALUE)
+                .addContainerGap(74, Short.MAX_VALUE)
                 .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(guestPanelLayout.createSequentialGroup()
                         .addComponent(searchGuestBtn)
@@ -1563,11 +1600,12 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(textGuestEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel25))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addGroup(guestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addGuestBtn)
                     .addComponent(editGuestBtn)
-                    .addComponent(delGuestBtn))
+                    .addComponent(delGuestBtn)
+                    .addComponent(clearGuestBtn))
                 .addGap(36, 36, 36)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1629,6 +1667,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        clearMemBtn.setText("Clear");
+        clearMemBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearMemBtnActionPerformed(evt);
+            }
+        });
+
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
@@ -1658,7 +1703,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(editMembershipBtn)
                 .addGap(18, 18, 18)
                 .addComponent(delMembershipBtn)
-                .addGap(130, 130, 130))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(clearMemBtn)
+                .addGap(48, 48, 48))
             .addGroup(membershipPanelLayout.createSequentialGroup()
                 .addGap(131, 131, 131)
                 .addGroup(membershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -1688,7 +1735,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(searchMemberBtn))
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 994, Short.MAX_VALUE)
                     .addComponent(jSeparator7))
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         membershipPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addMembershipBtn, delMembershipBtn, editMembershipBtn});
@@ -1718,7 +1765,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(membershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addMembershipBtn)
                     .addComponent(editMembershipBtn)
-                    .addComponent(delMembershipBtn))
+                    .addComponent(delMembershipBtn)
+                    .addComponent(clearMemBtn))
                 .addGap(17, 17, 17)
                 .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1773,6 +1821,14 @@ public class MainFrame extends javax.swing.JFrame {
         delPaymentBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delPaymentBtnActionPerformed(evt);
+            }
+        });
+
+        clearPaymentBtn.setText("Clear");
+        clearPaymentBtn.setPreferredSize(new java.awt.Dimension(70, 32));
+        clearPaymentBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearPaymentBtnActionPerformed(evt);
             }
         });
 
@@ -1856,7 +1912,9 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(editPaymentBtn)
                             .addGap(18, 18, 18)
                             .addComponent(delPaymentBtn)
-                            .addGap(148, 148, 148))))
+                            .addGap(18, 18, 18)
+                            .addComponent(clearPaymentBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(60, 60, 60))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1892,11 +1950,12 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(textPaymentAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel49)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                 .addGroup(paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addPaymentBtn)
                     .addComponent(editPaymentBtn)
-                    .addComponent(delPaymentBtn))
+                    .addComponent(delPaymentBtn)
+                    .addComponent(clearPaymentBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1953,6 +2012,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        clearBookingBtn.setText("Clear");
+        clearBookingBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearBookingBtnActionPerformed(evt);
+            }
+        });
+
         jLabel11.setText("First Name");
 
         jLabel12.setText("Last Name");
@@ -2002,14 +2068,6 @@ public class MainFrame extends javax.swing.JFrame {
         bookingPanel.setLayout(bookingPanelLayout);
         bookingPanelLayout.setHorizontalGroup(
             bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bookingPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(addBookingBtn)
-                .addGap(18, 18, 18)
-                .addComponent(editBookingBtn)
-                .addGap(18, 18, 18)
-                .addComponent(delBookingBtn)
-                .addGap(96, 96, 96))
             .addGroup(bookingPanelLayout.createSequentialGroup()
                 .addGap(124, 124, 124)
                 .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -2073,7 +2131,18 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(createBookingBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(36, 36, 36)))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bookingPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(clearBookingBtn)
+                    .addGroup(bookingPanelLayout.createSequentialGroup()
+                        .addComponent(addBookingBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(editBookingBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(delBookingBtn)))
+                .addGap(96, 96, 96))
         );
 
         bookingPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addBookingBtn, delBookingBtn, editBookingBtn});
@@ -2124,24 +2193,27 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(editBookingBtn)
                     .addComponent(addBookingBtn))
                 .addGap(23, 23, 23)
-                .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(bookingPanelLayout.createSequentialGroup()
-                        .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(createBookingBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel12))
-                    .addGroup(bookingPanelLayout.createSequentialGroup()
-                        .addComponent(searchBookingsBtn)
-                        .addGap(1, 1, 1)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(21, 21, 21)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(bookingPanelLayout.createSequentialGroup()
+                                .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(createBookingBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel12))
+                            .addGroup(bookingPanelLayout.createSequentialGroup()
+                                .addComponent(searchBookingsBtn)
+                                .addGap(1, 1, 1)
+                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(21, 21, 21)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(clearBookingBtn))
                 .addGap(92, 92, 92))
         );
 
@@ -2172,9 +2244,9 @@ public class MainFrame extends javax.swing.JFrame {
         btnHotels.setBackground(Color.decode("#86BBD8"));
 
         btnRooms.setBackground(Color.decode("#86BBD8"));
-        
+
         refreshDataTableModels();
-        
+
         hotelPanel.setVisible(false);
         roomPanel.setVisible(false);
         customerPanel.setVisible(false);
@@ -2204,8 +2276,7 @@ public class MainFrame extends javax.swing.JFrame {
         btnRooms.setBackground(Color.decode("#86BBD8"));
 
         refreshHotelTableModel(true);
-        
-        
+
         hotelPanel.setVisible(true);
         roomPanel.setVisible(false);
         customerPanel.setVisible(false);
@@ -2214,95 +2285,88 @@ public class MainFrame extends javax.swing.JFrame {
         membershipPanel.setVisible(false);
         guestPanel.setVisible(false);
         this.repaint();
-        
+
     }//GEN-LAST:event_btnHotelsActionPerformed
 
     private void btnGuestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuestsActionPerformed
         // TODO add your handling code here:
-            
-            btnGuests.setBackground(Color.decode("#f18973"));
-            //btnGuests.setForeground(Color.decode("#86BBD8"));
-            
-            btnBookings.setBackground(Color.decode("#86BBD8"));
-            
-            btnCustomers.setBackground(Color.decode("#86BBD8"));
-            
-            btnHotels.setBackground(Color.decode("#86BBD8"));
-            
-            btnMemberships.setBackground(Color.decode("#86BBD8"));
-            
-            btnPayments.setBackground(Color.decode("#86BBD8"));
-            
-            btnRooms.setBackground(Color.decode("#86BBD8"));
-            
-            refreshGuestTableModel(true);
-            
-            hotelPanel.setVisible(false);
-            roomPanel.setVisible(false);
-            customerPanel.setVisible(false);
-            paymentPanel.setVisible(false);
-            bookingPanel.setVisible(false);
-            membershipPanel.setVisible(false);
-            guestPanel.setVisible(true);
-            this.repaint();
-        
+
+        btnGuests.setBackground(Color.decode("#f18973"));
+        //btnGuests.setForeground(Color.decode("#86BBD8"));
+
+        btnBookings.setBackground(Color.decode("#86BBD8"));
+
+        btnCustomers.setBackground(Color.decode("#86BBD8"));
+
+        btnHotels.setBackground(Color.decode("#86BBD8"));
+
+        btnMemberships.setBackground(Color.decode("#86BBD8"));
+
+        btnPayments.setBackground(Color.decode("#86BBD8"));
+
+        btnRooms.setBackground(Color.decode("#86BBD8"));
+
+        refreshGuestTableModel(true);
+
+        hotelPanel.setVisible(false);
+        roomPanel.setVisible(false);
+        customerPanel.setVisible(false);
+        paymentPanel.setVisible(false);
+        bookingPanel.setVisible(false);
+        membershipPanel.setVisible(false);
+        guestPanel.setVisible(true);
+        this.repaint();
+
     }//GEN-LAST:event_btnGuestsActionPerformed
 
     private void btnRoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRoomsActionPerformed
         // TODO add your handling code here:
-            
-            btnRooms.setBackground(Color.decode("#f18973"));
-   
-            
-            btnBookings.setBackground(Color.decode("#86BBD8"));
-            
-            btnCustomers.setBackground(Color.decode("#86BBD8"));
-            
-            btnGuests.setBackground(Color.decode("#86BBD8"));
-            
-            btnMemberships.setBackground(Color.decode("#86BBD8"));
-            
-            btnPayments.setBackground(Color.decode("#86BBD8"));
-            
-            btnHotels.setBackground(Color.decode("#86BBD8"));
-            
-            refreshRoomTableModel(true);
-            
-            hotelPanel.setVisible(false);
-            roomPanel.setVisible(true);
-            customerPanel.setVisible(false);
-            paymentPanel.setVisible(false);
-            bookingPanel.setVisible(false);
-            membershipPanel.setVisible(false);
-            guestPanel.setVisible(false);
-            
-            this.repaint();
+
+        btnRooms.setBackground(Color.decode("#f18973"));
+
+        btnBookings.setBackground(Color.decode("#86BBD8"));
+
+        btnCustomers.setBackground(Color.decode("#86BBD8"));
+
+        btnGuests.setBackground(Color.decode("#86BBD8"));
+
+        btnMemberships.setBackground(Color.decode("#86BBD8"));
+
+        btnPayments.setBackground(Color.decode("#86BBD8"));
+
+        btnHotels.setBackground(Color.decode("#86BBD8"));
+
+        refreshRoomTableModel(true);
+
+        hotelPanel.setVisible(false);
+        roomPanel.setVisible(true);
+        customerPanel.setVisible(false);
+        paymentPanel.setVisible(false);
+        bookingPanel.setVisible(false);
+        membershipPanel.setVisible(false);
+        guestPanel.setVisible(false);
+
+        this.repaint();
     }//GEN-LAST:event_btnRoomsActionPerformed
 
     private void hotelTypeCodeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotelTypeCodeComboBoxActionPerformed
         // TODO add your handling code here:
-        
-        try
-        {
+
+        try {
             // Search by hotelTypeCode
             String code = hotelTypeCodeComboBox.getSelectedItem().toString().split("-")[0];
 
-            if (!code.equals("ALL"))
-            {
+            if (!code.equals("ALL")) {
                 hotels = new ArrayList<>(hotelController.getHotelByType(code));
                 refreshHotelTableModel(false);
-            }
-            else
-            {
+            } else {
                 refreshHotelTableModel(true);
             }
-            
+
+        } catch (Exception e) {
+
         }
-        catch (Exception e)
-        {
-            
-        }
-        
+
     }//GEN-LAST:event_hotelTypeCodeComboBoxActionPerformed
 
     private void roomFacilityComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomFacilityComboBoxActionPerformed
@@ -2314,24 +2378,23 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_membershipTierComboBoxActionPerformed
 
     private void btnCustomersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomersActionPerformed
-        
+
         btnCustomers.setBackground(Color.decode("#f18973"));
-       
 
         btnBookings.setBackground(Color.decode("#86BBD8"));
-        
+
         btnHotels.setBackground(Color.decode("#86BBD8"));
-        
+
         btnGuests.setBackground(Color.decode("#86BBD8"));
-        
+
         btnMemberships.setBackground(Color.decode("#86BBD8"));
-        
+
         btnPayments.setBackground(Color.decode("#86BBD8"));
-        
+
         btnRooms.setBackground(Color.decode("#86BBD8"));
-        
+
         refreshCustomerTableModel();
-        
+
         hotelPanel.setVisible(false);
         roomPanel.setVisible(false);
         customerPanel.setVisible(true);
@@ -2339,7 +2402,7 @@ public class MainFrame extends javax.swing.JFrame {
         bookingPanel.setVisible(false);
         membershipPanel.setVisible(false);
         guestPanel.setVisible(false);
-        
+
         this.repaint();
     }//GEN-LAST:event_btnCustomersActionPerformed
 
@@ -2348,8 +2411,8 @@ public class MainFrame extends javax.swing.JFrame {
         hotel = new Hotel();
         hotel.setHotelName(textHotelName.getText());
         hotel.setHotelTypeCode(hotelTypeCodeComboBox2.getSelectedItem().toString().split("-")[0]);
-        
-        try{
+
+        try {
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy");
             Date date1 = fmt.parse(textHotelConstructionYear.getText());
             // TODO: validate, should be just YYYY
@@ -2359,44 +2422,40 @@ public class MainFrame extends javax.swing.JFrame {
             hotel.setCity(textHotelCity.getText());
             hotel.setAddress(textHotelAddress.getText());
             hotel.setEmailAddress(textHotelEmailAddress.getText());
-            
+
             // Add hotel
             hotelController.createHotel(hotel);
-
+            sucessMessage();
+            clearHotelField();
             refreshHotelTableModel(true);
-            
-        }
-        catch(Exception e)
-        {
-            //TODO: Unable to parse date
-            
-        }
-        
 
-        
-                
+        } catch (Exception e) {
+            //TODO: Unable to parse date
+
+        }
+
+
     }//GEN-LAST:event_addHotelBtnActionPerformed
 
     private void btnMembershipsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMembershipsActionPerformed
         // TODO add your handling code here:
-        
+
         btnMemberships.setBackground(Color.decode("#f18973"));
-        
+
         btnBookings.setBackground(Color.decode("#86BBD8"));
-        
+
         btnCustomers.setBackground(Color.decode("#86BBD8"));
-        
+
         btnGuests.setBackground(Color.decode("#86BBD8"));
-        
+
         btnHotels.setBackground(Color.decode("#86BBD8"));
-        
+
         btnPayments.setBackground(Color.decode("#86BBD8"));
-        
+
         btnRooms.setBackground(Color.decode("#86BBD8"));
-        
 
         refreshMembershipTableModel();
-        
+
         hotelPanel.setVisible(false);
         roomPanel.setVisible(false);
         customerPanel.setVisible(false);
@@ -2404,29 +2463,27 @@ public class MainFrame extends javax.swing.JFrame {
         bookingPanel.setVisible(false);
         membershipPanel.setVisible(true);
         guestPanel.setVisible(false);
-        
 
-        
         this.repaint();
     }//GEN-LAST:event_btnMembershipsActionPerformed
 
     private void btnBookingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookingsActionPerformed
         // TODO add your handling code here:
-        
+
         btnBookings.setBackground(Color.decode("#f18973"));
 
         btnHotels.setBackground(Color.decode("#86BBD8"));
-        
+
         btnCustomers.setBackground(Color.decode("#86BBD8"));
-        
+
         btnGuests.setBackground(Color.decode("#86BBD8"));
-        
+
         btnMemberships.setBackground(Color.decode("#86BBD8"));
-        
+
         btnPayments.setBackground(Color.decode("#86BBD8"));
-        
+
         btnRooms.setBackground(Color.decode("#86BBD8"));
-        
+
         hotelPanel.setVisible(false);
         roomPanel.setVisible(false);
         customerPanel.setVisible(false);
@@ -2434,119 +2491,105 @@ public class MainFrame extends javax.swing.JFrame {
         bookingPanel.setVisible(true);
         membershipPanel.setVisible(false);
         guestPanel.setVisible(false);
-        
+
         refreshBookingTableModel(true);
-        
+
         this.repaint();
     }//GEN-LAST:event_btnBookingsActionPerformed
 
     private void editPaymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editPaymentBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             int id = Integer.parseInt(textPaymentBookingId.getText());
             int num = Integer.parseInt(textPaymentNumber.getText());
-            
-            
+
             payment = FinderService.findPaymentById(payments, id, num);
-            
-            if (payment != null)
-            {
+
+            if (payment != null) {
                 payment.setPaymentDate(new Date()); // this must always be the latest date you edited the payment
                 payment.setPaymentAmount(Double.parseDouble(textPaymentAmount.getText()));
                 payment.setCurrencyCode("AUD");
-                
+
                 String code = paymentMethodComboBox.getSelectedItem().toString().split("-")[0];
-                
+
                 payment.setPaymentMethodCode(code); //TODO: make this dropdown
-                
+
                 paymentController.updatePayment(payment);
-                
+                sucessMessage();
+                clearPaymentField();
                 refreshPaymentTableModel();
-            }
-            else{
+            } else {
                 // TODO: error! booking is not found
+                errorMessage();
             }
+        } catch (Exception e) {
+
         }
-        catch (Exception e)
-        {
-            
-        }
-        
+
     }//GEN-LAST:event_editPaymentBtnActionPerformed
 
     private void delBookingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delBookingBtnActionPerformed
         // TODO add your handling code here:
         // can be deleted - also delete the booking room guest
-        try
-        {
+        try {
             int id = Integer.parseInt(textBookingId.getText());
-            
+
             ArrayList<Guest> guestList = FinderService.findGuestByBookingId(guests, id);
-            
+
             ArrayList<BookingRoomGuest> brgList = new ArrayList<>(bookingController.getBookingRoomGuest());
-            
+
             ArrayList<BookingRoomGuest> rBrgList = null;
-            
+
             // Delete guests and booking-room-guests
-            for (int i = guestList.size() - 1; i >= 0; i--)
-            {
+            for (int i = guestList.size() - 1; i >= 0; i--) {
                 Guest g = guestList.get(i);
-                
+
                 int gid = g.getGuestId();
                 rBrgList = FinderService.findBookingRoomGuestByGuestId(brgList, gid);
-                
+
                 // Also delete the BookingRoomGuest if we're going to delete the room
                 // Works like CASCADE
-                if (rBrgList != null && rBrgList.size() > 0)
-                {
-                    for (int h = rBrgList.size() - 1; h >= 0; h--)
-                    {
+                if (rBrgList != null && rBrgList.size() > 0) {
+                    for (int h = rBrgList.size() - 1; h >= 0; h--) {
                         BookingRoomGuest brg = rBrgList.get(h);
                         bookingController.deleteBookingRoomGuest(brg);
                     }
                 }
-                
+
                 guestController.deleteGuest(g);
             }
-            
+
             // Delete payments
             ArrayList<Payment> paymentsList = FinderService.findPaymentByBookingId(payments, id);
-            
-            if (paymentsList != null && paymentsList.size() > 0)
-            {
-                for (int i = paymentsList.size() - 1 ; i >= 0; i--)
-                {
+
+            if (paymentsList != null && paymentsList.size() > 0) {
+                for (int i = paymentsList.size() - 1; i >= 0; i--) {
                     Payment p = paymentsList.get(i);
                     paymentController.deletePayment(p);
-                }   
-               
-            }
-            else{
+                }
+
+            } else {
                 // TODO: error! booking is not found
+                errorMessage();
             }
-                
-            
+            sucessMessage();
             refreshBookingTableModel(true);
-            
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_delBookingBtnActionPerformed
 
     private void addGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addGuestBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             guest = new Guest();
-            
+
             Booking bkg = new Booking();
             //bkg.setBookingId();
-            
+
             bkg = bookingController.getBookingByBookingId(Integer.parseInt(textGuestBookingId.getText()));
-            
+
             guest.setBooking(bkg);
             guest.setTitle(textGuestTitle.getText());
             guest.setFirstName(textGuestFirstName.getText());
@@ -2562,18 +2605,18 @@ public class MainFrame extends javax.swing.JFrame {
             guest.setPostalCode(textGuestPostalCode.getText());
             guest.setPhoneNumber(textGuestPhoneNumber.getText());
             guest.setEmailAddress(textGuestEmailAddress.getText());
-            
+
             // Add guest
             guestController.createGuest(guest);
-
+            sucessMessage();
+            clearGuestField();
             refreshGuestTableModel(true);
-            
+
             // TODO: Sort JTables by ID
             // TODO: Check for duplicates
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             // TODO: handle exception
+            errorMessage();
         }
     }//GEN-LAST:event_addGuestBtnActionPerformed
 
@@ -2583,15 +2626,14 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void addCustBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCustBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             customer = new Customer();
             String mc = membershipTierComboBox2.getSelectedItem().toString().split("-")[0];
             membership = membershipController.findMembershipByTierCode(mc);
-            
+
             customer.setMembership(membership);
             customer.setMembershipCredits(Integer.parseInt(textCustomerMembershipCredits.getText()));
-             
+
             customer.setTitle(textCustomerTitle.getText());
             customer.setFirstName(textCustomerFirstName.getText());
             customer.setLastName(textCustomerLastName.getText());
@@ -2606,35 +2648,30 @@ public class MainFrame extends javax.swing.JFrame {
             customer.setPostalCode(textCustomerPostalCode.getText());
             customer.setPhoneNumber(textCustomerPhoneNumber.getText());
             customer.setEmailAddress(textCustomerEmailAddress.getText());
-            
-            customerController.createCustomer(customer);
 
+            customerController.createCustomer(customer);
+            sucessMessage();
+            clearCustomerField();
             refreshCustomerTableModel();
-            
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+            errorMessage();
         }
     }//GEN-LAST:event_addCustBtnActionPerformed
 
     private void addRoomBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRoomBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             room = new Room();
-            
+
             int hotelId = Integer.parseInt(textRoomHotelId.getText());
             RoomType roomType = FinderService.findRoomTypeByCode(roomTypes, textRoomTypeCode.getText());
-            
+
             hotel = FinderService.findHotelById(hotels, hotelId);
-            
-            if (hotel != null)
-            {
+
+            if (hotel != null) {
                 room.setHotelId(hotelId);
-            }
-            else
-            {
+            } else {
                 //TODO: throw exception - hotel not found!
             }
             room.setRoomNumber(textRoomNumber.getText());
@@ -2642,56 +2679,50 @@ public class MainFrame extends javax.swing.JFrame {
             room.setRoomPrice(Double.parseDouble(textRoomPrice.getText()));
             room.setCurrencyCode("AUD");
             room.setRoomType(roomType);
-            
+
             roomController.createRoom(room);
-            
+            sucessMessage();
+            clearRoomField();
             refreshRoomTableModel(true);
-            
+
+        } catch (Exception e) {
+            errorMessage();
         }
-        catch (Exception e)
-        {
-            
-        }
-        
+
     }//GEN-LAST:event_addRoomBtnActionPerformed
 
     private void addMembershipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMembershipBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             membership = new Membership();
             membership.setMembershipTier(textMembershipTierName.getText());
             membership.setMembershipTierCode(textMembershipTierCode.getText());
             membership.setDiscount(Long.parseLong(textMembershipDiscount.getText()));
             membership.setOtherRewards(textMembershipOtherRewards.getText());
             membership.setTierCredits(Integer.parseInt(textMembershipCredit.getText()));
-            
+
             membershipController.createMembership(membership);
-            
+            sucessMessage();
+            clearMembershipField();
             refreshMembershipTableModel();
-            
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+            errorMessage();
         }
     }//GEN-LAST:event_addMembershipBtnActionPerformed
 
     private void addPaymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPaymentBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             payment = new Payment();
             int id = Integer.parseInt(textPaymentBookingId.getText());
             Booking bkg = bookingController.getBookingByBookingId(id);
-            
-            if (bkg != null)
-            {
+
+            if (bkg != null) {
                 Collection<Payment> bkgPayments = bkg.getPaymentCollection();
                 int pnum = 1;
 
-                if (bkgPayments != null)
-                {
+                if (bkgPayments != null) {
                     pnum = bkgPayments.size() + 1;
                 }
 
@@ -2705,33 +2736,31 @@ public class MainFrame extends javax.swing.JFrame {
                 payment.setCurrencyCode("AUD");
                 String mc = paymentMethodComboBox.getSelectedItem().toString().split("-")[0];
                 payment.setPaymentMethodCode(mc); //TODO: make this dropdown
-                
+
                 paymentController.createPayment(payment);
-                
+                sucessMessage();
+                clearPaymentField();
                 refreshPaymentTableModel();
-            }
-            else{
+            } else {
                 // TODO: error! booking is not found
+                errorMessage();
             }
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_addPaymentBtnActionPerformed
 
     private void addBookingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBookingBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
-        
+        try {
+
             booking = new Booking();
             booking.setBookingId(0);
-            
+
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
             Date date1 = fmt.parse(textBookingCheckInDate.getText());
             Date date2 = fmt.parse(textBookingCheckOutDate.getText());
-            
+
             booking.setCheckInDate(date1);
             booking.setCheckOutDate(date2);
             booking.setContactEmail(textBookingContactEmail.getText());
@@ -2747,37 +2776,33 @@ public class MainFrame extends javax.swing.JFrame {
             booking.setTotalAmount(Double.parseDouble(textBookingTotalAmount.getText()));
 
             bookingController.createBooking(booking);
-            
+            sucessMessage();
+            clearBookingField();
             refreshBookingTableModel(true);
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+            errorMessage();
         }
 
     }//GEN-LAST:event_addBookingBtnActionPerformed
 
-    private void tblHotelValueChanged(ListSelectionEvent evt)
-    {
+    private void tblHotelValueChanged(ListSelectionEvent evt) {
         // TODO add your handling code here:
-        Vector data = (Vector)hotelTableModel.getDataVector().elementAt(tblHotel.getSelectedRow());
-        
+        Vector data = (Vector) hotelTableModel.getDataVector().elementAt(tblHotel.getSelectedRow());
+
         // data[0] - hotel id
         textHotelId.setText(data.get(0).toString());
         // data[1] - hotel name
         textHotelName.setText(data.get(1).toString());
         //textHotelType.setText(data.get(2).toString());
-        
+
         int index = 0;
-        for (String a : htc2String)
-        {
-            if (a.split("-")[0].equals(data.get(2).toString()))
-            {
+        for (String a : htc2String) {
+            if (a.split("-")[0].equals(data.get(2).toString())) {
                 index = htc2String.indexOf(a);
                 break;
             }
         }
-        
+
         hotelTypeCodeComboBox2.setSelectedIndex(index);
         textHotelConstructionYear.setText(data.get(3).toString());
         textHotelCountry.setText(data.get(4).toString());
@@ -2786,11 +2811,10 @@ public class MainFrame extends javax.swing.JFrame {
         textHotelContactNumber.setText(data.get(7).toString());
         textHotelEmailAddress.setText(data.get(8).toString());
     }
-    
-    private void tblBookingValueChanged(ListSelectionEvent evt)
-    {
-        Vector data = (Vector)bookingTableModel.getDataVector().elementAt(tblBooking.getSelectedRow());
-        
+
+    private void tblBookingValueChanged(ListSelectionEvent evt) {
+        Vector data = (Vector) bookingTableModel.getDataVector().elementAt(tblBooking.getSelectedRow());
+
         textBookingId.setText(data.get(0).toString());
         textBookingCustomerId.setText(data.get(1).toString());
         textBookingCheckInDate.setText(data.get(2).toString());
@@ -2801,10 +2825,9 @@ public class MainFrame extends javax.swing.JFrame {
         // data.get(7).toString() is "AUD"
         textBookingPaymentStatusCode.setText(data.get(8).toString());
     }
-    
-    private void tblGuestValueChanged(ListSelectionEvent evt)
-    {
-        Vector data = (Vector)guestTableModel.getDataVector().elementAt(tblGuest.getSelectedRow());
+
+    private void tblGuestValueChanged(ListSelectionEvent evt) {
+        Vector data = (Vector) guestTableModel.getDataVector().elementAt(tblGuest.getSelectedRow());
         textGuestId.setText(data.get(0).toString());
         textGuestBookingId.setText(data.get(1).toString());
         textGuestTitle.setText(data.get(2).toString());
@@ -2817,26 +2840,23 @@ public class MainFrame extends javax.swing.JFrame {
         textGuestPostalCode.setText(data.get(9).toString());
         textGuestPhoneNumber.setText(data.get(10).toString());
         textGuestEmailAddress.setText(data.get(11).toString());
-        
+
     }
 
-    private void tblCustomerValueChanged(ListSelectionEvent evt)
-    {
-        Vector data = (Vector)customerTableModel.getDataVector().elementAt(tblCustomer.getSelectedRow());
+    private void tblCustomerValueChanged(ListSelectionEvent evt) {
+        Vector data = (Vector) customerTableModel.getDataVector().elementAt(tblCustomer.getSelectedRow());
         textCustomerId.setText(data.get(0).toString());
-        
+
         int index = 0;
         String dataCode = data.get(1).toString();
-        
-        for (String a : membership2String)
-        {
-            if (a.split("-")[0].equals(dataCode))
-            {
+
+        for (String a : membership2String) {
+            if (a.split("-")[0].equals(dataCode)) {
                 index = membership2String.indexOf(a);
                 break;
             }
         }
-        
+
         //textCustomerMembershipTier.setText(data.get(1).toString());
         membershipTierComboBox2.setSelectedIndex(index);
         textCustomerMembershipCredits.setText(data.get(2).toString());
@@ -2850,13 +2870,12 @@ public class MainFrame extends javax.swing.JFrame {
         textCustomerPostalCode.setText(data.get(10).toString());
         textCustomerPhoneNumber.setText(data.get(11).toString());
         textCustomerEmailAddress.setText(data.get(12).toString());
-        
+
     }
-    
-    private void tblRoomValueChanged(ListSelectionEvent evt)
-    {
-        Vector data = (Vector)roomTableModel.getDataVector().elementAt(tblRoom.getSelectedRow());
-        
+
+    private void tblRoomValueChanged(ListSelectionEvent evt) {
+        Vector data = (Vector) roomTableModel.getDataVector().elementAt(tblRoom.getSelectedRow());
+
         textRoomHotelId.setText(data.get(0).toString());
         textRoomId.setText(data.get(1).toString());
         textRoomNumber.setText(data.get(2).toString());
@@ -2864,100 +2883,92 @@ public class MainFrame extends javax.swing.JFrame {
         textRoomPrice.setText(data.get(4).toString());
         textRoomDescription.setText(data.get(6).toString());
     }
-    
-    private void tblMembershipValueChanged(ListSelectionEvent evt)
-    {
-        Vector data = (Vector)membershipTableModel.getDataVector().elementAt(tblMembership.getSelectedRow());
-        
+
+    private void tblMembershipValueChanged(ListSelectionEvent evt) {
+        Vector data = (Vector) membershipTableModel.getDataVector().elementAt(tblMembership.getSelectedRow());
+
         textMembershipTierCode.setText(data.get(0).toString());
         textMembershipTierName.setText(data.get(1).toString());
         textMembershipCredit.setText(data.get(2).toString());
         textMembershipDiscount.setText(data.get(3).toString());
         textMembershipOtherRewards.setText(data.get(4).toString());
     }
-    
-    private void tblPaymentValueChanged(ListSelectionEvent evt)
-    {
-         Vector data = (Vector)paymentTableModel.getDataVector().elementAt(tblPayment.getSelectedRow());
 
-         textPaymentBookingId.setText(data.get(0).toString());
-         textPaymentNumber.setText(data.get(1).toString());
-         textPaymentDate.setText(data.get(2).toString());
-         textPaymentAmount.setText(data.get(3).toString());
-         
-         int index = 0;
-         for (String a : pmcString)
-         {
-             if (a.split("-")[0].equals(data.get(4).toString()))
-             {
-                 index = pmcString.indexOf(a);
-                 break;
-             }
-         }
-         paymentMethodComboBox.setSelectedIndex(index);
-         //textPaymentMethodCode.setText(data.get(4).toString());
+    private void tblPaymentValueChanged(ListSelectionEvent evt) {
+        Vector data = (Vector) paymentTableModel.getDataVector().elementAt(tblPayment.getSelectedRow());
+
+        textPaymentBookingId.setText(data.get(0).toString());
+        textPaymentNumber.setText(data.get(1).toString());
+        textPaymentDate.setText(data.get(2).toString());
+        textPaymentAmount.setText(data.get(3).toString());
+
+        int index = 0;
+        for (String a : pmcString) {
+            if (a.split("-")[0].equals(data.get(4).toString())) {
+                index = pmcString.indexOf(a);
+                break;
+            }
+        }
+        paymentMethodComboBox.setSelectedIndex(index);
+        //textPaymentMethodCode.setText(data.get(4).toString());
     }
-    
-    
+
+
     private void editHotelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editHotelBtnActionPerformed
-        
-        try
-        {
+
+        try {
             // TODO add your handling code here:
-           int id = Integer.parseInt(textHotelId.getText());
+            int id = Integer.parseInt(textHotelId.getText());
 
-           hotel = FinderService.findHotelById(hotels, id);
-           
-           if (hotel == null)
-           {
-               // TODO: dialogbox - no hotel found
-           }
-           
-           hotel.setHotelName(textHotelName.getText());
-       
-           try{
-               SimpleDateFormat fmt = new SimpleDateFormat("yyyy");
-               Date date1 = fmt.parse(textHotelConstructionYear.getText());
-               hotel.setConstructionYear(date1);
-               hotel.setContactNumber(textHotelContactNumber.getText());
-               hotel.setCountry(textHotelCountry.getText());
-               hotel.setCity(textHotelCity.getText());
-               hotel.setAddress(textHotelAddress.getText());
-               hotel.setEmailAddress(textHotelEmailAddress.getText());
-               hotel.setHotelTypeCode(hotelTypeCodeComboBox2.getSelectedItem().toString().split("-")[0]); // TODO: should be drop down
+            hotel = FinderService.findHotelById(hotels, id);
 
-               // Add hotel
-               hotelController.updateHotel(hotel);
+            if (hotel == null) {
+                // TODO: dialogbox - no hotel found
+                JOptionPane.showMessageDialog(hotelPanel, "No Hotel Found!");
+            }
 
-               refreshHotelTableModel(true);
+            hotel.setHotelName(textHotelName.getText());
 
-           }
-           catch(Exception e)
-           {
-               //TODO: Unable to parse date
+            try {
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy");
+                Date date1 = fmt.parse(textHotelConstructionYear.getText());
+                hotel.setConstructionYear(date1);
+                hotel.setContactNumber(textHotelContactNumber.getText());
+                hotel.setCountry(textHotelCountry.getText());
+                hotel.setCity(textHotelCity.getText());
+                hotel.setAddress(textHotelAddress.getText());
+                hotel.setEmailAddress(textHotelEmailAddress.getText());
+                hotel.setHotelTypeCode(hotelTypeCodeComboBox2.getSelectedItem().toString().split("-")[0]); // TODO: should be drop down
 
-           }
+                // Add hotel
+                hotelController.updateHotel(hotel);
+                sucessMessage();
+                clearHotelField();
+                refreshHotelTableModel(true);
+
+            } catch (Exception e) {
+                //TODO: Unable to parse date
+                errorMessage();
+
+            }
+        } catch (Exception e) {
+
         }
-        catch (Exception e)
-        {
-            
-        }
-        
-        
+
+
     }//GEN-LAST:event_editHotelBtnActionPerformed
 
     private void editGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editGuestBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             int id = Integer.parseInt(textGuestId.getText());
             guest = FinderService.findGuestByGuestId(guests, id);
-            
+
             Booking bkg = new Booking();
             //bkg.setBookingId();
-            
+
             bkg = bookingController.getBookingByBookingId(Integer.parseInt(textGuestBookingId.getText()));
-            
+
             guest.setBooking(bkg);
             guest.setTitle(textGuestTitle.getText());
             guest.setFirstName(textGuestFirstName.getText());
@@ -2973,73 +2984,68 @@ public class MainFrame extends javax.swing.JFrame {
             guest.setPostalCode(textGuestPostalCode.getText());
             guest.setPhoneNumber(textGuestPhoneNumber.getText());
             guest.setEmailAddress(textGuestEmailAddress.getText());
-            
+
             // Add guest
             guestController.updateGuest(guest);
-
+            sucessMessage();
+            clearGuestField();
             refreshGuestTableModel(true);
-            
+
             // TODO: Sort JTables by ID
             // TODO: Check for duplicates
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             // TODO: handle exception
+            errorMessage();
         }
     }//GEN-LAST:event_editGuestBtnActionPerformed
 
     private void editRoomBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editRoomBtnActionPerformed
         // TODO add your handling code here:
-         try
-        {
+        try {
             int id = Integer.parseInt(textRoomId.getText());
             room = FinderService.findRoomByRoomId(rooms, id);
-            
+
             int hotelId = Integer.parseInt(textRoomHotelId.getText());
             RoomType roomType = FinderService.findRoomTypeByCode(roomTypes, textRoomTypeCode.getText());
-            
+
             hotel = FinderService.findHotelById(hotels, hotelId);
-            
-            if (hotel != null)
-            {
+
+            if (hotel != null) {
                 room.setHotelId(hotelId);
-            }
-            else
-            {
+            } else {
                 //TODO: throw exception - hotel not found!
+                JOptionPane.showMessageDialog(roomPanel, "Hotel Not Found!");
             }
             room.setRoomNumber(textRoomNumber.getText());
             room.setRoomDescription(textRoomDescription.getText());
             room.setRoomPrice(Double.parseDouble(textRoomPrice.getText()));
             room.setCurrencyCode("AUD");
             room.setRoomType(roomType);
-            
+
             roomController.updateRoom(room);
-            
+            sucessMessage();
+            clearRoomField();
             refreshRoomTableModel(true);
-            
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+            errorMessage();
         }
 
     }//GEN-LAST:event_editRoomBtnActionPerformed
 
     private void editCustomerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCustomerBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             int id = Integer.parseInt(textCustomerId.getText());
             customer = FinderService.findCustomerByCustomerId(customers, id);
-            
+
             String code = membershipTierComboBox2.getSelectedItem().toString().split("-")[0];
-            
+
             membership = membershipController.findMembershipByTierCode(code);
-            
+
             customer.setMembership(membership);
             customer.setMembershipCredits(Integer.parseInt(textCustomerMembershipCredits.getText()));
-             
+
             customer.setTitle(textCustomerTitle.getText());
             customer.setFirstName(textCustomerFirstName.getText());
             customer.setLastName(textCustomerLastName.getText());
@@ -3054,22 +3060,20 @@ public class MainFrame extends javax.swing.JFrame {
             customer.setPostalCode(textCustomerPostalCode.getText());
             customer.setPhoneNumber(textCustomerPhoneNumber.getText());
             customer.setEmailAddress(textCustomerEmailAddress.getText());
-            
-            customerController.updateCustomer(customer);
 
+            customerController.updateCustomer(customer);
+            sucessMessage();
+            clearCustomerField();
             refreshCustomerTableModel();
-            
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+            errorMessage();
         }
     }//GEN-LAST:event_editCustomerBtnActionPerformed
 
     private void editMembershipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMembershipBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             String code = textMembershipTierCode.getText();
             membership = FinderService.findMembershipByMembershipTierCode(memberships, code);
             membership.setMembershipTier(textMembershipTierName.getText());
@@ -3077,29 +3081,27 @@ public class MainFrame extends javax.swing.JFrame {
             membership.setDiscount(Long.parseLong(textMembershipDiscount.getText()));
             membership.setOtherRewards(textMembershipOtherRewards.getText());
             membership.setTierCredits(Integer.parseInt(textMembershipCredit.getText()));
-            
+
             membershipController.updateMembership(membership);
-            
+            sucessMessage();
+            clearMembershipField();
             refreshMembershipTableModel();
-            
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+            errorMessage();
         }
     }//GEN-LAST:event_editMembershipBtnActionPerformed
 
     private void editBookingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBookingBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             int id = Integer.parseInt(textBookingId.getText());
             booking = FinderService.findBookingById(bookings, id);
-            
+
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
             Date date1 = fmt.parse(textBookingCheckInDate.getText());
             Date date2 = fmt.parse(textBookingCheckOutDate.getText());
-            
+
             booking.setCheckInDate(date1);
             booking.setCheckOutDate(date2);
             booking.setContactEmail(textBookingContactEmail.getText());
@@ -3115,199 +3117,178 @@ public class MainFrame extends javax.swing.JFrame {
             booking.setTotalAmount(Double.parseDouble(textBookingTotalAmount.getText()));
 
             bookingController.updateBooking(booking);
-            
+            sucessMessage();
+            clearBookingField();
             refreshBookingTableModel(true);
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+            errorMessage();
+
         }
     }//GEN-LAST:event_editBookingBtnActionPerformed
 
     private void deleteHotelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteHotelBtnActionPerformed
         // TODO add your handling code here:
 
-        try 
-        {
+        try {
 
             int id = Integer.parseInt(textHotelId.getText());
 
-           hotel = FinderService.findHotelById(hotels, id);
-           ArrayList<Room> hotelRooms = FinderService.findRoomByHotelId(rooms, id);
-           
-           if (hotelRooms.size() <= 0)
-           {
-               hotelController.deleteHotel(hotel);
-           }
-           else
-           {
-               // TODO: Error, cannot delete hotel!
-           }
-           
-           tblHotel.addNotify();
-           refreshHotelTableModel(true);
-          
+            hotel = FinderService.findHotelById(hotels, id);
+            ArrayList<Room> hotelRooms = FinderService.findRoomByHotelId(rooms, id);
+
+            if (hotelRooms.size() <= 0) {
+                hotelController.deleteHotel(hotel);
+            } else {
+                // TODO: Error, cannot delete hotel!
+                JOptionPane.showMessageDialog(hotelPanel, "Cannot delete hotel!");
+            }
+
+            tblHotel.addNotify();
+            sucessMessage();
+            refreshHotelTableModel(true);
+
+        } catch (Exception e) {
+            errorMessage();
+
         }
-        catch (Exception e)
-        {
-            
-        }
-        
+
     }//GEN-LAST:event_deleteHotelBtnActionPerformed
 
     private void delRoomBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delRoomBtnActionPerformed
         // TODO add your handling code here:
-        
+
         // also delete the bookingroomguest
         // can be deleted
-        try
-        {
+        try {
             int id = Integer.parseInt(textRoomId.getText());
             room = FinderService.findRoomByRoomId(rooms, id);
-            
+
             ArrayList<BookingRoomGuest> brgList = new ArrayList<>(bookingController.getBookingRoomGuest());
-            
+
             ArrayList<BookingRoomGuest> rBrgList = FinderService.findBookingRoomGuestByRoomId(brgList, id);
-            
+
             // Also delete the BookingRoomGuest if we're going to delete the room
             // Works like CASCADE
-            if (rBrgList.size() > 0)
-            {
-                for (int i = rBrgList.size() - 1; i >= 0; i--)
-                {
+            if (rBrgList.size() > 0) {
+                for (int i = rBrgList.size() - 1; i >= 0; i--) {
                     BookingRoomGuest brg = rBrgList.get(i);
                     bookingController.deleteBookingRoomGuest(brg);
                 }
             }
-            
+
             roomController.deleteRoom(id);
+            sucessMessage();
             tblRoom.addNotify();
             refreshRoomTableModel(true);
-            
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+            errorMessage();
+
         }
     }//GEN-LAST:event_delRoomBtnActionPerformed
 
     private void delCustomerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delCustomerBtnActionPerformed
         // TODO add your handling code here:
-        
+
         // Check if the customer has any booking
-        
         // if none, delete!
-        
-        try
-        {
+        try {
             int id = Integer.parseInt(textCustomerId.getText());
             customer = FinderService.findCustomerByCustomerId(customers, id);
-            
-            if (customer.getBookingCollection().size() > 0)
-            {
+
+            if (customer.getBookingCollection().size() > 0) {
                 // TODO: Error! Cannot delete customer with booking
-            }
-            else
-            {
+                JOptionPane.showMessageDialog(customerPanel, "Cannot delete customer!");
+            } else {
                 customerController.deleteCustomer(customer);
             }
-            
+
             tblCustomer.addNotify();
+            sucessMessage();
             refreshCustomerTableModel();
 
+        } catch (Exception e) {
+            errorMessage();
         }
-        catch (Exception e)
-        {
-            
-        }
-        
-        
+
+
     }//GEN-LAST:event_delCustomerBtnActionPerformed
 
     private void delGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delGuestBtnActionPerformed
         // TODO add your handling code here:
-        
+
         // can be deleted - also delete the booking room guest
-        try
-        {
+        try {
             int id = Integer.parseInt(textGuestId.getText());
             guest = FinderService.findGuestByGuestId(guests, id);
-            
+
             ArrayList<BookingRoomGuest> brgList = new ArrayList<>(bookingController.getBookingRoomGuest());
-            
+
             ArrayList<BookingRoomGuest> rBrgList = FinderService.findBookingRoomGuestByGuestId(brgList, id);
-            
+
             // Also delete the BookingRoomGuest if we're going to delete the room
             // Works like CASCADE
-            if (rBrgList.size() > 0)
-            {
-                for (int i = rBrgList.size() - 1; i >= 0; i--)
-                {
+            if (rBrgList.size() > 0) {
+                for (int i = rBrgList.size() - 1; i >= 0; i--) {
                     BookingRoomGuest brg = rBrgList.get(i);
                     bookingController.deleteBookingRoomGuest(brg);
                 }
             }
-            
+
             guestController.deleteGuest(guest);
+            sucessMessage();
             tblGuest.addNotify();
             refreshGuestTableModel(true);
-            
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+            errorMessage();
+
         }
     }//GEN-LAST:event_delGuestBtnActionPerformed
 
     private void delMembershipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delMembershipBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             String code = textMembershipTierCode.getText();
             membership = FinderService.findMembershipByMembershipTierCode(memberships, code);
-            
-            if (membership.getCustomerCollection().size() > 0)
-            {
+
+            if (membership.getCustomerCollection().size() > 0) {
                 // TODO: error - cannot delete membership
-            }
-            else
-            {
+                JOptionPane.showMessageDialog(membershipPanel, "Cannot delete membership!");
+            } else {
                 membershipController.deleteMembership(membership);
+                sucessMessage();
                 tblMembership.addNotify();
                 refreshMembershipTableModel();
             }
 
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+            errorMessage();
+
         }
     }//GEN-LAST:event_delMembershipBtnActionPerformed
 
     private void delPaymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delPaymentBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             int id = Integer.parseInt(textPaymentBookingId.getText());
             int num = Integer.parseInt(textPaymentNumber.getText());
-            
+
             payment = FinderService.findPaymentById(payments, id, num);
-            
-            if (payment != null)
-            {
-                
+
+            if (payment != null) {
+
                 paymentController.deletePayment(payment);
-                
+                sucessMessage();
                 tblPayment.addNotify();
                 refreshPaymentTableModel();
-            }
-            else{
+            } else {
                 // TODO: error! booking is not found
+                JOptionPane.showMessageDialog(paymentPanel, "Booking is not found!");
             }
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+            errorMessage();
+
         }
     }//GEN-LAST:event_delPaymentBtnActionPerformed
 
@@ -3317,31 +3298,23 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void searchGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGuestBtnActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             String fname = searchGuestFirstName.getText();
             String lname = searchGuestLastName.getText();
-            
+
             guests = new ArrayList<>(guestController.getGuests());
-            
-            if (!fname.isEmpty() && !lname.isEmpty())
-            {
+
+            if (!fname.isEmpty() && !lname.isEmpty()) {
                 guests = FinderService.listGuestByGuestName(guests, fname, lname);
-            }
-            else if (fname.isEmpty() && !lname.isEmpty())
-            {
+            } else if (fname.isEmpty() && !lname.isEmpty()) {
                 guests = FinderService.findGuestByLastName(guests, lname);
-            }
-            else if (!fname.isEmpty() && lname.isEmpty())
-            {
+            } else if (!fname.isEmpty() && lname.isEmpty()) {
                 guests = FinderService.findGuestByFirstName(guests, fname);
             }
-            
+
             refreshGuestTableModel(false);
-        }
-        catch(Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_searchGuestBtnActionPerformed
 
@@ -3365,22 +3338,129 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
-    
-    private void refreshHotelTableModel(boolean getAll)
-    {
-        try
-        {
-            Object dataHotel [][] = {{}};
+    private void hotelClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotelClearBtnActionPerformed
+        clearHotelField();
+    }//GEN-LAST:event_hotelClearBtnActionPerformed
+
+    private void textHotelAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textHotelAddressActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textHotelAddressActionPerformed
+
+    private void clearRoomBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearRoomBtnActionPerformed
+        clearRoomField();
+    }//GEN-LAST:event_clearRoomBtnActionPerformed
+
+    private void clearCustomerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearCustomerBtnActionPerformed
+        clearCustomerField();
+    }//GEN-LAST:event_clearCustomerBtnActionPerformed
+
+    private void clearGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearGuestBtnActionPerformed
+        clearGuestField();
+    }//GEN-LAST:event_clearGuestBtnActionPerformed
+
+    private void clearMemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearMemBtnActionPerformed
+        clearMembershipField();
+    }//GEN-LAST:event_clearMemBtnActionPerformed
+
+    private void clearPaymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearPaymentBtnActionPerformed
+        clearPaymentField();        // TODO add your handling code here:
+    }//GEN-LAST:event_clearPaymentBtnActionPerformed
+
+    private void clearBookingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBookingBtnActionPerformed
+        clearBookingField();        // TODO add your handling code here:
+    }//GEN-LAST:event_clearBookingBtnActionPerformed
+    private void clearHotelField() {
+        textHotelName.setText("");
+        textHotelConstructionYear.setText("");
+        textHotelCountry.setText("");
+        textHotelCity.setText("");
+        textHotelAddress.setText("");
+        textHotelContactNumber.setText("");
+        textHotelEmailAddress.setText("");
+
+    }
+
+    private void clearRoomField() {
+        textRoomId.setText("");
+        textRoomNumber.setText("");
+        textRoomDescription.setText("");
+        textRoomPrice.setText("");
+        textRoomHotelId.setText("");
+        textRoomTypeCode.setText("");
+
+    }
+
+    private void clearCustomerField() {
+        textCustomerTitle.setText("");
+        textCustomerFirstName.setText("");
+        textCustomerLastName.setText("");
+        textCustomerDob.setText("");
+        textCustomerCountry.setText("");
+        textCustomerCity.setText("");
+        textCustomerStreet.setText("");
+        textCustomerPostalCode.setText("");
+        textCustomerPhoneNumber.setText("");
+        textCustomerEmailAddress.setText("");
+        textCustomerMembershipCredits.setText("");
+
+    }
+
+    private void clearGuestField() {
+        textGuestBookingId.setText("");
+        textGuestTitle.setText("");
+        textGuestFirstName.setText("");
+        textGuestLastName.setText("");
+        textGuestDob.setText("");
+        textGuestCountry.setText("");
+        textGuestCity.setText("");
+        textGuestStreet.setText("");
+        textGuestPostalCode.setText("");
+        textGuestPhoneNumber.setText("");
+        textGuestEmailAddress.setText("");
+    }
+
+    private void clearMembershipField() {
+        textMembershipTierCode.setText("");
+        textMembershipTierName.setText("");
+        textMembershipCredit.setText("");
+        textMembershipDiscount.setText("");
+        textMembershipOtherRewards.setText("");
+    }
+
+    private void clearPaymentField() {
+        textPaymentBookingId.setText("");
+        textPaymentAmount.setText("");
+    }
+
+    private void clearBookingField() {
+        textBookingCheckInDate.setText("");
+        textBookingCheckOutDate.setText("");
+        textBookingContactPerson.setText("");
+        textBookingContactEmail.setText("");
+        textBookingCustomerId.setText("");
+        textBookingPaymentStatusCode.setText("");
+        textBookingTotalAmount.setText("");
+    }
+
+    private void sucessMessage() {
+        JOptionPane.showMessageDialog(null, "Process Succeed!");
+    }
+
+    private void errorMessage() {
+        JOptionPane.showMessageDialog(null, "Error ocurred! Please try again!");
+    }
+
+    private void refreshHotelTableModel(boolean getAll) {
+        try {
+            Object dataHotel[][] = {{}};
             hotelTableModel = new DefaultTableModel(dataHotel, hotelColumnHeaders);
-            
-            if (getAll)
-            {
+
+            if (getAll) {
                 hotels = new ArrayList<>(hotelController.getHotels());
             }
 
-            for (Hotel h : hotels)
-            {
-                Object [] rowData = new Object[9];
+            for (Hotel h : hotels) {
+                Object[] rowData = new Object[9];
                 rowData[0] = h.getHotelId();
                 rowData[1] = h.getHotelName();
                 rowData[2] = h.getHotelTypeCode();
@@ -3398,32 +3478,26 @@ public class MainFrame extends javax.swing.JFrame {
 
             tblHotel.addNotify();
             tblHotel.setModel(hotelTableModel);
-            
+
             tblHotel.clearSelection();
             tblHotel.repaint();
-            
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+
         }
     }
-    
-    private void refreshBookingTableModel(boolean getAll)
-    {
-        try
-        {
-            Object dataBooking [][] = {{}};
+
+    private void refreshBookingTableModel(boolean getAll) {
+        try {
+            Object dataBooking[][] = {{}};
             bookingTableModel = new DefaultTableModel(dataBooking, bookingColumnHeaders);
-            
-            if (getAll)
-            {
+
+            if (getAll) {
                 bookings = new ArrayList<>(bookingController.getBookings());
             }
 
-            for (Booking h : bookings)
-            {
-                Object [] rowData = new Object[9];
+            for (Booking h : bookings) {
+                Object[] rowData = new Object[9];
                 rowData[0] = h.getBookingId();
                 rowData[1] = h.getCustomer().getCustomerId();
                 rowData[2] = getDateString(h.getCheckInDate());
@@ -3442,28 +3516,22 @@ public class MainFrame extends javax.swing.JFrame {
 
             tblBooking.clearSelection();
             tblBooking.repaint();
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
     }
-    
-    private void refreshRoomTableModel(boolean getAll)
-    {
-        try
-        {
-            Object dataRoom [][] = {{}};
+
+    private void refreshRoomTableModel(boolean getAll) {
+        try {
+            Object dataRoom[][] = {{}};
             roomTableModel = new DefaultTableModel(dataRoom, roomColumnHeaders);
-            
-            if (getAll)
-            {
+
+            if (getAll) {
                 rooms = new ArrayList<>(roomController.getRooms());
             }
 
-            for (Room h : rooms)
-            {
-                Object [] rowData = new Object[7];
+            for (Room h : rooms) {
+                Object[] rowData = new Object[7];
                 rowData[0] = h.getHotelId();
                 rowData[1] = h.getRoomId();
                 rowData[2] = h.getRoomNumber();
@@ -3479,28 +3547,22 @@ public class MainFrame extends javax.swing.JFrame {
             tblRoom.setModel(roomTableModel);
             tblRoom.clearSelection();
             tblRoom.repaint();
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
     }
-    
-    private void refreshGuestTableModel(boolean getAll)
-    {
-        try 
-        {
-            Object dataGuest [][] = {{}};
+
+    private void refreshGuestTableModel(boolean getAll) {
+        try {
+            Object dataGuest[][] = {{}};
             guestTableModel = new DefaultTableModel(dataGuest, guestColumnHeaders);
-            
-            if(getAll)
-            {
+
+            if (getAll) {
                 guests = new ArrayList<>(guestController.getGuests());
             }
-            
-            for (Guest h : guests)
-            {
-                Object [] rowData = new Object[12];
+
+            for (Guest h : guests) {
+                Object[] rowData = new Object[12];
                 rowData[0] = h.getGuestId();
                 rowData[1] = h.getBooking().getBookingId();
                 rowData[2] = h.getTitle();
@@ -3521,31 +3583,23 @@ public class MainFrame extends javax.swing.JFrame {
             tblGuest.setModel(guestTableModel);
             tblGuest.clearSelection();
             tblGuest.repaint();
-            
-        }
-        catch(Exception e)
-        {
-            
+
+        } catch (Exception e) {
+
         }
     }
-    
-    private void refreshPaymentTableModel()
-    {
-        try
-        {
-            Object dataPayment [][] = {{}};
+
+    private void refreshPaymentTableModel() {
+        try {
+            Object dataPayment[][] = {{}};
             paymentTableModel = new DefaultTableModel(dataPayment, paymentColumnHeaders);
             payments = new ArrayList<>(paymentController.getPayments());
 
-            
-            for (Payment p : payments)
-            {
-                Object [] rowData = new Object[6];
+            for (Payment p : payments) {
+                Object[] rowData = new Object[6];
                 rowData[0] = p.getPaymentPK().getBookingId();
                 rowData[1] = p.getPaymentPK().getPaymentNumber();
-   
-               
-                
+
                 rowData[2] = getDateString(p.getPaymentDate());//p.getPaymentDate();
                 rowData[3] = p.getPaymentAmount();
                 rowData[4] = p.getCurrencyCode();
@@ -3558,25 +3612,20 @@ public class MainFrame extends javax.swing.JFrame {
             tblPayment.setModel(paymentTableModel);
             tblPayment.clearSelection();
             tblPayment.repaint();
-            
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+
         }
     }
-    
-    private void refreshCustomerTableModel()
-    {
-        try
-        {
-            Object dataCustomer [][] = {{}};
+
+    private void refreshCustomerTableModel() {
+        try {
+            Object dataCustomer[][] = {{}};
             customerTableModel = new DefaultTableModel(dataCustomer, customerColumnHeaders);
             customers = new ArrayList<>(customerController.getCustomers());
-            
-            for (Customer h : customers)
-            {
-                Object [] rowData = new Object[13];
+
+            for (Customer h : customers) {
+                Object[] rowData = new Object[13];
                 rowData[0] = h.getCustomerId();
                 rowData[1] = h.getMembership().getMembershipTierCode();
                 rowData[2] = h.getMembershipCredits();
@@ -3599,26 +3648,21 @@ public class MainFrame extends javax.swing.JFrame {
             tblCustomer.clearSelection();
             tblCustomer.repaint();
 
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
     }
-    
-    private void refreshMembershipTableModel()
-    {
-        try
-        {
-            Object dataMembership [][] = {{}};
+
+    private void refreshMembershipTableModel() {
+        try {
+            Object dataMembership[][] = {{}};
 
             membershipTableModel = new DefaultTableModel(dataMembership, membershipColumnHeaders);
 
             memberships = new ArrayList<>(membershipController.getMemberships());
 
-            for (Membership m : memberships)
-            {
-                Object [] rowData = new Object[5];
+            for (Membership m : memberships) {
+                Object[] rowData = new Object[5];
                 rowData[0] = m.getMembershipTierCode();
                 rowData[1] = m.getMembershipTier();
                 rowData[2] = m.getTierCredits();
@@ -3632,18 +3676,15 @@ public class MainFrame extends javax.swing.JFrame {
             tblMembership.setModel(membershipTableModel);
             tblMembership.clearSelection();
             tblMembership.repaint();
-        }
-        catch (Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
 
     }
-    
-    private void refreshDataTableModels()
-    {
-        try{
-            
+
+    private void refreshDataTableModels() {
+        try {
+
             refreshHotelTableModel(true);
             refreshBookingTableModel(true);
             refreshRoomTableModel(true);
@@ -3651,32 +3692,29 @@ public class MainFrame extends javax.swing.JFrame {
             refreshCustomerTableModel();
             refreshMembershipTableModel();
             refreshPaymentTableModel();
-           
-        }
-        catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+
         }
     }
-    
-    private String getDateString(Date date)
-    {
+
+    private String getDateString(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
 
-        DecimalFormat mFormat= new DecimalFormat("00");
+        DecimalFormat mFormat = new DecimalFormat("00");
 
         String dataDate = date.toString();
 
         String mo = cal.getTime().toString();
-        mo = cal.get(Calendar.YEAR) + 
-                "-" + 
-                mFormat.format((cal.get(Calendar.MONTH) + 1)%12).toString() 
+        mo = cal.get(Calendar.YEAR)
+                + "-"
+                + mFormat.format((cal.get(Calendar.MONTH) + 1) % 12).toString()
                 + "-" + mFormat.format(cal.get(Calendar.DATE)).toString();
-        
+
         return mo;
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -3710,7 +3748,7 @@ public class MainFrame extends javax.swing.JFrame {
                 new MainFrame().setVisible(true);
             }
         });
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -3729,6 +3767,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnMemberships;
     private javax.swing.JButton btnPayments;
     private javax.swing.JButton btnRooms;
+    private javax.swing.JButton clearBookingBtn;
+    private javax.swing.JButton clearCustomerBtn;
+    private javax.swing.JButton clearGuestBtn;
+    private javax.swing.JButton clearMemBtn;
+    private javax.swing.JButton clearPaymentBtn;
+    private javax.swing.JButton clearRoomBtn;
     private javax.swing.JButton createBookingBtn;
     private javax.swing.JPanel customerPanel;
     private javax.swing.JButton delBookingBtn;
@@ -3748,6 +3792,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel guestPanel;
     private javax.swing.JLabel hotelAddress;
     private javax.swing.JLabel hotelCity;
+    private javax.swing.JButton hotelClearBtn;
     private javax.swing.JLabel hotelConstructionYear;
     private javax.swing.JLabel hotelContactNumber;
     private javax.swing.JLabel hotelCountry;
