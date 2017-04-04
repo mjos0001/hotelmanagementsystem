@@ -984,14 +984,6 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jLabel71)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(roomPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(addRoomBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(editRoomBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(delRoomBtn)
-                        .addGap(173, 173, 173))
-                    .addGroup(roomPanelLayout.createSequentialGroup()
                         .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(roomPanelLayout.createSequentialGroup()
                                 .addGap(149, 149, 149)
@@ -1023,7 +1015,14 @@ public class MainFrame extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(jLabel42))))
                             .addComponent(jSeparator5)
-                            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 975, Short.MAX_VALUE))
+                            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 975, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roomPanelLayout.createSequentialGroup()
+                                .addComponent(addRoomBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(editRoomBtn)
+                                .addGap(18, 18, 18)
+                                .addComponent(delRoomBtn)
+                                .addGap(42, 42, 42)))
                         .addContainerGap(222, Short.MAX_VALUE))))
         );
 
@@ -1064,18 +1063,14 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel38)
                             .addComponent(textRoomDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(roomPanelLayout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(delRoomBtn)
-                            .addComponent(editRoomBtn)
-                            .addComponent(addRoomBtn))
-                        .addGap(28, 28, 28))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roomPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel71)
-                        .addGap(125, 125, 125)))
+                .addGap(16, 16, 16)
+                .addComponent(jLabel71)
+                .addGap(74, 74, 74)
+                .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(delRoomBtn)
+                    .addComponent(editRoomBtn)
+                    .addComponent(addRoomBtn))
+                .addGap(26, 26, 26)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
                 .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -2690,6 +2685,10 @@ public class MainFrame extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(this, error);
         }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record updated.");
+        }
     }//GEN-LAST:event_editPaymentBtnActionPerformed
 
     private void delBookingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delBookingBtnActionPerformed
@@ -2750,6 +2749,7 @@ public class MainFrame extends javax.swing.JFrame {
                 
             
             refreshBookingTableModel(true);
+            clearBookingFields();
             
         }
         catch (Exception e)
@@ -2762,6 +2762,10 @@ public class MainFrame extends javax.swing.JFrame {
         if (hasError)
         {
             JOptionPane.showMessageDialog(this, error);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record deleted.");
         }
     }//GEN-LAST:event_delBookingBtnActionPerformed
 
@@ -2807,6 +2811,7 @@ public class MainFrame extends javax.swing.JFrame {
             guestController.createGuest(guest);
 
             refreshGuestTableModel(true);
+            clearGuestFields();
             
             // TODO: Sort JTables by ID
             // TODO: Check for duplicates
@@ -2821,6 +2826,11 @@ public class MainFrame extends javax.swing.JFrame {
         if (hasError)
         {
             JOptionPane.showMessageDialog(this, error);
+        }
+        
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record added successfully.");
         }
     }//GEN-LAST:event_addGuestBtnActionPerformed
 
@@ -2868,6 +2878,7 @@ public class MainFrame extends javax.swing.JFrame {
             customerController.createCustomer(customer);
 
             refreshCustomerTableModel(true);
+            clearCustomerFields();
             
         }
         catch (Exception e)
@@ -2879,6 +2890,11 @@ public class MainFrame extends javax.swing.JFrame {
         if (hasError)
         {
             JOptionPane.showMessageDialog(this, error);
+        }
+        
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record added successfully.");
         }
     }//GEN-LAST:event_addCustBtnActionPerformed
 
@@ -2903,6 +2919,9 @@ public class MainFrame extends javax.swing.JFrame {
             else
             {
                 //TODO: throw exception - hotel not found!
+                            
+                hasError = true;
+                error += "Error in hotel is not found.\n";
             }
             room.setRoomNumber(textRoomNumber.getText());
             room.setRoomDescription(textRoomDescription.getText());
@@ -2918,10 +2937,14 @@ public class MainFrame extends javax.swing.JFrame {
             
             //addFacilitiesToRoom(room);
             
+            clearRoomFields();
+            
         }
         catch (Exception e)
         {
-            
+                        
+            hasError = true;
+            error += "Error in creating room.\n";
         }
         
         
@@ -2929,6 +2952,12 @@ public class MainFrame extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(this, error);
         }
+            
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record added successfully.");
+        }
+        
         
     }//GEN-LAST:event_addRoomBtnActionPerformed
 
@@ -3028,6 +3057,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             refreshMembershipTableModel(true);
             fillUpComboBoxes();
+            clearMembershipFields();
             
         }
         catch (Exception e)
@@ -3039,6 +3069,11 @@ public class MainFrame extends javax.swing.JFrame {
         if (hasError)
         {
             JOptionPane.showMessageDialog(this, error);
+        }
+        
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record added successfully.");
         }
     }//GEN-LAST:event_addMembershipBtnActionPerformed
 
@@ -3077,20 +3112,31 @@ public class MainFrame extends javax.swing.JFrame {
                 paymentController.createPayment(payment);
                 
                 refreshPaymentTableModel(true);
+                clearPaymentFields();
             }
             else{
                 // TODO: error! booking is not found
+                            
+                hasError = true;
+                error += "Error in creating payment - booking referenced not found.\n";
             }
         }
         catch (Exception e)
         {
-            
+                        
+            hasError = true;
+            error += "Error in creating payment.\n";
         }
         
         
         if (hasError)
         {
             JOptionPane.showMessageDialog(this, error);
+        }
+        
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record added successfully.");
         }
     }//GEN-LAST:event_addPaymentBtnActionPerformed
 
@@ -3105,12 +3151,21 @@ public class MainFrame extends javax.swing.JFrame {
             booking = new Booking();
             booking.setBookingId(0);
             
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-            Date date1 = fmt.parse(textBookingCheckInDate.getText());
-            Date date2 = fmt.parse(textBookingCheckOutDate.getText());
+            try
+            {
+
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                Date date1 = fmt.parse(textBookingCheckInDate.getText());
+                Date date2 = fmt.parse(textBookingCheckOutDate.getText());
+                booking.setCheckInDate(date1);
+                booking.setCheckOutDate(date2);
+            }
+            catch (Exception e)
+            {
+                hasError = true;
+                error += "Error in parsing check in or check out date.\n";
+            }
             
-            booking.setCheckInDate(date1);
-            booking.setCheckOutDate(date2);
             booking.setContactEmail(textBookingContactEmail.getText());
             booking.setContactPerson(textBookingContactPerson.getText());
             booking.setCurrencyCode("AUD");
@@ -3126,16 +3181,23 @@ public class MainFrame extends javax.swing.JFrame {
             bookingController.createBooking(booking);
             
             refreshBookingTableModel(true);
+            clearBookingFields();
         }
         catch (Exception e)
         {
-            
+            hasError = true;
+            error += "Error in creating booking.\n";
         }
 
         
         if (hasError)
         {
             JOptionPane.showMessageDialog(this, error);
+        }
+        
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record added successfully.");
         }
     }//GEN-LAST:event_addBookingBtnActionPerformed
 
@@ -3408,6 +3470,11 @@ public class MainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, error);
         }
         
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record updated.");
+        }
+        
     }//GEN-LAST:event_editHotelBtnActionPerformed
 
     private void editGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editGuestBtnActionPerformed
@@ -3459,6 +3526,11 @@ public class MainFrame extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(this, error);
         }
+        
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record updated.");
+        }
     }//GEN-LAST:event_editGuestBtnActionPerformed
 
     private void editRoomBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editRoomBtnActionPerformed
@@ -3483,6 +3555,9 @@ public class MainFrame extends javax.swing.JFrame {
             else
             {
                 //TODO: throw exception - hotel not found!
+                            
+                hasError = true;
+                error += "Error in updating room - hotel referenced cannot be found.\n";
             }
             room.setRoomNumber(textRoomNumber.getText());
             room.setRoomDescription(textRoomDescription.getText());
@@ -3497,7 +3572,9 @@ public class MainFrame extends javax.swing.JFrame {
         }
         catch (Exception e)
         {
-            
+                        
+            hasError = true;
+            error += "Error in updating room.\n";
         }
          
          
@@ -3505,7 +3582,10 @@ public class MainFrame extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(this, error);
         }
-
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record updated.");
+        }
     }//GEN-LAST:event_editRoomBtnActionPerformed
 
     private void editCustomerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCustomerBtnActionPerformed
@@ -3555,13 +3635,18 @@ public class MainFrame extends javax.swing.JFrame {
         }
         catch (Exception e)
         {
-            
+            hasError = true;
+            error += "Error in updating customer.\n";
         }
         
         
         if (hasError)
         {
             JOptionPane.showMessageDialog(this, error);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record updated.");
         }
     }//GEN-LAST:event_editCustomerBtnActionPerformed
 
@@ -3653,6 +3738,10 @@ public class MainFrame extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(this, error);
         }
+        else
+        {
+           JOptionPane.showMessageDialog(this, "Record updated.");
+        }
     }//GEN-LAST:event_editBookingBtnActionPerformed
 
     private void deleteHotelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteHotelBtnActionPerformed
@@ -3680,6 +3769,7 @@ public class MainFrame extends javax.swing.JFrame {
            
            tblHotel.addNotify();
            refreshHotelTableModel(true);
+           clearHotelFields();
           
         }
         catch (Exception e)
@@ -3693,6 +3783,10 @@ public class MainFrame extends javax.swing.JFrame {
         if (hasError)
         {
             JOptionPane.showMessageDialog(this, error);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record deleted.");
         }
         
     }//GEN-LAST:event_deleteHotelBtnActionPerformed
@@ -3741,6 +3835,10 @@ public class MainFrame extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(this, error);
         }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record deleted.");
+        }
     }//GEN-LAST:event_delRoomBtnActionPerformed
 
     private void delCustomerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delCustomerBtnActionPerformed
@@ -3772,6 +3870,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             tblCustomer.addNotify();
             refreshCustomerTableModel(true);
+            clearCustomerFields();
 
         }
         catch (Exception e)
@@ -3785,6 +3884,10 @@ public class MainFrame extends javax.swing.JFrame {
         if (hasError)
         {
             JOptionPane.showMessageDialog(this, error);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record deleted.");
         }
         
     }//GEN-LAST:event_delCustomerBtnActionPerformed
@@ -3819,6 +3922,7 @@ public class MainFrame extends javax.swing.JFrame {
             guestController.deleteGuest(guest);
             tblGuest.addNotify();
             refreshGuestTableModel(true);
+            clearGuestFields();
             
         }
         catch (Exception e)
@@ -3832,6 +3936,10 @@ public class MainFrame extends javax.swing.JFrame {
         if (hasError)
         {
             JOptionPane.showMessageDialog(this, error);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record deleted.");
         }
     }//GEN-LAST:event_delGuestBtnActionPerformed
 
@@ -3854,6 +3962,7 @@ public class MainFrame extends javax.swing.JFrame {
                 membershipController.deleteMembership(membership);
                 tblMembership.addNotify();
                 refreshMembershipTableModel(true);
+                clearMembershipFields();
             }
 
         }
@@ -3868,6 +3977,10 @@ public class MainFrame extends javax.swing.JFrame {
         if (hasError)
         {
             JOptionPane.showMessageDialog(this, error);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record deleted.");
         }
     }//GEN-LAST:event_delMembershipBtnActionPerformed
 
@@ -3890,6 +4003,7 @@ public class MainFrame extends javax.swing.JFrame {
                 
                 tblPayment.addNotify();
                 refreshPaymentTableModel(true);
+                clearPaymentFields();
             }
             else{
                 // TODO: error! booking is not found
@@ -3908,6 +4022,10 @@ public class MainFrame extends javax.swing.JFrame {
         if (hasError)
         {
             JOptionPane.showMessageDialog(this, error);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Record deleted.");
         }
     }//GEN-LAST:event_delPaymentBtnActionPerformed
 
