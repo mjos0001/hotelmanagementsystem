@@ -5,6 +5,10 @@
  */
 package hmsFrame;
 
+import hmsModel.PaymentMethodCode;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author mrkjse
@@ -16,6 +20,8 @@ public class PaymentForm extends javax.swing.JPanel {
      */
     public PaymentForm() {
         initComponents();
+        
+        fillPaymentMethodComboBox();
     }
 
     /**
@@ -28,20 +34,18 @@ public class PaymentForm extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        paymentMethodComboBox = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        textPaymentAmount = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 204));
 
         jLabel1.setText("Payment Method");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        paymentMethodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel2.setText("Payment Amount");
-
-        jTextField1.setText("jTextField1");
 
         jLabel3.setText("AUD");
 
@@ -56,8 +60,8 @@ public class PaymentForm extends javax.swing.JPanel {
                     .addComponent(jLabel2))
                 .addGap(75, 75, 75)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE))
+                    .addComponent(paymentMethodComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(textPaymentAmount, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addContainerGap(71, Short.MAX_VALUE))
@@ -68,22 +72,49 @@ public class PaymentForm extends javax.swing.JPanel {
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(paymentMethodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textPaymentAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addContainerGap(211, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
+    private void fillPaymentMethodComboBox()
+    {
+        ArrayList<String> pmcString = new ArrayList<>();
+        
+        for (PaymentMethodCode pmc : PaymentMethodCode.values())
+        {
+            pmcString.add(pmc.code() + "-" + pmc.name());
+        }
+        
+        DefaultComboBoxModel pmcCBModel = new DefaultComboBoxModel(pmcString.toArray());
+        
+        paymentMethodComboBox.setModel(pmcCBModel);
+        paymentMethodComboBox.repaint();
+
+    }
+    
+    public javax.swing.JTextField getTextPaymentAmount()
+    {
+        return textPaymentAmount;
+    }
+    
+    
+    public javax.swing.JComboBox getPaymentMethodComboBox()
+    {
+        return paymentMethodComboBox;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JComboBox<String> paymentMethodComboBox;
+    private javax.swing.JTextField textPaymentAmount;
     // End of variables declaration//GEN-END:variables
 }

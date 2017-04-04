@@ -148,6 +148,65 @@ public class GuestForm extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    public javax.swing.JTextField getTextGuestCity()
+    {
+        return textGuestCity;
+    }
+    
+    
+    public javax.swing.JTextField getTextGuestCountry()
+    {
+        return textGuestCountry;
+    }
+    
+    
+    public javax.swing.JTextField getTextGuestDateOfBirth()
+    {
+        return textGuestDateOfBirth;
+    }
+    
+    
+    public javax.swing.JTextField getTextGuestEmailAddress()
+    {
+        return textGuestEmailAddress;
+    }
+    
+    
+    public javax.swing.JTextField getTextGuestFirstName()
+    {
+        return textGuestFirstName;
+    }
+    
+    
+    public javax.swing.JTextField getTextGuestLastName()
+    {
+        return textGuestLastName;
+    }
+    
+    
+    public javax.swing.JTextField getTextGuestPhone()
+    {
+        return textGuestPhone;
+    }
+    
+    
+    public javax.swing.JTextField getTextGuestPostalCode()
+    {
+        return textGuestPostalCode;
+    }
+    
+    
+    public javax.swing.JTextField getTextGuestStreet()
+    {
+        return textGuestStreet;
+    }
+    
+    
+    public javax.swing.JTextField getTextGuestTitle()
+    {
+        return textGuestTitle;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

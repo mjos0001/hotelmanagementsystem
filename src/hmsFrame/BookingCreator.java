@@ -20,6 +20,7 @@ import java.util.*;
 import java.text.SimpleDateFormat;
 import javax.persistence.EntityManagerFactory;
 import javax.swing.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -51,6 +52,9 @@ public class BookingCreator extends javax.swing.JFrame {
             cds = new CustomerDataService(emfactoryList.get(1));
             customers = new ArrayList<>(cds.getCustomers());
             
+            bds = new BookingDataService(emfactoryList.get(1));
+            gds = new GuestDataService(emfactoryList.get(1));
+            pds = new PaymentDataService(emfactoryList.get(1));
             
             fillUpBookingComboBoxes();
         }
@@ -75,23 +79,28 @@ public class BookingCreator extends javax.swing.JFrame {
     RoomAllocatorService allocatorService = null;
     HotelDataService hds = null;
     CustomerDataService cds = null;
+    BookingDataService bds = null;
+    GuestDataService gds = null;
+    PaymentDataService pds = null;
     
     ArrayList<Hotel> hotels = null;
     ArrayList<Customer> customers = null;
     ArrayList<Room> rooms = null;
     ArrayList<Room> takenRooms = null;
+    ArrayList<Guest> guests = null;
     
     SearchRoomRequest roomRequest = null;
  
     ArrayList<RoomChoice> roomChoices = null;
     ArrayList<BookingRoomGuest> bookingRoomGuests = null;
     
-    Booking newBooking = new Booking();
+    Booking booking = new Booking();
     
     int maxOccupancy = 0;
     int numOfGuests = 0;
     int numOfPayments = 0;
     double totalCost = 0.0;
+    double totalPaid = 0.0;
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -129,7 +138,7 @@ public class BookingCreator extends javax.swing.JFrame {
         textMinPrice = new javax.swing.JTextField();
         textMaxPrice = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        submitRoomChoiceBtn = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -152,18 +161,17 @@ public class BookingCreator extends javax.swing.JFrame {
         jLabel23 = new javax.swing.JLabel();
         textContactPerson = new javax.swing.JTextField();
         textContactEmail = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        submitContactBtn = new javax.swing.JButton();
         totalAmountlabel = new javax.swing.JLabel();
         textTotalAmount = new javax.swing.JTextField();
         jLabel24 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
+        submitGuestBtn = new javax.swing.JButton();
         guestTabbedPane = new javax.swing.JTabbedPane();
-        jButton7 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
+        submitPaymentBtn = new javax.swing.JButton();
         paymentTabbedPane = new javax.swing.JTabbedPane();
-        jButton5 = new javax.swing.JButton();
+        addPaymentBtn = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jButton6 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -329,7 +337,7 @@ public class BookingCreator extends javax.swing.JFrame {
                         .addComponent(hotelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(hotelLabel))
                     .addComponent(jLabel20))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 182, Short.MAX_VALUE)
                 .addComponent(btnSubmitSearchRequest)
                 .addGap(26, 26, 26))
         );
@@ -338,10 +346,10 @@ public class BookingCreator extends javax.swing.JFrame {
 
         jPanel2.setEnabled(false);
 
-        jButton2.setText("Submit Room Choices");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        submitRoomChoiceBtn.setText("Submit Room Choices");
+        submitRoomChoiceBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                submitRoomChoiceBtnActionPerformed(evt);
             }
         });
 
@@ -407,7 +415,7 @@ public class BookingCreator extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(submitRoomChoiceBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -469,8 +477,8 @@ public class BookingCreator extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
                     .addComponent(textNumGuests, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                .addComponent(submitRoomChoiceBtn)
                 .addGap(22, 22, 22))
         );
 
@@ -484,14 +492,16 @@ public class BookingCreator extends javax.swing.JFrame {
 
         jLabel23.setText("Contact Email");
 
-        jButton1.setText("Submit Contact Details");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        submitContactBtn.setText("Submit Contact Details");
+        submitContactBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                submitContactBtnActionPerformed(evt);
             }
         });
 
         totalAmountlabel.setText("Total Cost");
+
+        textTotalAmount.setEnabled(false);
 
         jLabel24.setText("AUD");
 
@@ -501,7 +511,7 @@ public class BookingCreator extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(submitContactBtn)
                 .addGap(62, 62, 62))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
@@ -542,8 +552,8 @@ public class BookingCreator extends javax.swing.JFrame {
                     .addComponent(totalAmountlabel)
                     .addComponent(textTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel24))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 183, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 233, Short.MAX_VALUE)
+                .addComponent(submitContactBtn)
                 .addGap(34, 34, 34))
         );
 
@@ -551,18 +561,11 @@ public class BookingCreator extends javax.swing.JFrame {
 
         jPanel3.setEnabled(false);
 
-        jButton3.setText("Submit Guest Information");
-        jButton3.setToolTipText("");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        submitGuestBtn.setText("Submit Guest Information");
+        submitGuestBtn.setToolTipText("");
+        submitGuestBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jButton7.setText("Add Guest - Remove THIS");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                submitGuestBtnActionPerformed(evt);
             }
         });
 
@@ -575,39 +578,35 @@ public class BookingCreator extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(guestTabbedPane)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton7)
-                            .addComponent(jButton3))))
+                        .addGap(0, 546, Short.MAX_VALUE)
+                        .addComponent(submitGuestBtn)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(40, Short.MAX_VALUE)
-                .addComponent(guestTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(jButton7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addContainerGap())
+                .addContainerGap()
+                .addComponent(guestTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(submitGuestBtn)
+                .addGap(24, 24, 24))
         );
 
         jTabbedPane3.addTab("Fill up Guest Details", jPanel3);
 
         jPanel4.setEnabled(false);
 
-        jButton4.setText("Submit Payments");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        submitPaymentBtn.setText("Submit Payments");
+        submitPaymentBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                submitPaymentBtnActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Add New Payment");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        addPaymentBtn.setText("Add New Payment");
+        addPaymentBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                addPaymentBtnActionPerformed(evt);
             }
         });
 
@@ -622,8 +621,8 @@ public class BookingCreator extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton5)
-                            .addComponent(jButton4))))
+                            .addComponent(addPaymentBtn)
+                            .addComponent(submitPaymentBtn))))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -631,10 +630,10 @@ public class BookingCreator extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(paymentTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addComponent(addPaymentBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
+                .addComponent(submitPaymentBtn)
                 .addContainerGap())
         );
 
@@ -650,7 +649,7 @@ public class BookingCreator extends javax.swing.JFrame {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 446, Short.MAX_VALUE)
+            .addGap(0, 484, Short.MAX_VALUE)
         );
 
         jTabbedPane3.addTab("Booking Confirmation", jPanel5);
@@ -669,10 +668,6 @@ public class BookingCreator extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton6)
-                .addGap(20, 20, 20))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -681,6 +676,10 @@ public class BookingCreator extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton6)
+                .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -688,10 +687,10 @@ public class BookingCreator extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTabbedPane3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6)
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addGap(52, 52, 52))
         );
 
         pack();
@@ -909,6 +908,8 @@ public class BookingCreator extends javax.swing.JFrame {
         takenRooms = new ArrayList<>();
         ArrayList<Room> availableRooms = new ArrayList<>(rooms);
         
+        totalCost = 0;
+        
         for (RoomChoice rc : roomChoices)
         {
             int qty = rc.getAllocatedGuests();
@@ -933,6 +934,15 @@ public class BookingCreator extends javax.swing.JFrame {
                     }
 
                 }
+                
+                Date date1 = roomRequest.getCheckInDate();
+                Date date2 = roomRequest.getCheckOutDate();
+                
+                long diff = date1.getTime() - date2.getTime();
+                long noOfDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+                long duration = Math.abs(TimeUnit.DAYS.toDays(noOfDays));
+                
+                totalCost *= duration;
             }
             catch (Exception e)
             {
@@ -961,7 +971,7 @@ public class BookingCreator extends javax.swing.JFrame {
         }
     }
     
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void submitRoomChoiceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitRoomChoiceBtnActionPerformed
         // TODO add your handling code here:
         boolean hasError = false;
         String errors = "";
@@ -1065,8 +1075,6 @@ public class BookingCreator extends javax.swing.JFrame {
                 allocation += line;
 
             }
-            
-            
 
             JOptionPane.showMessageDialog(this, allocation);
         }
@@ -1086,30 +1094,189 @@ public class BookingCreator extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, errors);
             
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_submitRoomChoiceBtnActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void submitGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitGuestBtnActionPerformed
         // TODO add your handling code here:
-        jTabbedPane3.setSelectedIndex(3);
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        jTabbedPane3.setSelectedIndex(4);
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-        GuestForm gf = new GuestForm();
-        guestForms.add(gf);
-        guestTabbedPane.add(gf);
-        int tabIndex = guestTabbedPane.getTabCount();
-        guestTabbedPane.setTitleAt(tabIndex - 1, "Guest " + tabIndex);
         
-        // TODO: generate guest forms based on the number of guests only
-    }//GEN-LAST:event_jButton7ActionPerformed
+        String error = "";
+        boolean hasError = false;
+        
+        guests = new ArrayList<>();
+        
+        
+        for (GuestForm gf : guestForms)
+        {
+            
+            String a = gf.getTextGuestCity().getText().toString();
+            String b = gf.getTextGuestCountry().getText().toString();
+            String c = gf.getTextGuestDateOfBirth().getText().toString();
+            String d = gf.getTextGuestEmailAddress().getText().toString();
+            String ee = gf.getTextGuestPhone().getText().toString();
+            String f = gf.getTextGuestPostalCode().getText().toString();
+            String gg = gf.getTextGuestStreet().getText().toString();
+            String h = gf.getTextGuestTitle().getText().toString();
+            
+            if (a.isEmpty() || b.isEmpty() || c.isEmpty() || d.isEmpty() || ee.isEmpty() || f.isEmpty() || gg.isEmpty() || h.isEmpty())
+            {
+                hasError = true;
+                error += "Error - the form is incomplete.\n";
+            }
+            
+            Guest newGuest = new Guest();
+            newGuest.setBooking(booking);
+            newGuest.setCity(gf.getTextGuestCity().getText().toString());
+            newGuest.setCountry(gf.getTextGuestCountry().getText().toString());
+            
+            try
+            {
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                Date date3 = fmt.parse(gf.getTextGuestDateOfBirth().getText().toString());
+                newGuest.setDob(date3);
+            }
+            catch (Exception e)
+            {
+                hasError = true;
+                error += "Error in parsing date of birth.\n";
+            }
+            
+            if (hasError)
+            {
+                break;
+            }
+            
+            newGuest.setEmailAddress(gf.getTextGuestEmailAddress().getText().toString());
+            newGuest.setFirstName(gf.getTextGuestFirstName().getText().toString());
+            newGuest.setLastName(gf.getTextGuestLastName().getText().toString());
+            newGuest.setGuestId(0);
+            newGuest.setPhoneNumber(gf.getTextGuestPhone().getText().toString());
+            newGuest.setPostalCode(gf.getTextGuestPostalCode().getText().toString());
+            newGuest.setStreet(gf.getTextGuestStreet().getText().toString());
+            newGuest.setTitle(gf.getTextGuestTitle().getText().toString());
+            
+            try
+            {
+                int newId = gds.createGuest(newGuest);
+                newGuest = gds.getGuestById(newId);
+                guests.add(newGuest);
+            }
+            catch (Exception e)
+            {
+                hasError = true;
+                error += "Error in creating guest.\n";
+                
+            }
+            
+            if (hasError)
+            {
+                break;
+            }
+            
+        }
+        
+        ArrayList<BookingRoomGuestPK> brgPKList = allocatorService.createBookingRoomGuest(booking.getBookingId(), roomChoices, rooms, guests);
+            ArrayList<Room> takenRooms = new ArrayList<>();
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        if (brgPKList != null) {
+            for (BookingRoomGuestPK brgPK : brgPKList) {
+                BookingRoomGuest brg = new BookingRoomGuest(brgPK);
+
+                Guest gst = FinderService.findGuestByGuestId(guests, brg.getBookingRoomGuestPK().getGuestId());
+
+                brg.setBooking(booking);
+                brg.setGuest(gst);
+                Room r = FinderService.findRoomByRoomId(rooms, brgPK.getRoomId());
+                brg.setRoom(r);
+
+                try
+                {
+                    bds.createBookingRoomGuest(brg);
+                }
+                catch (Exception e)
+                {
+                    hasError = true;
+                    error += "Error in adding BookingRoomGuest record.\n";
+                }
+
+                if (hasError)
+                {
+                    break;
+                }
+            }
+        }
+       
+
+        if (!hasError)
+        {
+            paymentForms = new ArrayList<>();
+            jTabbedPane3.setSelectedIndex(4);
+        }
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
+        }
+
+    }//GEN-LAST:event_submitGuestBtnActionPerformed
+
+    private void submitPaymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitPaymentBtnActionPerformed
+        // TODO add your handling code here:
+        String error = "";
+        boolean hasError = false;
+        int paymentNumber = 0;
+        
+        for (PaymentForm pf : paymentForms)
+        {
+            String pmc = pf.getPaymentMethodComboBox().getSelectedItem().toString().split("-")[0];
+            String amount = pf.getTextPaymentAmount().getText().toString();
+            
+            if (amount.isEmpty())
+            {
+                hasError = true;
+                error += "Error - incomplete form.\n";
+            }
+            
+            if (hasError)
+            {
+                break;
+            }
+            
+            double paymentAmount = 0;
+            try
+            {
+                paymentAmount = Double.parseDouble(amount);
+            }
+            catch (Exception e)
+            {
+                hasError = true;
+                error += "Error in parsing payment amount.\n";
+            }
+            
+           
+            Payment p1 = new Payment(paymentNumber++, booking.getBookingId());
+            p1.setBooking(booking);
+            p1.setPaymentAmount(paymentAmount);
+            p1.setCurrencyCode("AUD");
+            p1.setPaymentMethodCode(pmc);
+            p1.setPaymentDate(new Date());
+
+            try
+            {
+                pds.createPayment(p1);
+            }
+            catch (Exception e)
+            {
+                hasError = true;
+                error += "Error in adding payment.\n";
+            }
+
+        }
+        
+        
+        jTabbedPane3.setSelectedIndex(5);
+    }//GEN-LAST:event_submitPaymentBtnActionPerformed
+
+    private void addPaymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPaymentBtnActionPerformed
         // TODO add your handling code here:
         PaymentForm gf = new PaymentForm();
         paymentForms.add(gf);
@@ -1117,7 +1284,7 @@ public class BookingCreator extends javax.swing.JFrame {
         int tabIndex = paymentTabbedPane.getTabCount();
         paymentTabbedPane.setTitleAt(tabIndex - 1, "Payment " + tabIndex);
         
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_addPaymentBtnActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
@@ -1153,22 +1320,55 @@ public class BookingCreator extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_hotelComboBoxActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void submitContactBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitContactBtnActionPerformed
         // TODO add your handling code here:
-        Booking newBooking = new Booking();
-        newBooking.setBookingId(0);
+        String error = "";
+        boolean hasError = false;
         
         int cusId = Integer.parseInt(customerComboBox.getSelectedItem().toString().split("-")[0]);
         
         Customer cust = FinderService.findCustomerByCustomerId(customers, cusId);
         
-        newBooking.setCustomer(cust);
-        newBooking.setContactPerson(textContactPerson.getText());
+        try
+        {
+            Booking newBooking = new Booking();
+            newBooking.setBookingId(0);
+            newBooking.setCheckInDate(roomRequest.getCheckInDate());
+            newBooking.setCheckOutDate(roomRequest.getCheckOutDate());
+            newBooking.setCustomer(cust);
+            newBooking.setContactPerson(textContactPerson.getText());
+            newBooking.setContactEmail(textContactEmail.getText());
+            newBooking.setTotalAmount(totalCost);
+            newBooking.setPaymentStatusCode("UP");
+            newBooking.setCurrencyCode("AUD");
 
-        newBooking.setContactEmail(textContactEmail.getText());
+            int newId = bds.createBooking(newBooking);
+
+            booking = bds.getBookingByBookingId(newId);
+        }
+        catch (Exception e)
+        {
+            error += "Error in creating a new booking. \n";
+        }
         
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+        if (!hasError)
+        {
+            guestForms = new ArrayList<>();
+            for (int i = 0; i < numOfGuests; i++)
+            {
+                GuestForm gf = new GuestForm();
+                guestForms.add(gf);
+                guestTabbedPane.add(gf);
+                int tabIndex = guestTabbedPane.getTabCount();
+                guestTabbedPane.setTitleAt(tabIndex - 1, "Guest " + tabIndex);
+            }
+            jTabbedPane3.setSelectedIndex(3);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, error);
+        }
+    }//GEN-LAST:event_submitContactBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1210,6 +1410,7 @@ public class BookingCreator extends javax.swing.JFrame {
     } 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addPaymentBtn;
     private javax.swing.JButton btnSubmitSearchRequest;
     private javax.swing.JCheckBox cbDeluxe;
     private javax.swing.JCheckBox cbDouble;
@@ -1222,13 +1423,7 @@ public class BookingCreator extends javax.swing.JFrame {
     private javax.swing.JTabbedPane guestTabbedPane;
     private javax.swing.JComboBox<String> hotelComboBox;
     private javax.swing.JLabel hotelLabel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1264,6 +1459,10 @@ public class BookingCreator extends javax.swing.JFrame {
     private javax.swing.JTabbedPane paymentTabbedPane;
     private javax.swing.JComboBox<String> quadComboBox;
     private javax.swing.JComboBox<String> singleComboBox;
+    private javax.swing.JButton submitContactBtn;
+    private javax.swing.JButton submitGuestBtn;
+    private javax.swing.JButton submitPaymentBtn;
+    private javax.swing.JButton submitRoomChoiceBtn;
     private javax.swing.JComboBox<String> suiteComboBox;
     private javax.swing.JTextField textCheckInDate;
     private javax.swing.JTextField textCheckOutDate;
