@@ -352,6 +352,7 @@ public class MainFrame extends javax.swing.JFrame {
         textHotelId = new javax.swing.JTextField();
         jLabel68 = new javax.swing.JLabel();
         hotelTypeCodeComboBox2 = new javax.swing.JComboBox<>();
+        btnhotelClear = new javax.swing.JButton();
         roomPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         roomFacilityComboBox = new javax.swing.JComboBox<>();
@@ -772,6 +773,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        btnhotelClear.setText("Clear");
+
         javax.swing.GroupLayout hotelPanelLayout = new javax.swing.GroupLayout(hotelPanel);
         hotelPanel.setLayout(hotelPanelLayout);
         hotelPanelLayout.setHorizontalGroup(
@@ -813,7 +816,8 @@ public class MainFrame extends javax.swing.JFrame {
                             .addGap(75, 75, 75)
                             .addComponent(hotelTypeCodeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(hotelPanelLayout.createSequentialGroup()
-                            .addGap(480, 480, 480)
+                            .addComponent(btnhotelClear)
+                            .addGap(401, 401, 401)
                             .addComponent(addHotelBtn)
                             .addGap(18, 18, 18)
                             .addComponent(editHotelBtn)
@@ -872,7 +876,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addHotelBtn)
                     .addComponent(editHotelBtn)
-                    .addComponent(deleteHotelBtn))
+                    .addComponent(deleteHotelBtn)
+                    .addComponent(btnhotelClear))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -2433,6 +2438,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void addHotelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addHotelBtnActionPerformed
         // TODO add your handling code here:
+        boolean hasError = false;
+        String error = "";
+        
         hotel = new Hotel();
         hotel.setHotelName(textHotelName.getText());
         hotel.setHotelTypeCode(hotelTypeCodeComboBox2.getSelectedItem().toString().split("-")[0]);
@@ -2441,7 +2449,17 @@ public class MainFrame extends javax.swing.JFrame {
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy");
             Date date1 = fmt.parse(textHotelConstructionYear.getText());
             // TODO: validate, should be just YYYY
-            hotel.setConstructionYear(date1);
+            hotel.setConstructionYear(date1);            
+        }
+        catch(Exception e)
+        {
+            //TODO: Unable to parse date
+            hasError = true;
+            error += "Error in parsing dates.\n";
+        }
+        
+        try
+        {
             hotel.setContactNumber(textHotelContactNumber.getText());
             hotel.setCountry(textHotelCountry.getText());
             hotel.setCity(textHotelCity.getText());
@@ -2452,19 +2470,50 @@ public class MainFrame extends javax.swing.JFrame {
             hotelController.createHotel(hotel);
 
             refreshHotelTableModel(true);
-            
-        }
-        catch(Exception e)
-        {
-            //TODO: Unable to parse date
-            
-        }
-        
 
+        }
+        catch (Exception e)
+        {
+            hasError = true;
+            
+            error += "Error in adding new hotel.\n";
+        }
         
+        if (!hasError)
+        {
+            JOptionPane.showMessageDialog(this, "Hotel successfully added.");
+            clearHotelFields();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, error);
+        }
                 
     }//GEN-LAST:event_addHotelBtnActionPerformed
 
+    private void clearHotelFields()
+    {
+        textHotelAddress.setText("");
+        textHotelCity.setText("");
+        textHotelConstructionYear.setText("");
+        textHotelContactNumber.setText("");
+        textHotelCountry.setText("");
+        textHotelEmailAddress.setText("");
+        textHotelId.setText("");
+        textHotelName.setText("");
+    }
+    
+    private void clearRoomFields()
+    {
+        textRoomDescription.setText("");
+        textRoomHotelId.setText("");
+        textRoomNumber.setText("");
+        textRoomDescription.setText("");
+        textRoomId.setText("");
+        textRoomPrice.setText("");
+        textRoomTypeCode.setText("");
+    }
+    
     private void btnMembershipsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMembershipsActionPerformed
         // TODO add your handling code here:
         
@@ -4055,6 +4104,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnMemberships;
     private javax.swing.JButton btnPayments;
     private javax.swing.JButton btnRooms;
+    private javax.swing.JButton btnhotelClear;
     private javax.swing.JButton createBookingBtn;
     private javax.swing.JPanel customerPanel;
     private javax.swing.JButton delBookingBtn;

@@ -310,7 +310,8 @@
                               <Component id="hotelTypeCodeComboBox" min="-2" pref="128" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="480" max="-2" attributes="0"/>
+                              <Component id="btnhotelClear" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="401" max="-2" attributes="0"/>
                               <Component id="addHotelBtn" linkSize="2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="editHotelBtn" linkSize="2" min="-2" max="-2" attributes="0"/>
@@ -384,6 +385,7 @@
                       <Component id="addHotelBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="editHotelBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="deleteHotelBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnhotelClear" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   <Component id="jSeparator4" min="-2" pref="10" max="-2" attributes="0"/>
@@ -558,6 +560,11 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnhotelClear">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Clear"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
