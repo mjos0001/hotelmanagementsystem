@@ -14,6 +14,7 @@ import hmsModel.BookingRoomGuest;
 import hmsModel.SearchRoomRequest;
 import hmsModel.BookingRoomGuestPK;
 import hmsModel.Booking;
+import hmsModel.Payment;
 import java.text.SimpleDateFormat;
 import java.util.*; 
 
@@ -307,6 +308,36 @@ public class RoomAllocatorService {
         
         return brgList;
     }
+    
+    public void updateBookingPaymentStatus(Booking bkg)
+    {
+        double totalPaid = 0.0;
+        
+        for (Payment p : bkg.getPaymentCollection())
+        {
+            totalPaid += p.getPaymentAmount();
+        }
+        
+        if (totalPaid >= bkg.getTotalAmount())
+        {
+            bkg.setPaymentStatusCode("PD");
+        }
+        else
+        {
+            bkg.setPaymentStatusCode("UP");
+        }
+        
+        try
+        {
+            BookingDataService bc = new BookingDataService(emfactory);
+            bc.updateBooking(bkg);
+        }
+        catch (Exception e)
+        {
+            
+        }
+    }
+
     
     public boolean roomChoiceIntegrityEnsured (ArrayList<RoomChoice> roomChoices, ArrayList<Room> availableRooms)
     {

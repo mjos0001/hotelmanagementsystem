@@ -70,7 +70,7 @@ public class Payment implements Serializable {
         this.paymentMethodCode = paymentMethodCode;
     }
 
-    public Payment(long paymentNumber, long bookingId) {
+    public Payment(long paymentNumber, int bookingId) {
         this.paymentPK = new PaymentPK(paymentNumber, bookingId);
     }
 

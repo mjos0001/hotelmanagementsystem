@@ -83,6 +83,7 @@ public class BookingCreator extends javax.swing.JFrame {
     ArrayList<Room> takenRooms = null;
     ArrayList<Guest> guests = null;
 
+    Customer customer = null;
     SearchRoomRequest roomRequest = null;
 
     ArrayList<RoomChoice> roomChoices = null;
@@ -1410,6 +1411,15 @@ public class BookingCreator extends javax.swing.JFrame {
             newBooking.setCustomer(cust);
             newBooking.setContactPerson(textContactPerson.getText());
             newBooking.setContactEmail(textContactEmail.getText());
+            
+            // consider the discount
+            long disc = cust.getMembership().getDiscount();
+            
+            if (disc > 0 && disc < 100)
+            {
+                totalCost *= (100 - disc)/100;
+            }
+            
             newBooking.setTotalAmount(totalCost);
             newBooking.setPaymentStatusCode("UP");
             newBooking.setCurrencyCode("AUD");

@@ -23,12 +23,12 @@ public class PaymentPK implements Serializable {
     private long paymentNumber;
     @Basic(optional = false)
     @Column(name = "BOOKING_ID")
-    private long bookingId;
+    private int bookingId;
 
     public PaymentPK() {
     }
 
-    public PaymentPK(long paymentNumber, long bookingId) {
+    public PaymentPK(long paymentNumber, int bookingId) {
         this.paymentNumber = paymentNumber;
         this.bookingId = bookingId;
     }
@@ -41,11 +41,11 @@ public class PaymentPK implements Serializable {
         this.paymentNumber = paymentNumber;
     }
 
-    public long getBookingId() {
+    public int getBookingId() {
         return bookingId;
     }
 
-    public void setBookingId(long bookingId) {
+    public void setBookingId(int bookingId) {
         this.bookingId = bookingId;
     }
 

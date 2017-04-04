@@ -2409,22 +2409,25 @@ public class MainFrame extends javax.swing.JFrame {
             error += "Error in parsing dates.\n";
         }
 
-        try {
-            hotel.setContactNumber(textHotelContactNumber.getText());
-            hotel.setCountry(textHotelCountry.getText());
-            hotel.setCity(textHotelCity.getText());
-            hotel.setAddress(textHotelAddress.getText());
-            hotel.setEmailAddress(textHotelEmailAddress.getText());
+        if (!hasError)
+        {
+            try {
+                hotel.setContactNumber(textHotelContactNumber.getText());
+                hotel.setCountry(textHotelCountry.getText());
+                hotel.setCity(textHotelCity.getText());
+                hotel.setAddress(textHotelAddress.getText());
+                hotel.setEmailAddress(textHotelEmailAddress.getText());
 
-            // Add hotel
-            hotelController.createHotel(hotel);
+                // Add hotel
+                hotelController.createHotel(hotel);
 
-            refreshHotelTableModel(true);
+                refreshHotelTableModel(true);
 
-        } catch (Exception e) {
-            hasError = true;
+            } catch (Exception e) {
+                hasError = true;
 
-            error += "Error in adding new hotel.\n";
+                error += "Error in adding new hotel.\n";
+            }
         }
 
         if (!hasError) {
@@ -2588,23 +2591,30 @@ public class MainFrame extends javax.swing.JFrame {
                 hasError = true;
                 error += "Error in parsing booking id and payment number.\n";
             }
+            
+            if (!hasError)
+            {
 
-            if (payment != null) {
-                payment.setPaymentDate(new Date()); // this must always be the latest date you edited the payment
-                payment.setPaymentAmount(Double.parseDouble(textPaymentAmount.getText()));
-                payment.setCurrencyCode("AUD");
+                if (payment != null) {
+                    payment.setPaymentDate(new Date()); // this must always be the latest date you edited the payment
+                    payment.setPaymentAmount(Double.parseDouble(textPaymentAmount.getText()));
+                    payment.setCurrencyCode("AUD");
 
-                String code = paymentMethodComboBox.getSelectedItem().toString().split("-")[0];
+                    String code = paymentMethodComboBox.getSelectedItem().toString().split("-")[0];
 
-                payment.setPaymentMethodCode(code); //TODO: make this dropdown
+                    payment.setPaymentMethodCode(code); //TODO: make this dropdown
 
-                paymentController.updatePayment(payment);
+                    paymentController.updatePayment(payment);
 
-                refreshPaymentTableModel(true);
-            } else {
-                // TODO: error! booking is not found
-                hasError = true;
-                error += "Error - booking referenced by payment does not exist.\n";
+                    Booking paymentBooking = bookingController.getBookingByBookingId(payment.getPaymentPK().getBookingId());
+                    roomAllocatorService.updateBookingPaymentStatus(paymentBooking);
+
+                    refreshPaymentTableModel(true);
+                } else {
+                    // TODO: error! booking is not found
+                    hasError = true;
+                    error += "Error - booking referenced by payment does not exist.\n";
+                }
             }
         } catch (Exception e) {
             hasError = true;
@@ -2666,9 +2676,12 @@ public class MainFrame extends javax.swing.JFrame {
                 hasError = true;
                 error += "Error - booking referenced by the payment does not exist.\n";
             }
-
-            refreshBookingTableModel(true);
-            clearBookingFields();
+            
+            if (!hasError)
+            {
+                refreshBookingTableModel(true);
+                clearBookingFields();
+            }
 
         } catch (Exception e) {
             hasError = true;
@@ -2708,19 +2721,22 @@ public class MainFrame extends javax.swing.JFrame {
                 hasError = true;
                 error += "Error in parsing date of birth.\n";
             }
+            
+            if (!hasError)
+            {
+                guest.setCountry(textGuestCountry.getText());
+                guest.setCity(textGuestCity.getText());
+                guest.setStreet(textGuestStreet.getText());
+                guest.setPostalCode(textGuestPostalCode.getText());
+                guest.setPhoneNumber(textGuestPhoneNumber.getText());
+                guest.setEmailAddress(textGuestEmailAddress.getText());
 
-            guest.setCountry(textGuestCountry.getText());
-            guest.setCity(textGuestCity.getText());
-            guest.setStreet(textGuestStreet.getText());
-            guest.setPostalCode(textGuestPostalCode.getText());
-            guest.setPhoneNumber(textGuestPhoneNumber.getText());
-            guest.setEmailAddress(textGuestEmailAddress.getText());
+                // Add guest
+                guestController.createGuest(guest);
 
-            // Add guest
-            guestController.createGuest(guest);
-
-            refreshGuestTableModel(true);
-            clearGuestFields();
+                refreshGuestTableModel(true);
+                clearGuestFields();
+            }
 
             // TODO: Sort JTables by ID
             // TODO: Check for duplicates
@@ -2767,17 +2783,20 @@ public class MainFrame extends javax.swing.JFrame {
                 error += "Error in parsing date of birth.\n";
             }
 
-            customer.setCountry(textCustomerCountry.getText());
-            customer.setCity(textCustomerCity.getText());
-            customer.setStreet(textCustomerStreet.getText());
-            customer.setPostalCode(textCustomerPostalCode.getText());
-            customer.setPhoneNumber(textCustomerPhoneNumber.getText());
-            customer.setEmailAddress(textCustomerEmailAddress.getText());
+            if (!hasError)
+            {
+                customer.setCountry(textCustomerCountry.getText());
+                customer.setCity(textCustomerCity.getText());
+                customer.setStreet(textCustomerStreet.getText());
+                customer.setPostalCode(textCustomerPostalCode.getText());
+                customer.setPhoneNumber(textCustomerPhoneNumber.getText());
+                customer.setEmailAddress(textCustomerEmailAddress.getText());
 
-            customerController.createCustomer(customer);
+                customerController.createCustomer(customer);
 
-            refreshCustomerTableModel(true);
-            clearCustomerFields();
+                refreshCustomerTableModel(true);
+                clearCustomerFields();
+            }
 
         } catch (Exception e) {
             hasError = true;
@@ -2812,20 +2831,24 @@ public class MainFrame extends javax.swing.JFrame {
                 hasError = true;
                 error += "Error in hotel is not found.\n";
             }
-            room.setRoomNumber(textRoomNumber.getText());
-            room.setRoomDescription(textRoomDescription.getText());
-            room.setRoomPrice(Double.parseDouble(textRoomPrice.getText()));
-            room.setCurrencyCode("AUD");
-            room.setRoomType(roomType);
+            
+            if (!hasError)
+            {
+                room.setRoomNumber(textRoomNumber.getText());
+                room.setRoomDescription(textRoomDescription.getText());
+                room.setRoomPrice(Double.parseDouble(textRoomPrice.getText()));
+                room.setCurrencyCode("AUD");
+                room.setRoomType(roomType);
 
-            int newId = roomController.createRoom(room);
+                int newId = roomController.createRoom(room);
 
-            refreshRoomTableModel(true);
+                refreshRoomTableModel(true);
 
-            room = FinderService.findRoomByRoomId(rooms, newId);
+                room = FinderService.findRoomByRoomId(rooms, newId);
 
-            //addFacilitiesToRoom(room);
-            clearRoomFields();
+                //addFacilitiesToRoom(room);
+                clearRoomFields();
+            }
 
         } catch (Exception e) {
 
@@ -2929,18 +2952,31 @@ public class MainFrame extends javax.swing.JFrame {
             membership = new Membership();
             membership.setMembershipTier(textMembershipTierName.getText());
             membership.setMembershipTierCode(textMembershipTierCode.getText());
-            membership.setDiscount(Long.parseLong(textMembershipDiscount.getText()));
-            membership.setOtherRewards(textMembershipOtherRewards.getText());
-            membership.setTierCredits(Integer.parseInt(textMembershipCredit.getText()));
+            
+            long discount = Long.parseLong(textMembershipDiscount.getText());
+            
+            if (discount < 0 || discount > 100)
+            {
+                hasError = true;
+                error += "Error - invalid membership discount.\n";
+            }
+            
+            if (!hasError)
+            {
+                membership.setDiscount(discount);
+                membership.setOtherRewards(textMembershipOtherRewards.getText());
+                membership.setTierCredits(Integer.parseInt(textMembershipCredit.getText()));
 
-            membershipController.createMembership(membership);
+                membershipController.createMembership(membership);
 
-            refreshMembershipTableModel(true);
-            fillUpComboBoxes();
-            clearMembershipFields();
+                refreshMembershipTableModel(true);
+                fillUpComboBoxes();
+                clearMembershipFields();
+            }
 
         } catch (Exception e) {
-
+            hasError = true;
+            error += "Error in creating membership.\n";
         }
 
         if (hasError) {
@@ -2980,8 +3016,14 @@ public class MainFrame extends javax.swing.JFrame {
                 payment.setPaymentMethodCode(mc); //TODO: make this dropdown
 
                 paymentController.createPayment(payment);
-
+                
                 refreshPaymentTableModel(true);
+                
+                
+                Booking paymentBooking = bookingController.getBookingByBookingId(id);
+                roomAllocatorService.updateBookingPaymentStatus(paymentBooking);
+                
+                
                 clearPaymentFields();
             } else {
                 // TODO: error! booking is not found
@@ -3002,6 +3044,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addPaymentBtnActionPerformed
 
+     
     private void addBookingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBookingBtnActionPerformed
         // TODO add your handling code here:
         boolean hasError = false;
@@ -3024,22 +3067,25 @@ public class MainFrame extends javax.swing.JFrame {
                 error += "Error in parsing check in or check out date.\n";
             }
 
-            booking.setContactEmail(textBookingContactEmail.getText());
-            booking.setContactPerson(textBookingContactPerson.getText());
-            booking.setCurrencyCode("AUD");
+            if (!hasError)
+            {
+                booking.setContactEmail(textBookingContactEmail.getText());
+                booking.setContactPerson(textBookingContactPerson.getText());
+                booking.setCurrencyCode("AUD");
 
-            int id = Integer.parseInt(textBookingCustomerId.getText());
+                int id = Integer.parseInt(textBookingCustomerId.getText());
 
-            customer = FinderService.findCustomerByCustomerId(customers, id);
+                customer = FinderService.findCustomerByCustomerId(customers, id);
 
-            booking.setCustomer(customer);
-            booking.setPaymentStatusCode("UP");
-            booking.setTotalAmount(Double.parseDouble(textBookingTotalAmount.getText()));
+                booking.setCustomer(customer);
+                booking.setPaymentStatusCode("UP");
+                booking.setTotalAmount(Double.parseDouble(textBookingTotalAmount.getText()));
 
-            bookingController.createBooking(booking);
+                bookingController.createBooking(booking);
 
-            refreshBookingTableModel(true);
-            clearBookingFields();
+                refreshBookingTableModel(true);
+                clearBookingFields();
+            }
         } catch (Exception e) {
             hasError = true;
             error += "Error in creating booking.\n";
@@ -3265,17 +3311,20 @@ public class MainFrame extends javax.swing.JFrame {
                     error += "Error in parsing construction year.\n";
                 }
 
-                hotel.setContactNumber(textHotelContactNumber.getText());
-                hotel.setCountry(textHotelCountry.getText());
-                hotel.setCity(textHotelCity.getText());
-                hotel.setAddress(textHotelAddress.getText());
-                hotel.setEmailAddress(textHotelEmailAddress.getText());
-                hotel.setHotelTypeCode(hotelTypeCodeComboBox2.getSelectedItem().toString().split("-")[0]); // TODO: should be drop down
+                if (!hasError)
+                {
+                    hotel.setContactNumber(textHotelContactNumber.getText());
+                    hotel.setCountry(textHotelCountry.getText());
+                    hotel.setCity(textHotelCity.getText());
+                    hotel.setAddress(textHotelAddress.getText());
+                    hotel.setEmailAddress(textHotelEmailAddress.getText());
+                    hotel.setHotelTypeCode(hotelTypeCodeComboBox2.getSelectedItem().toString().split("-")[0]); // TODO: should be drop down
 
-                // Add hotel
-                hotelController.updateHotel(hotel);
+                    // Add hotel
+                    hotelController.updateHotel(hotel);
 
-                refreshHotelTableModel(true);
+                    refreshHotelTableModel(true);
+                }
 
             } catch (Exception e) {
                 //TODO: Unable to parse date
@@ -3336,6 +3385,8 @@ public class MainFrame extends javax.swing.JFrame {
             // TODO: Check for duplicates
         } catch (Exception e) {
             // TODO: handle exception
+            hasError = true;
+            error += "Error in updating guest.\n";
         }
 
         if (hasError) {
@@ -3367,15 +3418,19 @@ public class MainFrame extends javax.swing.JFrame {
                 hasError = true;
                 error += "Error in updating room - hotel referenced cannot be found.\n";
             }
-            room.setRoomNumber(textRoomNumber.getText());
-            room.setRoomDescription(textRoomDescription.getText());
-            room.setRoomPrice(Double.parseDouble(textRoomPrice.getText()));
-            room.setCurrencyCode("AUD");
-            room.setRoomType(roomType);
+            
+            if (!hasError)
+            {
+                room.setRoomNumber(textRoomNumber.getText());
+                room.setRoomDescription(textRoomDescription.getText());
+                room.setRoomPrice(Double.parseDouble(textRoomPrice.getText()));
+                room.setCurrencyCode("AUD");
+                room.setRoomType(roomType);
 
-            roomController.updateRoom(room);
+                roomController.updateRoom(room);
 
-            refreshRoomTableModel(true);
+                refreshRoomTableModel(true);
+            }
 
         } catch (Exception e) {
 
@@ -3419,16 +3474,19 @@ public class MainFrame extends javax.swing.JFrame {
                 error += "Error in parsing date.\n";
             }
 
-            customer.setCountry(textCustomerCountry.getText());
-            customer.setCity(textCustomerCity.getText());
-            customer.setStreet(textCustomerStreet.getText());
-            customer.setPostalCode(textCustomerPostalCode.getText());
-            customer.setPhoneNumber(textCustomerPhoneNumber.getText());
-            customer.setEmailAddress(textCustomerEmailAddress.getText());
+            if (!hasError)
+            {
+                customer.setCountry(textCustomerCountry.getText());
+                customer.setCity(textCustomerCity.getText());
+                customer.setStreet(textCustomerStreet.getText());
+                customer.setPostalCode(textCustomerPostalCode.getText());
+                customer.setPhoneNumber(textCustomerPhoneNumber.getText());
+                customer.setEmailAddress(textCustomerEmailAddress.getText());
 
-            customerController.updateCustomer(customer);
+                customerController.updateCustomer(customer);
 
-            refreshCustomerTableModel(true);
+                refreshCustomerTableModel(true);
+            }
 
         } catch (Exception e) {
             hasError = true;
@@ -3489,24 +3547,27 @@ public class MainFrame extends javax.swing.JFrame {
                 hasError = true;
                 error += "Error in parsing check in or check out date.\n";
             }
+            
+            if (!hasError)
+            {
+                booking.setCheckInDate(date1);
+                booking.setCheckOutDate(date2);
+                booking.setContactEmail(textBookingContactEmail.getText());
+                booking.setContactPerson(textBookingContactPerson.getText());
+                booking.setCurrencyCode("AUD");
 
-            booking.setCheckInDate(date1);
-            booking.setCheckOutDate(date2);
-            booking.setContactEmail(textBookingContactEmail.getText());
-            booking.setContactPerson(textBookingContactPerson.getText());
-            booking.setCurrencyCode("AUD");
+                int cusid = Integer.parseInt(textBookingCustomerId.getText());
 
-            int cusid = Integer.parseInt(textBookingCustomerId.getText());
+                customer = FinderService.findCustomerByCustomerId(customers, cusid);
 
-            customer = FinderService.findCustomerByCustomerId(customers, cusid);
+                booking.setCustomer(customer);
+                booking.setPaymentStatusCode(textBookingPaymentStatusCode.getText());
+                booking.setTotalAmount(Double.parseDouble(textBookingTotalAmount.getText()));
 
-            booking.setCustomer(customer);
-            booking.setPaymentStatusCode(textBookingPaymentStatusCode.getText());
-            booking.setTotalAmount(Double.parseDouble(textBookingTotalAmount.getText()));
+                bookingController.updateBooking(booking);
 
-            bookingController.updateBooking(booking);
-
-            refreshBookingTableModel(true);
+                refreshBookingTableModel(true);
+            }
         } catch (Exception e) {
 
             hasError = true;
@@ -3537,11 +3598,16 @@ public class MainFrame extends javax.swing.JFrame {
                 hotelController.deleteHotel(hotel);
             } else {
                 // TODO: Error, cannot delete hotel!
+                hasError = true;
+                error += "Error - hotel has rooms, cannot delete hotel.\n";
             }
 
-            tblHotel.addNotify();
-            refreshHotelTableModel(true);
-            clearHotelFields();
+            if (!hasError)
+            {
+                tblHotel.addNotify();
+                refreshHotelTableModel(true);
+                clearHotelFields();
+            }
 
         } catch (Exception e) {
 
@@ -3619,9 +3685,12 @@ public class MainFrame extends javax.swing.JFrame {
                 customerController.deleteCustomer(customer);
             }
 
-            tblCustomer.addNotify();
-            refreshCustomerTableModel(true);
-            clearCustomerFields();
+            if(!hasError)
+            {
+                tblCustomer.addNotify();
+                refreshCustomerTableModel(true);
+                clearCustomerFields();
+            }
 
         } catch (Exception e) {
 
@@ -3689,6 +3758,8 @@ public class MainFrame extends javax.swing.JFrame {
 
             if (membership.getCustomerCollection().size() > 0) {
                 // TODO: error - cannot delete membership
+                hasError = true;
+                error += "Error - cannot delete membership because it is being used by customers.\n";
             } else {
                 membershipController.deleteMembership(membership);
                 tblMembership.addNotify();
@@ -3726,6 +3797,10 @@ public class MainFrame extends javax.swing.JFrame {
 
                 tblPayment.addNotify();
                 refreshPaymentTableModel(true);
+                
+                Booking paymentBooking = bookingController.getBookingByBookingId(id);
+                roomAllocatorService.updateBookingPaymentStatus(paymentBooking);
+                
                 clearPaymentFields();
             } else {
                 // TODO: error! booking is not found
