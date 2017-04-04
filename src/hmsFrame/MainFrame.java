@@ -2514,6 +2514,67 @@ public class MainFrame extends javax.swing.JFrame {
         textRoomTypeCode.setText("");
     }
     
+    private void clearBookingFields()
+    {
+        textBookingCheckInDate.setText("");
+        textBookingCheckOutDate.setText("");
+        textBookingContactEmail.setText("");
+        textBookingCustomerId.setText("");
+        textBookingId.setText("");
+        textBookingPaymentStatusCode.setText("");
+        textBookingTotalAmount.setText("");
+    }
+    
+    private void clearPaymentFields()
+    {
+        textPaymentAmount.setText("");
+        textPaymentBookingId.setText("");
+        textPaymentDate.setText("");
+        textPaymentNumber.setText("");
+    }
+    
+    private void clearMembershipFields()
+    {
+        textMembershipCredit.setText("");
+        textMembershipDiscount.setText("");
+        textMembershipOtherRewards.setText("");
+        textMembershipTierCode.setText("");
+        textMembershipTierName.setText("");
+    }
+    
+    private void clearCustomerFields()
+    {
+        textCustomerCity.setText("");
+        textCustomerCountry.setText("");
+        textCustomerDob.setText("");
+        textCustomerEmailAddress.setText("");
+        textCustomerFirstName.setText("");
+        textCustomerId.setText("");
+        textCustomerLastName.setText("");
+        textCustomerMembershipCredits.setText("");
+        textCustomerPhoneNumber.setText("");
+        textCustomerPostalCode.setText("");
+        textCustomerStreet.setText("");
+        textCustomerTitle.setText("");
+    }
+    
+    private void clearGuestFields()
+    {
+        textGuestCity.setText("");
+        textGuestCountry.setText("");
+        textGuestDob.setText("");
+        textGuestEmailAddress.setText("");
+        textGuestFirstName.setText("");
+        textGuestId.setText("");
+        textGuestBookingId.setText("");
+        textGuestLastName.setText("");
+        textGuestBookingId.setText("");
+        textGuestPhoneNumber.setText("");
+        textGuestPostalCode.setText("");
+        textGuestStreet.setText("");
+        textGuestTitle.setText("");
+    }
+    
     private void btnMembershipsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMembershipsActionPerformed
         // TODO add your handling code here:
         
@@ -2579,13 +2640,24 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void editPaymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editPaymentBtnActionPerformed
         // TODO add your handling code here:
+        boolean hasError = false;
+        String error = "";
+        
         try
         {
-            int id = Integer.parseInt(textPaymentBookingId.getText());
-            int num = Integer.parseInt(textPaymentNumber.getText());
+            try
+            {
+                int id = Integer.parseInt(textPaymentBookingId.getText());
+                int num = Integer.parseInt(textPaymentNumber.getText());
+                            
+                payment = FinderService.findPaymentById(payments, id, num);
+            }
+            catch (Exception e)
+            {
+                hasError = true;
+                error += "Error in parsing booking id and payment number.\n";
+            }
             
-            
-            payment = FinderService.findPaymentById(payments, id, num);
             
             if (payment != null)
             {
@@ -2603,18 +2675,29 @@ public class MainFrame extends javax.swing.JFrame {
             }
             else{
                 // TODO: error! booking is not found
+                hasError = true;
+                error += "Error - booking referenced by payment does not exist.\n";
             }
         }
         catch (Exception e)
         {
-            
+            hasError = true;
+            error += "Error - cannot update payment.\n";
         }
         
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
+        }
     }//GEN-LAST:event_editPaymentBtnActionPerformed
 
     private void delBookingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delBookingBtnActionPerformed
         // TODO add your handling code here:
         // can be deleted - also delete the booking room guest
+        boolean hasError = true;
+        String error = "";
+        
         try
         {
             int id = Integer.parseInt(textBookingId.getText());
@@ -2661,6 +2744,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
             else{
                 // TODO: error! booking is not found
+                hasError = true;
+                error += "Error - booking referenced by the payment does not exist.\n";
             }
                 
             
@@ -2669,12 +2754,22 @@ public class MainFrame extends javax.swing.JFrame {
         }
         catch (Exception e)
         {
-            
+            hasError = true;
+            error += "Error in deleting payment.\n";
+        }
+        
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
         }
     }//GEN-LAST:event_delBookingBtnActionPerformed
 
     private void addGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addGuestBtnActionPerformed
         // TODO add your handling code here:
+        boolean hasError = false;
+        String error = "";
+        
         try
         {
             guest = new Guest();
@@ -2688,10 +2783,18 @@ public class MainFrame extends javax.swing.JFrame {
             guest.setTitle(textGuestTitle.getText());
             guest.setFirstName(textGuestFirstName.getText());
             guest.setLastName(textGuestLastName.getText());
-
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-            Date date1 = fmt.parse(textGuestDob.getText());
-            guest.setDob(date1);
+            
+            try
+            {
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                Date date1 = fmt.parse(textGuestDob.getText());
+                guest.setDob(date1);
+            }
+            catch (Exception e)
+            {
+                hasError = true;
+                error += "Error in parsing date of birth.\n";
+            }
 
             guest.setCountry(textGuestCountry.getText());
             guest.setCity(textGuestCity.getText());
@@ -2711,6 +2814,13 @@ public class MainFrame extends javax.swing.JFrame {
         catch (Exception e)
         {
             // TODO: handle exception
+            hasError = true;
+            error += "Error in creating a guest.\n";
+        }
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
         }
     }//GEN-LAST:event_addGuestBtnActionPerformed
 
@@ -2720,6 +2830,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void addCustBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCustBtnActionPerformed
         // TODO add your handling code here:
+        boolean hasError = false;
+        String error = "";
+        
         try
         {
             customer = new Customer();
@@ -2733,9 +2846,17 @@ public class MainFrame extends javax.swing.JFrame {
             customer.setFirstName(textCustomerFirstName.getText());
             customer.setLastName(textCustomerLastName.getText());
 
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-            Date date1 = fmt.parse(textCustomerDob.getText());
-            customer.setDob(date1);
+            try
+            {
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                Date date1 = fmt.parse(textCustomerDob.getText());
+                customer.setDob(date1);
+            }
+            catch (Exception e)
+            {
+                hasError = true;
+                error += "Error in parsing date of birth.\n";
+            }
 
             customer.setCountry(textCustomerCountry.getText());
             customer.setCity(textCustomerCity.getText());
@@ -2751,12 +2872,21 @@ public class MainFrame extends javax.swing.JFrame {
         }
         catch (Exception e)
         {
-            
+            hasError = true;
+            error += "Error in creating customer.\n";
+        }
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
         }
     }//GEN-LAST:event_addCustBtnActionPerformed
 
     private void addRoomBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRoomBtnActionPerformed
         // TODO add your handling code here:
+        boolean hasError = false;
+        String error = "";
+        
         try
         {
             room = new Room();
@@ -2792,6 +2922,12 @@ public class MainFrame extends javax.swing.JFrame {
         catch (Exception e)
         {
             
+        }
+        
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
         }
         
     }//GEN-LAST:event_addRoomBtnActionPerformed
@@ -2876,6 +3012,9 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void addMembershipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMembershipBtnActionPerformed
         // TODO add your handling code here:
+        boolean hasError = false;
+        String error = "";
+        
         try
         {
             membership = new Membership();
@@ -2895,10 +3034,19 @@ public class MainFrame extends javax.swing.JFrame {
         {
             
         }
+        
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
+        }
     }//GEN-LAST:event_addMembershipBtnActionPerformed
 
     private void addPaymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPaymentBtnActionPerformed
         // TODO add your handling code here:
+        boolean hasError = false;
+        String error = "";
+        
         try
         {
             payment = new Payment();
@@ -2938,10 +3086,19 @@ public class MainFrame extends javax.swing.JFrame {
         {
             
         }
+        
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
+        }
     }//GEN-LAST:event_addPaymentBtnActionPerformed
 
     private void addBookingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBookingBtnActionPerformed
         // TODO add your handling code here:
+        boolean hasError = false;
+        String error = "";
+        
         try
         {
         
@@ -2975,6 +3132,11 @@ public class MainFrame extends javax.swing.JFrame {
             
         }
 
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
+        }
     }//GEN-LAST:event_addBookingBtnActionPerformed
 
     private void tblHotelValueChanged(ListSelectionEvent evt)
@@ -3181,6 +3343,8 @@ public class MainFrame extends javax.swing.JFrame {
     
     
     private void editHotelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editHotelBtnActionPerformed
+        boolean hasError = false;
+        String error = "";
         
         try
         {
@@ -3192,14 +3356,25 @@ public class MainFrame extends javax.swing.JFrame {
            if (hotel == null)
            {
                // TODO: dialogbox - no hotel found
+               hasError = true;
+               error += "Error - no hotel found.\n";
            }
            
            hotel.setHotelName(textHotelName.getText());
        
            try{
-               SimpleDateFormat fmt = new SimpleDateFormat("yyyy");
-               Date date1 = fmt.parse(textHotelConstructionYear.getText());
-               hotel.setConstructionYear(date1);
+               try
+               {
+                    SimpleDateFormat fmt = new SimpleDateFormat("yyyy");
+                    Date date1 = fmt.parse(textHotelConstructionYear.getText());
+                    hotel.setConstructionYear(date1);
+               }
+               catch (Exception e)
+               {
+                    hasError = true;
+                    error += "Error in parsing construction year.\n";
+               }
+               
                hotel.setContactNumber(textHotelContactNumber.getText());
                hotel.setCountry(textHotelCountry.getText());
                hotel.setCity(textHotelCity.getText());
@@ -3216,19 +3391,30 @@ public class MainFrame extends javax.swing.JFrame {
            catch(Exception e)
            {
                //TODO: Unable to parse date
+               hasError = true;
+               error += "Error in updating the hotel.\n";
 
            }
         }
         catch (Exception e)
         {
-            
+            //TODO: Unable to parse date
+               hasError = true;
+               error += "Error in updating the hotel.\n";
         }
         
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
+        }
         
     }//GEN-LAST:event_editHotelBtnActionPerformed
 
     private void editGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editGuestBtnActionPerformed
         // TODO add your handling code here:
+        boolean hasError = false;
+        String error = "";
+        
         try
         {
             int id = Integer.parseInt(textGuestId.getText());
@@ -3267,10 +3453,19 @@ public class MainFrame extends javax.swing.JFrame {
         {
             // TODO: handle exception
         }
+        
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
+        }
     }//GEN-LAST:event_editGuestBtnActionPerformed
 
     private void editRoomBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editRoomBtnActionPerformed
         // TODO add your handling code here:
+        boolean hasError = false;
+        String error = "";
+
          try
         {
             int id = Integer.parseInt(textRoomId.getText());
@@ -3304,11 +3499,20 @@ public class MainFrame extends javax.swing.JFrame {
         {
             
         }
+         
+         
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
+        }
 
     }//GEN-LAST:event_editRoomBtnActionPerformed
 
     private void editCustomerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCustomerBtnActionPerformed
         // TODO add your handling code here:
+                boolean hasError = false;
+        String error = "";
+
         try
         {
             int id = Integer.parseInt(textCustomerId.getText());
@@ -3325,9 +3529,17 @@ public class MainFrame extends javax.swing.JFrame {
             customer.setFirstName(textCustomerFirstName.getText());
             customer.setLastName(textCustomerLastName.getText());
 
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-            Date date1 = fmt.parse(textCustomerDob.getText());
-            customer.setDob(date1);
+            try
+            {
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                Date date1 = fmt.parse(textCustomerDob.getText());
+                customer.setDob(date1);
+            }
+            catch (Exception e)
+            {
+                hasError = true;
+                error += "Error in parsing date.\n";
+            }
 
             customer.setCountry(textCustomerCountry.getText());
             customer.setCity(textCustomerCity.getText());
@@ -3345,10 +3557,19 @@ public class MainFrame extends javax.swing.JFrame {
         {
             
         }
+        
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
+        }
     }//GEN-LAST:event_editCustomerBtnActionPerformed
 
     private void editMembershipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMembershipBtnActionPerformed
         // TODO add your handling code here:
+                boolean hasError = false;
+        String error = "";
+
         try
         {
             String code = textMembershipTierCode.getText();
@@ -3366,20 +3587,40 @@ public class MainFrame extends javax.swing.JFrame {
         }
         catch (Exception e)
         {
-            
+                            hasError = true;
+                error += "Error in updating membership.\n";
+        }
+        
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
         }
     }//GEN-LAST:event_editMembershipBtnActionPerformed
 
     private void editBookingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBookingBtnActionPerformed
         // TODO add your handling code here:
+                boolean hasError = false;
+        String error = "";
+
         try
         {
             int id = Integer.parseInt(textBookingId.getText());
             booking = FinderService.findBookingById(bookings, id);
             
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-            Date date1 = fmt.parse(textBookingCheckInDate.getText());
-            Date date2 = fmt.parse(textBookingCheckOutDate.getText());
+            Date date1 = null;
+                    Date date2 = null;
+            try
+            {
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                date1 = fmt.parse(textBookingCheckInDate.getText());
+                date2 = fmt.parse(textBookingCheckOutDate.getText());
+            }
+            catch (Exception e)
+            {
+                hasError = true;
+                error += "Error in parsing check in or check out date.\n";
+            }
             
             booking.setCheckInDate(date1);
             booking.setCheckOutDate(date2);
@@ -3402,16 +3643,28 @@ public class MainFrame extends javax.swing.JFrame {
         catch (Exception e)
         {
             
+            hasError = true;
+            error += "Error in updating booking.\n";
+
+        }
+        
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
         }
     }//GEN-LAST:event_editBookingBtnActionPerformed
 
     private void deleteHotelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteHotelBtnActionPerformed
         // TODO add your handling code here:
+                boolean hasError = false;
+        String error = "";
+
 
         try 
         {
 
-            int id = Integer.parseInt(textHotelId.getText());
+           int id = Integer.parseInt(textHotelId.getText());
 
            hotel = FinderService.findHotelById(hotels, id);
            ArrayList<Room> hotelRooms = FinderService.findRoomByHotelId(rooms, id);
@@ -3431,14 +3684,24 @@ public class MainFrame extends javax.swing.JFrame {
         }
         catch (Exception e)
         {
-            
+                        
+            hasError = true;
+            error += "Error in deleting hotel.\n";
+        }
+        
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
         }
         
     }//GEN-LAST:event_deleteHotelBtnActionPerformed
 
     private void delRoomBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delRoomBtnActionPerformed
         // TODO add your handling code here:
-        
+        boolean hasError = false;
+        String error = "";
+
         // also delete the bookingroomguest
         // can be deleted
         try
@@ -3468,7 +3731,15 @@ public class MainFrame extends javax.swing.JFrame {
         }
         catch (Exception e)
         {
-            
+                        
+            hasError = true;
+            error += "Error in deleting room.\n";
+        }
+        
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
         }
     }//GEN-LAST:event_delRoomBtnActionPerformed
 
@@ -3478,6 +3749,9 @@ public class MainFrame extends javax.swing.JFrame {
         // Check if the customer has any booking
         
         // if none, delete!
+                boolean hasError = false;
+        String error = "";
+
         
         try
         {
@@ -3487,6 +3761,9 @@ public class MainFrame extends javax.swing.JFrame {
             if (customer.getBookingCollection().size() > 0)
             {
                 // TODO: Error! Cannot delete customer with booking
+                            
+                hasError = true;
+                error += "Error Cannot delete customer with a booking.\n";
             }
             else
             {
@@ -3499,14 +3776,24 @@ public class MainFrame extends javax.swing.JFrame {
         }
         catch (Exception e)
         {
-            
+                        
+            hasError = true;
+            error += "Error in deleting customer.\n";
         }
         
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
+        }
         
     }//GEN-LAST:event_delCustomerBtnActionPerformed
 
     private void delGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delGuestBtnActionPerformed
         // TODO add your handling code here:
+                boolean hasError = false;
+        String error = "";
+
         
         // can be deleted - also delete the booking room guest
         try
@@ -3536,12 +3823,23 @@ public class MainFrame extends javax.swing.JFrame {
         }
         catch (Exception e)
         {
-            
+                        
+            hasError = true;
+            error += "Error in deleting guest.\n";
+        }
+        
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
         }
     }//GEN-LAST:event_delGuestBtnActionPerformed
 
     private void delMembershipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delMembershipBtnActionPerformed
         // TODO add your handling code here:
+                boolean hasError = false;
+        String error = "";
+
         try
         {
             String code = textMembershipTierCode.getText();
@@ -3561,12 +3859,23 @@ public class MainFrame extends javax.swing.JFrame {
         }
         catch (Exception e)
         {
-            
+                        
+            hasError = true;
+            error += "Error in deleting membership.\n";
+        }
+        
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
         }
     }//GEN-LAST:event_delMembershipBtnActionPerformed
 
     private void delPaymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delPaymentBtnActionPerformed
         // TODO add your handling code here:
+                boolean hasError = false;
+        String error = "";
+
         try
         {
             int id = Integer.parseInt(textPaymentBookingId.getText());
@@ -3584,11 +3893,21 @@ public class MainFrame extends javax.swing.JFrame {
             }
             else{
                 // TODO: error! booking is not found
+                            
+                hasError = true;
+                error += "Error in deleting payment - booking is not found.\n";
             }
         }
         catch (Exception e)
+        {     
+            hasError = true;
+            error += "Error in deleting payment.\n";
+        }
+        
+        
+        if (hasError)
         {
-            
+            JOptionPane.showMessageDialog(this, error);
         }
     }//GEN-LAST:event_delPaymentBtnActionPerformed
 
@@ -3598,6 +3917,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void searchGuestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGuestBtnActionPerformed
         // TODO add your handling code here:
+                boolean hasError = false;
+        String error = "";
+
         try
         {
             String fname = searchGuestFirstName.getText();
@@ -3621,6 +3943,13 @@ public class MainFrame extends javax.swing.JFrame {
             refreshGuestTableModel(false);
         }
         catch(Exception e)
+        {
+                        
+            hasError = true;
+            error += "Error in searching guests.\n";
+        }
+        
+        if (hasError)
         {
             
         }
@@ -3688,6 +4017,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void searchMemberBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchMemberBtnActionPerformed
         // TODO add your handling code here:
+                boolean hasError = false;
+        String error = "";
+
         
         try
         {
@@ -3699,7 +4031,13 @@ public class MainFrame extends javax.swing.JFrame {
         }
         catch (Exception e)
         {
-            
+            hasError = true;
+            error += "Error in parsing member tier credits.\n";
+        }
+        
+        if (hasError)
+        {
+            JOptionPane.showMessageDialog(this, error);
         }
     }//GEN-LAST:event_searchMemberBtnActionPerformed
 
