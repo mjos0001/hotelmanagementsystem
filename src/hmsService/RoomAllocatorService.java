@@ -24,6 +24,7 @@ import java.util.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+
 public class RoomAllocatorService {
     
     EntityManagerFactory emfactory = null;
@@ -112,6 +113,24 @@ public class RoomAllocatorService {
                 // throw exception!!! this is required
                 throw new Exception("Check in date and check out date are both required.");
             }
+            
+            /*
+            // Filter by hotel id
+            int hotelId = request.getHotelId();
+            
+            if (hotelId != -1)
+            {
+                                // Check room type code
+                int i = 0;
+                
+                for (i = allRooms.size() - 1; i >= 0; i--)
+                {
+                    if (allRooms.get(i).getHotelId() != hotelId)
+                    {
+                        allRooms.remove(i);
+                    }
+                }
+            } */
 
             // Filter by room type
             if (request.getRoomTypeCode() != null && request.getRoomTypeCode().size() > 0)
@@ -147,7 +166,7 @@ public class RoomAllocatorService {
             }
 
             // Price range: any can be filled up
-            if (request.getMinPrice() != -1L)
+            if (request.getMinPrice() != 0)
             {
                 // Check room type code
                 int i = 0;
@@ -162,8 +181,7 @@ public class RoomAllocatorService {
 
             }
 
-
-            if (request.getMaxPrice() != -1L)
+            if (request.getMaxPrice() != 0)
             {
                 // Check room type code
                 int i = 0;

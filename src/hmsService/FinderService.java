@@ -95,6 +95,21 @@ public class FinderService {
         return null;
     }
     
+    public static ArrayList<Room> findRoomByRoomType(ArrayList<Room> list, String code)
+    {
+        ArrayList<Room> rooms = new ArrayList<>();
+        
+        for (Room r : list)
+        {
+            if (r.getRoomType().getRoomTypeCode().equals(code))
+            {
+                rooms.add(r);
+            }
+        }
+        
+        return rooms;
+    }
+    
     public static ArrayList<Room> findRoomByHotelId(ArrayList<Room> list, int id)
     {
         ArrayList<Room> rooms = new ArrayList<>();

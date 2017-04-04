@@ -234,18 +234,36 @@ public class BookingService {
                 // Note: Booking Room Guest is created via RoomAllocatorService.createBookingRoomGuests
                 // brgPKList size should be equal to the number of guests
                 ArrayList<BookingRoomGuestPK> brgPKList = rf.createBookingRoomGuest(newBooking.getBookingId(), rcList, availableRooms, guests);
+                ArrayList<Room> takenRooms = new ArrayList<>();
 
                 if (brgPKList != null) {
                     for (BookingRoomGuestPK brgPK : brgPKList) {
                         BookingRoomGuest brg = new BookingRoomGuest(brgPK);
                         brg.setBooking(newBooking);
                         brg.setGuest(newGuest);
-                        brg.setRoom(FinderService.findRoomByRoomId(availableRooms, brgPK.getRoomId()));
+                        Room r = FinderService.findRoomByRoomId(availableRooms, brgPK.getRoomId());
+                        brg.setRoom(r);
+                        
+                        if (!takenRooms.contains(r))
+                        {
+                            takenRooms.add(r);
+                        }
+                        
                         x.createBookingRoomGuest(brg);
                     }
                 }
                 
                 // 6. Compute for the total booking amount
+                
+                double totalAmount = 0;
+                
+                for (Room tr : takenRooms)
+                {
+                    totalAmount += tr.getRoomPrice();
+                }
+                
+                newBooking.setTotalAmount(totalAmount);
+                x.updateBooking(newBooking);
                 
                 // 6a. calculate the prices of the rooms
                 

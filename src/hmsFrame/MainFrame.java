@@ -1988,6 +1988,11 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel60.setText("must be in yyyy-mm-dd");
 
         createBookingBtn.setText("CREATE A BOOKING");
+        createBookingBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createBookingBtnActionPerformed(evt);
+            }
+        });
 
         searchBookingsBtn.setText("Search");
         searchBookingsBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -2071,7 +2076,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(createBookingBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(36, 36, 36)))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bookingPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addBookingBtn, delBookingBtn, editBookingBtn});
@@ -3624,6 +3629,12 @@ public class MainFrame extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_searchMemberBtnActionPerformed
+
+    private void createBookingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBookingBtnActionPerformed
+        // TODO add your handling code here:
+        BookingCreator bookingCreator = new BookingCreator(emfactoryList);
+        bookingCreator.setVisible(true);
+    }//GEN-LAST:event_createBookingBtnActionPerformed
 
     
     private void refreshHotelTableModel(boolean getAll)

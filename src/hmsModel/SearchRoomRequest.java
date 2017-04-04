@@ -15,6 +15,7 @@ public class SearchRoomRequest {
     private Date checkInDate = null;
     private Date checkOutDate = null;
     private ArrayList<String> roomTypeCode = null;
+    private int hotelId = -1;
     private double minPrice = -1L;
     private double maxPrice = -1L;
     
@@ -41,6 +42,16 @@ public class SearchRoomRequest {
     public double getMaxPrice()
     {
         return maxPrice;
+    }
+    
+    public int getHotelId()
+    {
+        return hotelId;
+    }
+    
+    public void setHotelId(int newId)
+    {
+        hotelId = newId;
     }
     
     public void setCheckInDate(Date value)
