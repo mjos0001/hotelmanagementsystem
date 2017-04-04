@@ -229,7 +229,7 @@ public class CustomerDataService {
         return customer;
     }
     
-        public List<Customer> findCustomerByName(String fname, String lname) throws Exception
+    public List<Customer> findCustomerByName(String fname, String lname) throws Exception
     {
         List<Customer> customers =  null;
         

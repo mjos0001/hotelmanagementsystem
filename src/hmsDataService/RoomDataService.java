@@ -117,22 +117,22 @@ public class RoomDataService {
       return facilities;
     }
     
-    public boolean createRoom(Room room) throws Exception
+    public int createRoom(Room room) throws Exception
     {
         try
         {
             entitymanager.getTransaction().begin();
             entitymanager.persist(room);
+            entitymanager.flush();
             entitymanager.getTransaction().commit();
-
-            getRooms();
             
-            return true;
+            return room.getRoomId();
         }
         catch (Exception e)
         {
             throw new Exception("Error in doing the database operation.");
         }
+        
     }
     
     public Room getRoomByRoomId(int roomId) throws Exception
@@ -253,22 +253,10 @@ public class RoomDataService {
         try {
             EntityManagerFactory emfactorya = Persistence.createEntityManagerFactory("HotelManagementSystemPUB");
             RoomDataService x = new RoomDataService(emfactorya);
-
-            List<Room> rList = x.getRooms();
-
-            List<Room> r = x.getRoomByType("DLX");
-
-            List<RoomType> roomTypes = x.getRoomTypes();
-            RoomType roomType = null;
-
-            for (RoomType rt : roomTypes)
-            {
-                if (rt.getRoomTypeCode().equals("DLX"))
-                {
-                    roomType = rt;
-                    break;
-                }
-            }
+            
+            List<Facility> fcList = x.getRoomFacilities();
+            
+            int mo = 0;
 
    //         Room newRoom = new Room();
    //         newRoom.setHotelId(1);
