@@ -797,7 +797,7 @@ public class BookingCreator extends javax.swing.JFrame {
 
             if (date1.compareTo(new Date()) < 0) {
                 hasError = true;
-                error += "Error - selected date has already passed.";
+                error += "Error - selected date has already passed.\n";
             }
 
             if (date1.compareTo(date2) > 0) {
@@ -808,7 +808,7 @@ public class BookingCreator extends javax.swing.JFrame {
         } catch (Exception e) {
             // Add error to error strings
             hasError = true;
-            error += "Error in parsing dates.";
+            error += "Error in parsing dates.\n";
         }
 
         ArrayList<String> roomTypes = new ArrayList<>();
