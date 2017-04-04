@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="HotelManagementSystemPUA" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>hmsModel.Hotel</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@hippo.its.monash.edu:1521:FIT5148A"/>
+      <property name="javax.persistence.jdbc.user" value="S28066049"/>
+      <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+      <property name="javax.persistence.jdbc.password" value="student"/>
+    </properties>
+  </persistence-unit>
+  <persistence-unit name="HotelManagementSystemPUB" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>Models.RoomFacility</class>
+    <class>hmsModel.Guest</class>
+    <class>hmsModel.RoomType</class>
+    <class>hmsModel.PaymentPK</class>
+    <class>hmsModel.Booking</class>
+    <class>hmsModel.Customer</class>
+    <class>hmsModel.Facility</class>
+    <class>hmsModel.BookingRoomGuest</class>
+    <class>hmsModel.Membership</class>
+    <class>hmsModel.Room</class>
+    <class>hmsModel.BookingRoomGuestPK</class>
+    <class>hmsModel.Payment</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@hippo.its.monash.edu:1521:FIT5148B"/>
+      <property name="javax.persistence.jdbc.user" value="S28066049"/>
+      <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+      <property name="javax.persistence.jdbc.password" value="student"/>
+    </properties>
+  </persistence-unit>
+</persistence>
