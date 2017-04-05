@@ -2181,7 +2181,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         btnRooms.setBackground(Color.decode("#86BBD8"));
 
-        refreshDataTableModels();
+        refreshPaymentTableModel(true);
 
         hotelPanel.setVisible(false);
         roomPanel.setVisible(false);
