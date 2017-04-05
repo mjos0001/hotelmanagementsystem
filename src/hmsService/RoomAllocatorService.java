@@ -92,7 +92,8 @@ public class RoomAllocatorService {
                         {
                             // Find this room in all rooms
                             i = 0;
-                            for (i = allRooms.size() - 1; i >= 0; i--)
+                            int size = allRooms.size(); 
+                            for (i = size - 1; i >= 0; i--)
                             {
                                 if (allRooms.get(i).getRoomId() == brg.getRoom().getRoomId())
                                 {
@@ -138,15 +139,20 @@ public class RoomAllocatorService {
             {
                 // Check room type code
                 int i = 0;
-                for (i = allRooms.size() - 1; i >= 0; i--)
+                int size = allRooms.size(); 
+                for (i = size - 1; i >= 0; i--)
                 {
+                    Room thisRoom = allRooms.get(i);
+                    String thisRoomType = thisRoom.getRoomType().getRoomTypeCode();
+                    
                     // Check if the room type code is in the request
                     // if yes then don't delete
                     boolean delete = true;
-                    ArrayList<String> roomTypes = request.getRoomTypeCode();
-                    for (String rtc : roomTypes)
+                    ArrayList<String> rooomTypesRequest = request.getRoomTypeCode();
+                    
+                    for (String rtc : rooomTypesRequest)
                     {
-                        if (allRooms.get(i).getRoomType().getRoomTypeCode().equals(rtc))
+                        if (thisRoomType.equals(rtc))
                         {
                             delete = false;
                             break;
@@ -171,8 +177,8 @@ public class RoomAllocatorService {
             {
                 // Check room type code
                 int i = 0;
-
-                for (i = allRooms.size() - 1; i >= 0; i--)
+                int size = allRooms.size(); 
+                for (i = size - 1; i >= 0; i--)
                 {
                     if (allRooms.get(i).getRoomPrice() < request.getMinPrice())
                     {
@@ -186,8 +192,8 @@ public class RoomAllocatorService {
             {
                 // Check room type code
                 int i = 0;
-
-                for (i = allRooms.size() - 1; i >= 0; i--)
+                int size = allRooms.size(); 
+                for (i = size - 1; i >= 0; i--)
                 {
                     if (allRooms.get(i).getRoomPrice() > request.getMaxPrice())
                     {

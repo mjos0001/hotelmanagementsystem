@@ -1047,9 +1047,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(roomFacilityComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(26, 26, 26)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2007,7 +2007,7 @@ public class MainFrame extends javax.swing.JFrame {
         bookingPanelLayout.setHorizontalGroup(
             bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bookingPanelLayout.createSequentialGroup()
-                .addGap(124, 124, 124)
+                .addGap(97, 97, 97)
                 .addGroup(bookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(bookingPanelLayout.createSequentialGroup()
                         .addComponent(jButton1)
@@ -2150,7 +2150,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(searchBookingLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(21, 21, 21)
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(92, 92, 92))
+                .addGap(53, 53, 53))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2652,8 +2652,9 @@ public class MainFrame extends javax.swing.JFrame {
                 error += "Error in getting booking guest data.\n";
             }
             
+            int gSize = guestList.size();
             // Delete guests and booking-room-guests
-            for (int i = guestList.size() - 1; i >= 0; i--) {
+            for (int i = gSize - 1; i >= 0; i--) {
                 Guest g = guestList.get(i);
 
                 int gid = g.getGuestId();
@@ -2662,7 +2663,8 @@ public class MainFrame extends javax.swing.JFrame {
                 // Also delete the BookingRoomGuest if we're going to delete the room
                 // Works like CASCADE
                 if (rBrgList != null && rBrgList.size() > 0) {
-                    for (int h = rBrgList.size() - 1; h >= 0; h--) {
+                    int size = rBrgList.size();
+                    for (int h = size - 1; h >= 0; h--) {
                         BookingRoomGuest brg = rBrgList.get(h);
                         bookingController.deleteBookingRoomGuest(brg);
                     }
@@ -2677,7 +2679,8 @@ public class MainFrame extends javax.swing.JFrame {
             if (paymentsList != null) {
                 if (paymentsList.size() > 0)
                 {
-                    for (int i = paymentsList.size() - 1; i >= 0; i--) {
+                    int size = paymentsList.size();
+                    for (int i = size - 1; i >= 0; i--) {
                         Payment p = paymentsList.get(i);
                         paymentController.deletePayment(p);
                     }
@@ -3665,7 +3668,8 @@ public class MainFrame extends javax.swing.JFrame {
             // Also delete the BookingRoomGuest if we're going to delete the room
             // Works like CASCADE
             if (rBrgList.size() > 0) {
-                for (int i = rBrgList.size() - 1; i >= 0; i--) {
+                int size = rBrgList.size();
+                for (int i = size - 1; i >= 0; i--) {
                     BookingRoomGuest brg = rBrgList.get(i);
                     bookingController.deleteBookingRoomGuest(brg);
                 }
@@ -3748,7 +3752,8 @@ public class MainFrame extends javax.swing.JFrame {
             // Also delete the BookingRoomGuest if we're going to delete the room
             // Works like CASCADE
             if (rBrgList.size() > 0) {
-                for (int i = rBrgList.size() - 1; i >= 0; i--) {
+                int size = rBrgList.size();
+                for (int i = size - 1; i >= 0; i--) {
                     BookingRoomGuest brg = rBrgList.get(i);
                     bookingController.deleteBookingRoomGuest(brg);
                 }

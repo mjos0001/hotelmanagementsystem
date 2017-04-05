@@ -94,6 +94,7 @@ public class BookingCreator extends javax.swing.JFrame {
     int maxOccupancy = 0;
     int numOfGuests = 0;
     int numOfPayments = 0;
+    double initialTotalCost = 0.0;
     double totalCost = 0.0;
     double totalPaid = 0.0;
 
@@ -167,6 +168,8 @@ public class BookingCreator extends javax.swing.JFrame {
         submitPaymentBtn = new javax.swing.JButton();
         paymentTabbedPane = new javax.swing.JTabbedPane();
         addPaymentBtn = new javax.swing.JButton();
+        jLabel30 = new javax.swing.JLabel();
+        textTotalCostWithDiscount = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
@@ -250,26 +253,9 @@ public class BookingCreator extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSubmitSearchRequest)
-                .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(textCheckInDate)
-                            .addComponent(textCheckOutDate, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))
-                        .addGap(39, 39, 39)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5))
-                        .addGap(120, 120, 120))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
@@ -303,7 +289,24 @@ public class BookingCreator extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))))
-                        .addContainerGap(151, Short.MAX_VALUE))))
+                        .addContainerGap(151, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(textCheckInDate)
+                            .addComponent(textCheckOutDate, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))
+                        .addGap(39, 39, 39)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5))
+                        .addGap(120, 120, 120))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSubmitSearchRequest)
+                .addGap(70, 70, 70))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -343,9 +346,9 @@ public class BookingCreator extends javax.swing.JFrame {
                         .addComponent(hotelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(hotelLabel))
                     .addComponent(jLabel20))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 182, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
                 .addComponent(btnSubmitSearchRequest)
-                .addGap(26, 26, 26))
+                .addGap(33, 33, 33))
         );
 
         jTabbedPane3.addTab("Request for a room", jPanel1);
@@ -361,15 +364,15 @@ public class BookingCreator extends javax.swing.JFrame {
 
         jLabel12.setText("Room Choices - select the number of available rooms based on the room type");
 
-        jLabel13.setText(" Single Rooms (SGL) - 1 pax per room");
+        jLabel13.setText(" Single Rooms (SGL) - 1 guest per room");
 
-        jLabel14.setText("Double (DBL) Rooms - 2 pax per room");
+        jLabel14.setText("Double (DBL) Rooms - 2 guests per room");
 
-        jLabel15.setText("Quadruple (QPL) Rooms - 4 pax per room");
+        jLabel15.setText("Quadruple (QPL) Rooms - 4 guests per room");
 
-        jLabel16.setText("Deluxe (DLX) Rooms - 4 pax per room");
+        jLabel16.setText("Deluxe (DLX) Rooms - 4 guests per room");
 
-        jLabel17.setText("Suites (STE) - 6 pax per room");
+        jLabel17.setText("Suites (STE) - 6 guests per room");
 
         jLabel18.setText("Maximum Number of Guests");
 
@@ -494,6 +497,11 @@ public class BookingCreator extends javax.swing.JFrame {
         jLabel21.setText("Customer ");
 
         customerComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        customerComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customerComboBoxActionPerformed(evt);
+            }
+        });
 
         jLabel22.setText("Contact Person");
 
@@ -506,7 +514,7 @@ public class BookingCreator extends javax.swing.JFrame {
             }
         });
 
-        totalAmountlabel.setText("Total Cost");
+        totalAmountlabel.setText("Total Cost incl. Customer Discount");
 
         textTotalAmount.setEnabled(false);
 
@@ -537,7 +545,7 @@ public class BookingCreator extends javax.swing.JFrame {
                         .addComponent(textTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel24)))
-                .addContainerGap(394, Short.MAX_VALUE))
+                .addContainerGap(284, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -617,6 +625,15 @@ public class BookingCreator extends javax.swing.JFrame {
             }
         });
 
+        jLabel30.setText("Total Amount incl. Customer Discount");
+
+        textTotalCostWithDiscount.setEnabled(false);
+        textTotalCostWithDiscount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textTotalCostWithDiscountActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -626,21 +643,28 @@ public class BookingCreator extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(paymentTabbedPane)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 588, Short.MAX_VALUE)
-                        .addComponent(submitPaymentBtn)
-                        .addGap(6, 6, 6))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(addPaymentBtn)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 218, Short.MAX_VALUE)
+                        .addComponent(jLabel30)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textTotalCostWithDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(submitPaymentBtn))
+                        .addGap(6, 6, 6)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addComponent(paymentTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(addPaymentBtn)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(paymentTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(addPaymentBtn))
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel30)
+                        .addComponent(textTotalCostWithDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addComponent(submitPaymentBtn)
                 .addContainerGap())
@@ -753,11 +777,13 @@ public class BookingCreator extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPane3)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jButton6))
+                        .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(jButton6)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -766,9 +792,9 @@ public class BookingCreator extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(jTabbedPane3)
-                .addGap(29, 29, 29)
+                .addGap(18, 18, 18)
                 .addComponent(jButton6)
-                .addGap(30, 30, 30))
+                .addGap(41, 41, 41))
         );
 
         pack();
@@ -808,7 +834,7 @@ public class BookingCreator extends javax.swing.JFrame {
         } catch (Exception e) {
             // Add error to error strings
             hasError = true;
-            error += "Error in parsing dates.\n";
+            error += "Error in parsing dates. Make sure both dates are filled up correctly.\n";
         }
 
         ArrayList<String> roomTypes = new ArrayList<>();
@@ -857,12 +883,17 @@ public class BookingCreator extends javax.swing.JFrame {
             error += "Error in parsing minimum or maximum amounts.\n";
         }
 
-        try {
-            int hotelId = Integer.parseInt(hotelComboBox.getSelectedItem().toString().split("-")[0]);
-            roomRequest.setHotelId(hotelId);
-        } catch (Exception e) {
-            hasError = true;
-            error += "Error in parsing hotel id.\n";
+        String hString = hotelComboBox.getSelectedItem().toString().split("-")[0];
+        
+        if (!hString.toLowerCase().equals("none"))
+        {
+            try {
+                int hotelId = Integer.parseInt(hString);
+                roomRequest.setHotelId(hotelId);
+            } catch (Exception e) {
+                hasError = true;
+                error += "Error in parsing hotel id.\n";
+            }
         }
 
         if (!hasError) {
@@ -979,7 +1010,7 @@ public class BookingCreator extends javax.swing.JFrame {
         takenRooms = new ArrayList<>();
         ArrayList<Room> availableRooms = new ArrayList<>(rooms);
 
-        totalCost = 0;
+        initialTotalCost = 0;
 
         for (RoomChoice rc : roomChoices) {
             int qty = rc.getAllocatedGuests();
@@ -991,7 +1022,7 @@ public class BookingCreator extends javax.swing.JFrame {
                 for (int i = 0; i < qty; i++) {
                     try {
                         Room takenRoom = aRoomByType.get(aRoomByType.size() - 1);
-                        totalCost += takenRoom.getRoomPrice();
+                        initialTotalCost += takenRoom.getRoomPrice();
                         // remove the room we'll take
                         takenRooms.add(takenRoom);
                     } catch (Exception e) {
@@ -1007,7 +1038,9 @@ public class BookingCreator extends javax.swing.JFrame {
                 long noOfDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
                 long duration = Math.abs(TimeUnit.DAYS.toDays(noOfDays));
 
-                totalCost *= duration;
+                initialTotalCost *= duration;
+                initialTotalCost = Math.round(initialTotalCost);
+                totalCost = initialTotalCost;
             } catch (Exception e) {
 
             }
@@ -1114,19 +1147,23 @@ public class BookingCreator extends javax.swing.JFrame {
                 errors += "Error during room allocation for guests.\n";
             }
 
-            String allocation = "You will be allocated:\n";
+            String allocation = "You will be allocated the following room types:\n\n";
 
             for (RoomChoice a : roomChoices) {
                 String line = (a.getRoomTypeCode() + "- " + Integer.toString(a.getAllocatedGuests()) + " guests \n");
                 allocation += line;
 
             }
+            
+            allocation += "\nNote: if your booking guests are less than this allocation,\n";
+            allocation += "the system will allocate a guest to multiple rooms.\n";
 
             JOptionPane.showMessageDialog(this, allocation);
         }
 
         if (!hasError) {
             calculateTotalCost();
+            recalculateTotalCost();
             textTotalAmount.setText(Double.toString(totalCost));
             textTotalAmount.repaint();
             jTabbedPane3.setEnabledAt(2, true);
@@ -1234,6 +1271,10 @@ public class BookingCreator extends javax.swing.JFrame {
         }
 
         if (!hasError) {
+            
+            // Display the new total cost
+            textTotalCostWithDiscount.setText(Double.toString(totalCost));
+            
             paymentForms = new ArrayList<>();
             jTabbedPane3.setEnabledAt(4, true);
             jTabbedPane3.setSelectedIndex(4);
@@ -1345,6 +1386,9 @@ public class BookingCreator extends javax.swing.JFrame {
             submitGuestBtn.setEnabled(false);
             submitPaymentBtn.setEnabled(false);
             addPaymentBtn.setEnabled(false);
+            textNumGuests.setEnabled(false);
+            customerComboBox.setEnabled(false);
+            hotelComboBox.setEnabled(false);
 
             jTabbedPane3.setSelectedIndex(5);
         } else {
@@ -1394,6 +1438,24 @@ public class BookingCreator extends javax.swing.JFrame {
         calculateMaxOccupancy();
     }//GEN-LAST:event_suiteComboBoxActionPerformed
 
+    private void recalculateTotalCost()
+    {
+        int cusId = Integer.parseInt(customerComboBox.getSelectedItem().toString().split("-")[0]);
+
+        Customer cust = FinderService.findCustomerByCustomerId(customers, cusId);
+        
+        totalCost = initialTotalCost;
+        
+        // consider the discount
+        double disc = cust.getMembership().getDiscount();
+        
+        if (disc > 0 && disc < 100)
+        {
+            totalCost = Math.round(totalCost * (double)((100 - disc)/100));
+        }
+
+    }
+    
     private void submitContactBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitContactBtnActionPerformed
         // TODO add your handling code here:
         String error = "";
@@ -1412,13 +1474,7 @@ public class BookingCreator extends javax.swing.JFrame {
             newBooking.setContactPerson(textContactPerson.getText());
             newBooking.setContactEmail(textContactEmail.getText());
             
-            // consider the discount
-            long disc = cust.getMembership().getDiscount();
-            
-            if (disc > 0 && disc < 100)
-            {
-                totalCost *= (100 - disc)/100;
-            }
+            recalculateTotalCost();
             
             newBooking.setTotalAmount(totalCost);
             newBooking.setPaymentStatusCode("UP");
@@ -1459,6 +1515,18 @@ public class BookingCreator extends javax.swing.JFrame {
     private void hotelComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotelComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_hotelComboBoxActionPerformed
+
+    private void customerComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerComboBoxActionPerformed
+        // TODO add your handling code here:
+        recalculateTotalCost();
+        
+        textTotalAmount.setText(Double.toString(totalCost));
+        textTotalAmount.repaint();
+    }//GEN-LAST:event_customerComboBoxActionPerformed
+
+    private void textTotalCostWithDiscountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textTotalCostWithDiscountActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textTotalCostWithDiscountActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1537,6 +1605,7 @@ public class BookingCreator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1573,6 +1642,7 @@ public class BookingCreator extends javax.swing.JFrame {
     private javax.swing.JTextField textNumGuests;
     private javax.swing.JTextField textTotalAmount;
     private javax.swing.JTextField textTotalAmountFinal;
+    private javax.swing.JTextField textTotalCostWithDiscount;
     private javax.swing.JLabel totalAmountlabel;
     // End of variables declaration//GEN-END:variables
 }
